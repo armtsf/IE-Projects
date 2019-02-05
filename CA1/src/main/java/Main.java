@@ -1,9 +1,7 @@
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.util.Pair;
-import models.Project;
-import models.ProjectList;
-import models.User;
-import models.UserList;
+import models.*;
 
 import java.io.IOException;
 import java.util.Scanner;
@@ -32,10 +30,15 @@ public class Main {
                     break;
                 case "bid":
                     System.out.println(commandData);
+                    Bid bid = mapper.readValue(commandData, Bid.class);
+                    BidList.add(bid);
                     break;
                 case "auction":
                     System.out.println(commandData);
                     isFinished = true;
+                    JsonNode jsonNode = mapper.readTree(commandData);
+                    String title = jsonNode.get("projectTitle").asText();
+                    System.out.println(Auction.finish(title).getUsername());
                     break;
             }
         }
