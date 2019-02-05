@@ -1,6 +1,9 @@
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.util.Pair;
+import models.Project;
+import models.ProjectList;
 import models.User;
+import models.UserList;
 
 import java.io.IOException;
 import java.util.Scanner;
@@ -20,9 +23,12 @@ public class Main {
                 case "register":
                     System.out.println(commandData);
                     User user = mapper.readValue(commandData, User.class);
+                    UserList.add(user);
                     break;
                 case "addProject":
                     System.out.println(commandData);
+                    Project project = mapper.readValue(commandData, Project.class);
+                    ProjectList.add(project);
                     break;
                 case "bid":
                     System.out.println(commandData);
