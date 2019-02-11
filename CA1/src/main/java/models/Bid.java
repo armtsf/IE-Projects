@@ -40,10 +40,16 @@ public class Bid {
     }
 
     public boolean isValid() {
-        Project project = ProjectList.get(projectTitle);
+        Project project;
+        try {
+            project = ProjectList.get(projectTitle);
+        } catch (NoSuchElementException e) {
+            return false;
+        }
         if (bidAmount > project.getBudget()) {
             return false;
         }
+
         User user;
         try {
             user = UserList.get(biddingUser);
