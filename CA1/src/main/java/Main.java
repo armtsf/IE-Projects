@@ -5,6 +5,7 @@ import models.*;
 
 import java.io.IOException;
 import java.io.InvalidObjectException;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class Main {
@@ -47,11 +48,15 @@ public class Main {
                     isFinished = true;
                     JsonNode jsonNode = mapper.readTree(commandData);
                     String projectTitle = jsonNode.get("projectTitle").asText();
-                    User winner = Auction.finish(projectTitle);
-                    if (winner != null) {
-                        System.out.println("winner: " + winner.getUsername());
-                    } else {
-                        System.out.println("no winner!");
+                    try {
+                        User winner = Auction.finish(projectTitle);
+                        if (winner != null) {
+                            System.out.println("winner: " + winner.getUsername());
+                        } else {
+                            System.out.println("no winner!");
+                        }
+                    } catch (NoSuchElementException e) {
+                        System.err.println("invalid projectTitle");
                     }
                     break;
             }
