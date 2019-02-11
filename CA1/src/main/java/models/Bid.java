@@ -44,7 +44,12 @@ public class Bid {
         if (bidAmount > project.getBudget()) {
             return false;
         }
-        User user = UserList.get(biddingUser);
+        User user;
+        try {
+            user = UserList.get(biddingUser);
+        } catch (NoSuchElementException e) {
+            return false;
+        }
         for (Skill skill: project.getSkills()) {
             try {
                 Skill userSkill = user.getSkill(skill.getName());

@@ -7,12 +7,8 @@ public class BidList {
     private static ArrayList<Bid> bids = new ArrayList<>();
 
     public static void add(Bid bid) {
-        try {
-            User user = UserList.get(bid.getBiddingUser());
+        if (bid.isValid()) {
             bids.add(bid);
-        }
-        catch (Exception e) {
-            System.out.println("Invalid username.");
         }
     }
 

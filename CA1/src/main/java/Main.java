@@ -28,9 +28,7 @@ public class Main {
                     break;
                 case "bid":
                     Bid bid = mapper.readValue(commandData, Bid.class);
-                    if (bid.isValid()) {
-                        BidList.add(bid);
-                    }
+                    BidList.add(bid);
                     break;
                 case "auction":
                     isFinished = true;
