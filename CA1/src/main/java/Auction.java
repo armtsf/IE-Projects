@@ -3,9 +3,9 @@ import models.*;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
-public class Auction {
+class Auction {
 
-    public static User finish(String projectName) {
+    static User finish(String projectName) {
         Project project = ProjectList.get(projectName);
         ArrayList<Skill> jobSkills = project.getSkills();
         long jobOffer = project.getBudget();
