@@ -4,6 +4,7 @@ import javafx.util.Pair;
 import models.*;
 
 import java.io.IOException;
+import java.io.InvalidObjectException;
 import java.util.Scanner;
 
 public class Main {
@@ -20,15 +21,27 @@ public class Main {
             switch (commandName) {
                 case "register":
                     User user = mapper.readValue(commandData, User.class);
-                    UserList.add(user);
+                    try {
+                        UserList.add(user);
+                    } catch (InvalidObjectException e) {
+                        System.err.println(e.getMessage());
+                    }
                     break;
                 case "addProject":
                     Project project = mapper.readValue(commandData, Project.class);
-                    ProjectList.add(project);
+                    try {
+                        ProjectList.add(project);
+                    } catch (InvalidObjectException e) {
+                        System.err.println(e.getMessage());
+                    }
                     break;
                 case "bid":
                     Bid bid = mapper.readValue(commandData, Bid.class);
-                    BidList.add(bid);
+                    try {
+                        BidList.add(bid);
+                    } catch (InvalidObjectException e) {
+                        System.err.println(e.getMessage());
+                    }
                     break;
                 case "auction":
                     isFinished = true;
