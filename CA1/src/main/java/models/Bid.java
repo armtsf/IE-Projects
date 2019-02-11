@@ -1,5 +1,7 @@
 package models;
 
+import java.util.NoSuchElementException;
+
 public class Bid {
     private String biddingUser;
     private String projectTitle;
@@ -35,5 +37,24 @@ public class Bid {
 
     public void setBidAmount(long bidAmount) {
         this.bidAmount = bidAmount;
+    }
+
+    public boolean isValid() {
+        Project project = ProjectList.get(projectTitle);
+        if (bidAmount > project.getBudget()) {
+            return false;
+        }
+        User user = UserList.get(biddingUser);
+        for (Skill skill: project.getSkills()) {
+            try {
+                Skill userSkill = user.getSkill(skill.getName());
+                if (userSkill.getPoints() < skill.getPoints()) {
+                    return false;
+                }
+            } catch (NoSuchElementException e) {
+                return false;
+            }
+        }
+        return true;
     }
 }

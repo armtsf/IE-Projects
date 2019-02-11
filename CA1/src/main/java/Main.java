@@ -19,26 +19,29 @@ public class Main {
 
             switch (commandName) {
                 case "register":
-                    System.out.println(commandData);
                     User user = mapper.readValue(commandData, User.class);
                     UserList.add(user);
                     break;
                 case "addProject":
-                    System.out.println(commandData);
                     Project project = mapper.readValue(commandData, Project.class);
                     ProjectList.add(project);
                     break;
                 case "bid":
-                    System.out.println(commandData);
                     Bid bid = mapper.readValue(commandData, Bid.class);
-                    BidList.add(bid);
+                    if (bid.isValid()) {
+                        BidList.add(bid);
+                    }
                     break;
                 case "auction":
-                    System.out.println(commandData);
                     isFinished = true;
                     JsonNode jsonNode = mapper.readTree(commandData);
-                    String title = jsonNode.get("projectTitle").asText();
-                    System.out.println(Auction.finish(title).getUsername());
+                    String projectTitle = jsonNode.get("projectTitle").asText();
+                    User winner = Auction.finish(projectTitle);
+                    if (winner != null) {
+                        System.out.println("winner: " + winner.getUsername());
+                    } else {
+                        System.out.println("no winner!");
+                    }
                     break;
             }
         }
