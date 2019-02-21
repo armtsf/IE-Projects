@@ -1,7 +1,10 @@
 package models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Skill {
     private String name;
+    @JsonProperty("point")
     private int points;
 
     public Skill() {}
