@@ -3,24 +3,29 @@ package models;
 import java.util.ArrayList;
 
 public class Project {
+    private String id;
     private String title;
+    private String description;
+    private String imageURL;
     private ArrayList<Skill> skills;
     private long budget;
+    private long deadline;
+    private User winner;
 
     public Project() {}
 
-    public Project(String title, ArrayList<Skill> skills, long budget) {
-        this.title = title;
+    public Project(String id, ArrayList<Skill> skills, long budget) {
+        this.id = id;
         this.skills = skills;
         this.budget = budget;
     }
 
-    public String getTitle() {
-        return title;
+    public String getId() {
+        return id;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public ArrayList<Skill> getSkills() {

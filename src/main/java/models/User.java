@@ -5,22 +5,27 @@ import java.util.NoSuchElementException;
 
 public class User {
 
-    private String username;
+    private String id;
+    private String firstName;
+    private String lastName;
+    private String jobTitle;
+    private String profilePictureURL;
     private ArrayList<Skill> skills;
+    private String bio;
 
     public User() {}
 
-    public User(String username, ArrayList<Skill> skills) {
-        this.username = username;
+    public User(String id, ArrayList<Skill> skills) {
+        this.id = id;
         this.skills = skills;
     }
 
-    public String getUsername() {
-        return username;
+    public String getId() {
+        return id;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public ArrayList<Skill> getSkills() {
