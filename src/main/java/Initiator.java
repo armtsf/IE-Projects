@@ -16,18 +16,19 @@ public class Initiator {
     public static void init() {
         ObjectMapper mapper = new ObjectMapper();
         try {
-            HttpResponse<String> jsonResponse = Unirest.get(PROJECTS_ENDPOINT).asString();
-            ArrayList<Project> projects = mapper.readValue(jsonResponse.getBody(), new TypeReference<List<Project>>(){});
-            for (Project project: projects) {
-                System.out.println(project.getTitle());
-                ProjectList.add(project);
-            }
-
-            jsonResponse = Unirest.get(SKILLS_ENDPOINT).asString();
+            HttpResponse<String> jsonResponse = Unirest.get(SKILLS_ENDPOINT).asString();
             ArrayList<SkillName> skillNames = mapper.readValue(jsonResponse.getBody(), new TypeReference<List<SkillName>>(){});
             for (SkillName skillName: skillNames) {
-                System.out.println(skillName.getName());
                 SkillNameList.add(skillName);
+            }
+
+            jsonResponse = Unirest.get(PROJECTS_ENDPOINT).asString();
+            ArrayList<Project> projects = mapper.readValue(jsonResponse.getBody(), new TypeReference<List<Project>>(){});
+            for (Project project: projects) {
+                for (Skill skill: project.getSkills()) {
+                    skill.setSkillName(SkillNameList.get(skill.getSkillName().getName()));
+                }
+                ProjectList.add(project);
             }
         } catch (UnirestException | IOException e) {
             e.printStackTrace();
