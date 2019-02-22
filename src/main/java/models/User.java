@@ -36,8 +36,8 @@ public class User {
         this.skills = skills;
     }
 
-    public Skill getSkill(String skillName) {
-        return skills.stream().filter(skill -> skill.getName().equals(skillName)).findFirst()
+    public Skill getSkill(SkillName skillName) {
+        return skills.stream().filter(skill -> skill.getSkillName().getName().equals(skillName.getName())).findFirst()
                 .orElseThrow(NoSuchElementException::new);
     }
 }

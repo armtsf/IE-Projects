@@ -31,7 +31,7 @@ class Auction {
         long sum = 0;
         for (Skill skill : jobSkills) {
             try {
-                Skill userSkill = user.getSkill(skill.getName());
+                Skill userSkill = user.getSkill(skill.getSkillName());
                 sum += 10000 * Math.pow((userSkill.getPoints() - skill.getPoints()), 2);
             }
             catch (NoSuchElementException e) {

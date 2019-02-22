@@ -58,7 +58,7 @@ public class Bid {
         }
         for (Skill skill: project.getSkills()) {
             try {
-                Skill userSkill = user.getSkill(skill.getName());
+                Skill userSkill = user.getSkill(skill.getSkillName());
                 if (userSkill.getPoints() < skill.getPoints()) {
                     return false;
                 }

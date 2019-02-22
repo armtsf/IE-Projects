@@ -3,23 +3,24 @@ package models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Skill {
-    private String name;
+    @JsonProperty("name")
+    private SkillName skillName;
     @JsonProperty("point")
     private int points;
 
     public Skill() {}
 
-    public Skill(String name, int points) {
-        this.name = name;
+    public Skill(SkillName skillName, int points) {
+        this.skillName = skillName;
         this.points = points;
     }
 
-    public String getName() {
-        return name;
+    public SkillName getSkillName() {
+        return skillName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setSkillName(SkillName skillName) {
+        this.skillName = skillName;
     }
 
     public int getPoints() {
