@@ -33,5 +33,21 @@ public class Initiator {
         } catch (UnirestException | IOException e) {
             e.printStackTrace();
         }
+
+        User user = new User();
+        user.setId("1");
+        user.setFirstName("علی");
+        user.setLastName("شریف‌زاده");
+        user.setJobTitle("برنامه‌نویس وب");
+        user.setBio("روی سنگ قبرم بنویسید: خدا بیامرز می‌خواست خیلی کارا بکنه ولی پول نداشت");
+        ArrayList<Skill> skills = new ArrayList<Skill>(){{
+            new Skill(SkillNameList.get("HTML"), 5);
+            new Skill(SkillNameList.get("Javascript"), 4);
+            new Skill(SkillNameList.get("C++"), 2);
+            new Skill(SkillNameList.get("Java"), 3);
+        }};
+        user.setSkills(skills);
+
+        Session.put("userId", user.getId());
     }
 }
