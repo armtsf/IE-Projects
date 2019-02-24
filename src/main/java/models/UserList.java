@@ -16,8 +16,8 @@ public class UserList {
         users.add(user);
     }
 
-    public static User get(final String username) {
-        return users.stream().filter(user -> user.getId().equals(username)).findFirst()
+    public static User get(final String userId) {
+        return users.stream().filter(user -> user.getId().equals(userId)).findFirst()
                 .orElseThrow(NoSuchElementException::new);
     }
 }
