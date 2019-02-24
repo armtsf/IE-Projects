@@ -20,4 +20,8 @@ public class ProjectList {
         return projects.stream().filter(project -> project.getId().equals(title)).findFirst()
                 .orElseThrow(NoSuchElementException::new);
     }
+
+    public static ArrayList<Project> all() {
+        return projects;
+    }
 }
