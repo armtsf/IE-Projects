@@ -3,9 +3,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import base.Session;
 import models.*;
 
 import java.io.IOException;
+import java.io.InvalidObjectException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,14 +42,19 @@ public class Initiator {
         user.setLastName("شریف‌زاده");
         user.setJobTitle("برنامه‌نویس وب");
         user.setBio("روی سنگ قبرم بنویسید: خدا بیامرز می‌خواست خیلی کارا بکنه ولی پول نداشت");
-        ArrayList<Skill> skills = new ArrayList<Skill>(){{
-            new Skill(SkillNameList.get("HTML"), 5);
-            new Skill(SkillNameList.get("Javascript"), 4);
-            new Skill(SkillNameList.get("C++"), 2);
-            new Skill(SkillNameList.get("Java"), 3);
-        }};
+        ArrayList<Skill> skills = new ArrayList<>();
+        skills.add(new Skill(SkillNameList.get("HTML"), 5));
+        skills.add(new Skill(SkillNameList.get("Javascript"), 4));
+        skills.add(new Skill(SkillNameList.get("C++"), 2));
+        skills.add(new Skill(SkillNameList.get("Java"), 3));
         user.setSkills(skills);
-
+        try {
+            UserList.add(user);
+        } catch (InvalidObjectException e) {
+            e.printStackTrace();
+        }
         Session.put("userId", user.getId());
+
+        System.out.println("init finished!");
     }
 }

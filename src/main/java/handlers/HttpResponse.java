@@ -4,7 +4,12 @@ import java.util.HashMap;
 
 public class HttpResponse {
     private int status;
-    private HashMap<String, String> headers;
+    private HashMap<String, String> headers = new HashMap<>();
+    private String body;
+
+    public HttpResponse(int status) {
+        this.status = status;
+    }
 
     public int getStatus() {
         return status;
@@ -29,6 +34,4 @@ public class HttpResponse {
     public void setBody(String body) {
         this.body = body;
     }
-
-    private String body;
 }
