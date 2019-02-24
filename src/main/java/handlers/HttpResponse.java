@@ -11,6 +11,11 @@ public class HttpResponse {
         this.status = status;
     }
 
+    public HttpResponse(int status, String body) {
+        this.status = status;
+        this.body = body;
+    }
+
     public int getStatus() {
         return status;
     }
