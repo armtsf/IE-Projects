@@ -1,4 +1,5 @@
 import com.sun.net.httpserver.HttpServer;
+import handlers.ProjectListHandler;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -8,7 +9,8 @@ public class Main {
         Initiator.init();
 
         HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0);
-        server.createContext("/project");
+        server.createContext("/project", new ProjectListHandler());
+        server.setExecutor(null);
         server.start();
     }
 }
