@@ -2,6 +2,7 @@ package base;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import handlers.ServiceHandler;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -10,15 +11,16 @@ import java.util.ArrayList;
 public class Router implements HttpHandler {
     private ArrayList<Route> routes = new ArrayList<>();
 
-    public void addRoute(String path, HttpHandler handler) {
+    public void addRoute(String path, ServiceHandler handler) {
         routes.add(new Route(path, handler));
     }
 
     public void handle(HttpExchange t) throws IOException {
         boolean found = false;
-        HttpHandler handler = null;
+        ServiceHandler handler = null;
 
-        String[] pathParts = Route.getPathParts(t.getRequestURI().getPath());
+        String path = t.getRequestURI().getPath();
+        String[] pathParts = Route.getPathParts(path);
         for (Route route: routes) {
             boolean check = true;
             String[] routeParts = route.getPathParts();
@@ -36,10 +38,11 @@ public class Router implements HttpHandler {
             if (check) {
                 found = true;
                 handler = route.getHandler();
+                handler.setUriVars(Route.getRouteVars(route, path));
                 break;
             }
         }
-        if (found && handler != null) {
+        if (found) {
             handler.handle(t);
         } else {
             String response = "Not Found";

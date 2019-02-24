@@ -6,9 +6,12 @@ import com.sun.net.httpserver.HttpHandler;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.HashMap;
 import java.util.Map;
 
 public abstract class ServiceHandler implements HttpHandler {
+    private HashMap<String, String> uriVars;
+
     public abstract HttpResponse handleRequest(HttpExchange t);
 
     public void handle(HttpExchange t) throws IOException {
@@ -24,5 +27,13 @@ public abstract class ServiceHandler implements HttpHandler {
         OutputStream os = t.getResponseBody();
         os.write(responseBody);
         os.close();
+    }
+
+    public HashMap<String, String> getUriVars() {
+        return uriVars;
+    }
+
+    public void setUriVars(HashMap<String, String> uriVars) {
+        this.uriVars = uriVars;
     }
 }
