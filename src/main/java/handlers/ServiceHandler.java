@@ -9,10 +9,10 @@ import java.io.OutputStream;
 import java.util.Map;
 
 public abstract class ServiceHandler implements HttpHandler {
-    public abstract HttpResponse execute(HttpExchange t);
+    public abstract HttpResponse handleRequest(HttpExchange t);
 
     public void handle(HttpExchange t) throws IOException {
-        HttpResponse response = execute(t);
+        HttpResponse response = handleRequest(t);
         byte[] responseBody = response.getBody().getBytes();
 
         Headers headers = t.getResponseHeaders();

@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
 public class ProjectListHandler extends ServiceHandler {
-    public HttpResponse execute(HttpExchange t) {
+    public HttpResponse handleRequest(HttpExchange t) {
         String userId = Session.get("userId");
         if (userId == null) {
             return new HttpResponse(401);
