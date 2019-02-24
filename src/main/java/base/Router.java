@@ -28,7 +28,7 @@ public class Router implements HttpHandler {
                 continue;
             }
             for (int i = 0; i < pathParts.length; i++) {
-                if (routeParts[i].startsWith("/")) {  // param
+                if (routeParts[i].startsWith("{")) {  // param
                     continue;
                 }
                 if (!pathParts[i].equals(routeParts[i])) {

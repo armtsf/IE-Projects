@@ -40,7 +40,7 @@ public class Route {
 
         String[] routeParts = route.getPathParts();
         String[] pathParts = Route.getPathParts(path);
-        if (routeParts != pathParts) {
+        if (routeParts.length != pathParts.length) {
             return res;
         }
         for (int i = 0; i < routeParts.length; i++) {
