@@ -56,16 +56,6 @@ public class Bid {
         } catch (NoSuchElementException e) {
             return false;
         }
-        for (Skill skill: project.getSkills()) {
-            try {
-                Skill userSkill = user.getSkill(skill.getSkillName());
-                if (userSkill.getPoints() < skill.getPoints()) {
-                    return false;
-                }
-            } catch (NoSuchElementException e) {
-                return false;
-            }
-        }
-        return true;
+        return user.isEligibleFor(project);
     }
 }

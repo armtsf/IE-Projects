@@ -20,6 +20,20 @@ public class User {
         this.skills = skills;
     }
 
+    public boolean isEligibleFor(Project project) {
+        for (Skill skill: project.getSkills()) {
+            try {
+                Skill userSkill = this.getSkill(skill.getSkillName());
+                if (userSkill.getPoints() < skill.getPoints()) {
+                    return false;
+                }
+            } catch (NoSuchElementException e) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public String getId() {
         return id;
     }
