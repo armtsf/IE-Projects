@@ -5,6 +5,8 @@ import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import base.Session;
 import models.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InvalidObjectException;
@@ -14,6 +16,8 @@ import java.util.List;
 public class Initiator {
     public static final String PROJECTS_ENDPOINT = "http://142.93.134.194:8000/joboonja/project";
     public static final String SKILLS_ENDPOINT = "http://142.93.134.194:8000/joboonja/skill";
+
+    private static final Logger logger = LoggerFactory.getLogger(Initiator.class);
 
     public static void init() {
         ObjectMapper mapper = new ObjectMapper();
@@ -55,6 +59,6 @@ public class Initiator {
         }
         Session.put("userId", user.getId());
 
-        System.out.println("init finished!");
+        logger.info("Initialization Done.");
     }
 }
