@@ -1,3 +1,4 @@
+import base.Router;
 import com.sun.net.httpserver.HttpServer;
 import handlers.ProjectListHandler;
 
@@ -9,7 +10,9 @@ public class Main {
         Initiator.init();
 
         HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0);
-        server.createContext("/project", new ProjectListHandler());
+        Router router = new Router();
+        router.addRoute("/project", new ProjectListHandler());
+        server.createContext("/", router);
         server.setExecutor(null);
         server.start();
     }
