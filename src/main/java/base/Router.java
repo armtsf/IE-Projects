@@ -3,6 +3,8 @@ package base;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import handlers.ServiceHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -10,6 +12,7 @@ import java.util.ArrayList;
 
 public class Router implements HttpHandler {
     private ArrayList<Route> routes = new ArrayList<>();
+    private static final Logger logger = LoggerFactory.getLogger(Router.class);
 
     public void addRoute(String path, ServiceHandler handler) {
         routes.add(new Route(path, handler));
@@ -51,5 +54,6 @@ public class Router implements HttpHandler {
             os.write(response.getBytes());
             os.close();
         }
+        logger.info(t.getRequestMethod() + " " + t.getRequestURI() + " "+ t.getResponseCode());
     }
 }
