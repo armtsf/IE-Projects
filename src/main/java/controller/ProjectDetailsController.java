@@ -16,9 +16,7 @@ import java.util.NoSuchElementException;
 public class ProjectDetailsController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println("Here");
         String projectId = req.getPathInfo().split("/")[1];
-        System.out.println(projectId);
         User user = (User) req.getAttribute("user");
         try {
             Project requestedProject = ProjectService.getProjectDetails(user, projectId);
