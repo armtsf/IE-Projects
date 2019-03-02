@@ -16,10 +16,12 @@ public class UserDetailsController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String userId = req.getPathInfo().split("/")[1];
+        User currUser = (User) req.getAttribute("user");
         try {
             User requestedUser = UserService.getUser(userId);
             req.setAttribute("user", requestedUser);
-            req.getRequestDispatcher("/user.jsp").forward(req, resp);
+            if (!currUser.getId().equals(userId))
+                req.getRequestDispatcher("/user-guest.jsp").forward(req, resp);
         }
         catch (NoSuchElementException e) {
             resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
