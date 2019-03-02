@@ -24,4 +24,6 @@ public class SkillNameList {
         }
         throw new NoSuchElementException();
     }
+
+    public static ArrayList<SkillName> all() { return skillNames; }
 }

@@ -1,5 +1,6 @@
 package controller;
 
+import models.SkillNameList;
 import models.User;
 import service.UserService;
 
@@ -22,6 +23,10 @@ public class UserDetailsController extends HttpServlet {
             req.setAttribute("user", requestedUser);
             if (!currUser.getId().equals(userId))
                 req.getRequestDispatcher("/user-guest.jsp").forward(req, resp);
+            else {
+                req.setAttribute("skills", SkillNameList.all());
+                req.getRequestDispatcher("/user-logged-in.jsp").forward(req, resp);
+            }
         }
         catch (NoSuchElementException e) {
             resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
