@@ -19,6 +19,9 @@
         </style>
     </head>
     <body>
+        <c:if test="${not empty msg}">
+            <h1><c:out value="${msg}"/></h1>
+        </c:if>
         <table>
             <tr>
                 <th>id</th>

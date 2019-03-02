@@ -15,5 +15,11 @@
             <li><c:out value="imageUrl: "/><img src="<c:url value="${project.imageURL}"/>" style=\"width: 50px; height: 50px;\"/></li>
             <li><c:out value="budget: ${project.budget}"/></li>
         </ul>
+        <form action="bid" method="POST">
+            <input type="hidden" name="id" value="${project.id}"/>
+            <label for="bidAmount">Bid Amount:</label>
+            <input type="number" name="bidAmount">
+            <button>Submit</button>
+        </form>
     </body>
 </html>

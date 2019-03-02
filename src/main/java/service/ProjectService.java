@@ -1,9 +1,8 @@
 package service;
 
-import models.Project;
-import models.ProjectList;
-import models.User;
+import models.*;
 
+import java.io.InvalidObjectException;
 import java.util.ArrayList;
 
 public class ProjectService {
@@ -24,6 +23,11 @@ public class ProjectService {
             return project;
         else
             throw new IllegalAccessException();
+    }
+
+    public static void addBid(User user, String projectId, long bidAmount) throws InvalidObjectException {
+        Bid bid = new Bid(user.getId(), projectId, bidAmount);
+        BidList.add(bid);
     }
 
 }
