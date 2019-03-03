@@ -2,7 +2,6 @@ package models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.sun.javaws.exceptions.InvalidArgumentException;
 
 import java.util.ArrayList;
 
@@ -51,5 +50,6 @@ public class Skill {
             throw new IllegalArgumentException("");
         }
         endorsedBy.add(userId);
+        points += 1;
     }
 }

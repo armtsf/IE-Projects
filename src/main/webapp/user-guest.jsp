@@ -19,7 +19,7 @@
                     <c:forEach var="skill" items="${skills}">
                         <li><c:out value="${skill.name}: '${skill.points}'"/>
                             <c:if test="${not skill.isEndorsed}">
-                                <form action="/user/endorse" method="POST">
+                                <form action="endorse" method="POST">
                                     <input type="hidden" name="id" value="${user.id}"/>
                                     <input type="hidden" name="skill" value="${skill.name}"/>
                                     <button>Endorse</button>
