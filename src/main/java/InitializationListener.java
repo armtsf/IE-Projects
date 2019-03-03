@@ -60,6 +60,24 @@ public class InitializationListener implements ServletContextListener {
         }
         Session.put("userId", user.getId());
 
+        User user1 = new User();
+        user1.setId("2");
+        user1.setFirstName("Bob");
+        user1.setLastName("Ross");
+        user1.setJobTitle("برنامه‌نویس وب");
+        user1.setBio("Yo");
+        ArrayList<Skill> skills1 = new ArrayList<>();
+        skills1.add(new Skill(SkillNameList.get("HTML"), 4));
+        skills1.add(new Skill(SkillNameList.get("Javascript"), 2));
+        skills1.add(new Skill(SkillNameList.get("C++"), 8));
+        skills1.add(new Skill(SkillNameList.get("Java"), 1));
+        user1.setSkills(skills);
+        try {
+            UserList.add(user1);
+        } catch (InvalidObjectException e) {
+            e.printStackTrace();
+        }
+
         System.out.println("Initialization Done.");
     }
 }
