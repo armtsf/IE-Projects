@@ -1,5 +1,6 @@
 package controller;
 
+import models.SkillNameList;
 import models.User;
 import service.UserService;
 
@@ -24,6 +25,7 @@ public class AddSkillController extends HttpServlet {
         catch (NoSuchElementException e) {
             req.setAttribute("msg", "Could not add skill.");
         }
+        req.setAttribute("availableSkills", SkillNameList.all());
         req.getRequestDispatcher("/user-logged-in.jsp").forward(req, resp);
     }
 }

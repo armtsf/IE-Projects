@@ -104,7 +104,11 @@ public class User {
         }
     }
 
-    public void addSkill(String skill) {
-        skills.add(new Skill(SkillNameList.get(skill), 0));
+    public void addSkill(String skillName) {
+        for (Skill skill: skills) {
+            if (skill.getSkillName().getName().equals(skillName))
+                return;
+        }
+        skills.add(new Skill(SkillNameList.get(skillName), 0));
     }
 }

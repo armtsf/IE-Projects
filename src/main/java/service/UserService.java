@@ -40,8 +40,7 @@ public class UserService {
     }
 
     public static void addSkill(User user, String skill) {
-
-
+        user.addSkill(skill);
     }
 
 }

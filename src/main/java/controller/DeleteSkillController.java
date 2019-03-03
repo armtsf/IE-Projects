@@ -1,5 +1,6 @@
 package controller;
 
+import models.SkillNameList;
 import models.User;
 import service.UserService;
 
@@ -18,6 +19,7 @@ public class DeleteSkillController extends HttpServlet {
         String skill = req.getParameter("skill");
         UserService.deleteSkill(user, skill);
         req.setAttribute("user", user);
+        req.setAttribute("availableSkills", SkillNameList.all());
         req.getRequestDispatcher("/user-logged-in.jsp").forward(req, resp);
     }
 }

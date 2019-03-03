@@ -26,6 +26,7 @@ public class UserDetailsController extends HttpServlet {
                 req.getRequestDispatcher("/user-guest.jsp").forward(req, resp);
             }
             else {
+                req.setAttribute("availableSkills", SkillNameList.all());
                 req.getRequestDispatcher("/user-logged-in.jsp").forward(req, resp);
             }
         }

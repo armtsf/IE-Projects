@@ -19,10 +19,10 @@
             <li><c:out value="bio: ${user.bio}"/></li>
             <li><c:out value="skills: "/>
                 <ul>
-                    <c:forEach var="skill" items="${skills}">
-                        <li><c:out value="${skill.name}: '${skill.points}'"/>
+                    <c:forEach var="skill" items="${user.skills}">
+                        <li><c:out value="${skill.skillName.name}: '${skill.points}'"/>
                             <form action="delete" method="POST">
-                                <input type="hidden" name="skill" value="${skill.name}"/>
+                                <input type="hidden" name="skill" value="${skill.skillName.name}"/>
                                 <button>Delete</button>
                             </form>
                         </li>
@@ -32,7 +32,7 @@
         </ul>
          <form action="add" method="POST">
             <select name="skill">
-                <c:forEach var="skillName" items="${skills}">
+                <c:forEach var="skillName" items="${availableSkills}">
                     <option value="${skillName.name}"><c:out value="${skillName.name}"/></option>
                 </c:forEach>
             </select>
