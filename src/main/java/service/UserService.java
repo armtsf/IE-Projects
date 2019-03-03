@@ -3,6 +3,7 @@ package service;
 import models.*;
 
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 
 public class UserService {
 
@@ -31,6 +32,15 @@ public class UserService {
         User user = UserList.get(endorsee);
         Skill skill = user.getSkill(SkillNameList.get(skillName));
         skill.endorse(userId);
+    }
+
+    public static void deleteSkill(User user, String skillName) {
+        user.deleteSkill(skillName);
+    }
+
+    public static void addSkill(User user, String skill) {
+
+
     }
 
 }

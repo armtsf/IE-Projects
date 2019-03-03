@@ -8,6 +8,9 @@
         <title>User</title>
     </head>
     <body>
+        <c:if test="${not empty msg}">
+                <h1><c:out value="${msg}"/></h1>
+        </c:if>
         <ul>
             <li><c:out value="id: ${user.id}"/></li>
             <li><c:out value="first name: ${user.firstName}"/></li>
@@ -27,7 +30,7 @@
                 </ul>
             </li>
         </ul>
-         <form action="add" method="">
+         <form action="add" method="POST">
             <select name="skill">
                 <c:forEach var="skillName" items="${skills}">
                     <option value="${skillName.name}"><c:out value="${skillName.name}"/></option>
