@@ -10,4 +10,16 @@ public class SkillDto {
         this.points = points;
         this.isEndorsed = isEndorsed;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getPoints() {
+        return points;
+    }
+
+    public boolean getIsEndorsed() {
+        return isEndorsed;
+    }
 }

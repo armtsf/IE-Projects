@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.NoSuchElementException;
 
 @WebServlet("/user/endorse")
 public class EndorsementController extends HttpServlet {
@@ -17,10 +18,16 @@ public class EndorsementController extends HttpServlet {
         User user = (User) req.getAttribute("user");
         String endorsee = req.getParameter("id");
         String skillName = req.getParameter("skill");
-        UserService.endorse(user.getId(), endorsee, skillName);
-        User requestedUser = UserService.getUser(endorsee);
-        req.setAttribute("user", requestedUser);
-        req.setAttribute("skills", UserService.getSkills(UserService.getUser(endorsee)));
-        req.getRequestDispatcher("/user-guest.jsp").forward(req, resp);
+        try {
+            UserService.endorse(user.getId(), endorsee, skillName);
+            User requestedUser = UserService.getUser(endorsee);
+            req.setAttribute("user", requestedUser);
+            req.setAttribute("skills", UserService.getSkills(UserService.getUser(endorsee), user));
+            req.getRequestDispatcher("/user-guest.jsp").forward(req, resp);
+        } catch (IllegalArgumentException e) {
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        } catch (NoSuchElementException e) {
+            resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
+        }
     }
 }
