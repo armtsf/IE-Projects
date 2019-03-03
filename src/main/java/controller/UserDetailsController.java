@@ -19,7 +19,7 @@ public class UserDetailsController extends HttpServlet {
         String[] parts = req.getPathInfo().split("/");
         System.out.println(parts.length);
         if (parts.length == 0) {
-            resp.setStatus(400);
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return;
         }
         String userId = parts[1];

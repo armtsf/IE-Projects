@@ -18,7 +18,7 @@ public class ProjectDetailsController extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String[] parts = req.getPathInfo().split("/");
         if (parts.length == 0) {
-            resp.setStatus(400);
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return;
         }
         String projectId = parts[1];
