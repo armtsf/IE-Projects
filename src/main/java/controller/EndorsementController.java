@@ -22,7 +22,7 @@ public class EndorsementController extends HttpServlet {
             UserService.endorse(user.getId(), endorsee, skillName);
             User requestedUser = UserService.getUser(endorsee);
             req.setAttribute("user", requestedUser);
-            req.setAttribute("skills", UserService.getSkills(UserService.getUser(endorsee), user));
+            req.setAttribute("skills", UserService.getSkills(requestedUser, user));
             req.getRequestDispatcher("/user-guest.jsp").forward(req, resp);
         } catch (IllegalArgumentException e) {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);

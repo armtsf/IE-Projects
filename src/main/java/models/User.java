@@ -107,7 +107,7 @@ public class User {
     public void addSkill(String skillName) {
         for (Skill skill: skills) {
             if (skill.getSkillName().getName().equals(skillName))
-                return;
+                throw new IllegalArgumentException();
         }
         skills.add(new Skill(SkillNameList.get(skillName), 0));
     }

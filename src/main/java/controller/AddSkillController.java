@@ -25,6 +25,9 @@ public class AddSkillController extends HttpServlet {
         catch (NoSuchElementException e) {
             req.setAttribute("msg", "Could not add skill.");
         }
+        catch (IllegalArgumentException e) {
+            req.setAttribute("msg", "Skill already exists.");
+        }
         req.setAttribute("availableSkills", SkillNameList.all());
         req.getRequestDispatcher("/user-logged-in.jsp").forward(req, resp);
     }

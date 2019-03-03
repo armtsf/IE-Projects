@@ -71,7 +71,7 @@ public class InitializationListener implements ServletContextListener {
         skills1.add(new Skill(SkillNameList.get("Javascript"), 2));
         skills1.add(new Skill(SkillNameList.get("C++"), 8));
         skills1.add(new Skill(SkillNameList.get("Java"), 1));
-        user1.setSkills(skills);
+        user1.setSkills(skills1);
         try {
             UserList.add(user1);
         } catch (InvalidObjectException e) {
