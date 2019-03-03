@@ -16,7 +16,13 @@ import java.util.NoSuchElementException;
 public class UserDetailsController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String userId = req.getPathInfo().split("/")[1];
+        String[] parts = req.getPathInfo().split("/");
+        System.out.println(parts.length);
+        if (parts.length == 0) {
+            resp.setStatus(400);
+            return;
+        }
+        String userId = parts[1];
         User currUser = (User) req.getAttribute("user");
         try {
             User requestedUser = UserService.getUser(userId);
