@@ -16,13 +16,15 @@
             <li><c:out value="bio: ${user.bio}"/></li>
             <li><c:out value="skills: "/>
                 <ul>
-                    <c:forEach var="skill" items="${user.skills}">
-                        <li><c:out value="${skill.skillName.name}: '${skill.endorsementCount()}'"/>
-                            <form action="endorse" method="POST">
-                                <input type="hidden" name="id" value="${user.id}"/>
-                                <input type="hidden" name="skill" value="${skill.skillName.name}"/>
-                                <button>Endorse</button>
-                            </form>
+                    <c:forEach var="skill" items="${skills}">
+                        <li><c:out value="${skill.name}: '${skill.points}'"/>
+                            <c:if test="${not skill.isEndorsed}">
+                                <form action="/user/endorse" method="POST">
+                                    <input type="hidden" name="id" value="${user.id}"/>
+                                    <input type="hidden" name="skill" value="${skill.name}"/>
+                                    <button>Endorse</button>
+                                </form>
+                            </c:if>
                         </li>
                     </c:forEach>
                 </ul>

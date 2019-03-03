@@ -22,7 +22,7 @@ public class UserDetailsController extends HttpServlet {
             User requestedUser = UserService.getUser(userId);
             req.setAttribute("user", requestedUser);
             if (!currUser.getId().equals(userId)) {
-                req.setAttribute("skills", UserService.getSkills(requestedUser));
+                req.setAttribute("skills", UserService.getSkills(requestedUser, currUser));
                 req.getRequestDispatcher("/user-guest.jsp").forward(req, resp);
             }
             else {

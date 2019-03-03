@@ -1,5 +1,6 @@
 package service;
 
+import com.sun.javaws.exceptions.InvalidArgumentException;
 import models.*;
 
 import java.util.ArrayList;
@@ -16,18 +17,18 @@ public class UserService {
         return userList;
     }
 
-    public static ArrayList<SkillDto> getSkills(User user) {
+    public static ArrayList<SkillDto> getSkills(User user, User currentUser) {
         ArrayList<Skill> skills = user.getSkills();
         ArrayList<SkillDto> dto = new ArrayList<>();
         for (Skill skill : skills) {
             SkillDto tmpSkill = new SkillDto(skill.getSkillName().getName(), skill.getPoints(),
-                    skill.isEndorsedBy(user.getId()));
+                    skill.isEndorsedBy(currentUser.getId()));
             dto.add(tmpSkill);
         }
         return dto;
     }
 
-    public static void endorse(String userId, String endorsee, String skillName) {
+    public static void endorse(String userId, String endorsee, String skillName) throws IllegalArgumentException {
         User user = UserList.get(endorsee);
         Skill skill = user.getSkill(SkillNameList.get(skillName));
         skill.endorse(userId);

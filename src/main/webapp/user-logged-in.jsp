@@ -16,10 +16,10 @@
             <li><c:out value="bio: ${user.bio}"/></li>
             <li><c:out value="skills: "/>
                 <ul>
-                    <c:forEach var="skill" items="${user.skills}">
-                        <li><c:out value="${skill.skillName.name}: '${skill.endorsementCount()}'"/>
+                    <c:forEach var="skill" items="${skills}">
+                        <li><c:out value="${skill.name}: '${skill.points}'"/>
                             <form action="delete" method="POST">
-                                <input type="hidden" name="skill" value="${skill.skillName.name}"/>
+                                <input type="hidden" name="skill" value="${skill.name}"/>
                                 <button>Delete</button>
                             </form>
                         </li>
