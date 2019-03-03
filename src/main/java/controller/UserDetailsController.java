@@ -21,10 +21,11 @@ public class UserDetailsController extends HttpServlet {
         try {
             User requestedUser = UserService.getUser(userId);
             req.setAttribute("user", requestedUser);
-            if (!currUser.getId().equals(userId))
+            if (!currUser.getId().equals(userId)) {
+                req.setAttribute("skills", UserService.getSkills(requestedUser));
                 req.getRequestDispatcher("/user-guest.jsp").forward(req, resp);
+            }
             else {
-                req.setAttribute("skills", SkillNameList.all());
                 req.getRequestDispatcher("/user-logged-in.jsp").forward(req, resp);
             }
         }

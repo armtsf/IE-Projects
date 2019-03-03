@@ -45,7 +45,7 @@ public class Skill {
         return false;
     }
 
-    public int endorsementCount() {
-        return endorsedBy.size();
+    public void endorse(String userId) {
+        endorsedBy.add(userId);
     }
 }
