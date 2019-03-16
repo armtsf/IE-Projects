@@ -1,25 +1,26 @@
+import base.Session;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
-import base.Session;
 import models.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
+import javax.servlet.annotation.WebListener;
 import java.io.IOException;
 import java.io.InvalidObjectException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Initiator {
-    public static final String PROJECTS_ENDPOINT = "http://142.93.134.194:8000/joboonja/project";
-    public static final String SKILLS_ENDPOINT = "http://142.93.134.194:8000/joboonja/skill";
+@WebListener
+public class InitializationListener implements ServletContextListener {
+    private final String PROJECTS_ENDPOINT = "http://142.93.134.194:8000/joboonja/project";
+    private final String SKILLS_ENDPOINT = "http://142.93.134.194:8000/joboonja/skill";
 
-    private static final Logger logger = LoggerFactory.getLogger(Initiator.class);
-
-    public static void init() {
+    @Override
+    public void contextInitialized(ServletContextEvent sce) {
         ObjectMapper mapper = new ObjectMapper();
         try {
             HttpResponse<String> jsonResponse = Unirest.get(SKILLS_ENDPOINT).asString();
@@ -59,6 +60,24 @@ public class Initiator {
         }
         Session.put("userId", user.getId());
 
-        logger.info("Initialization Done.");
+        User user1 = new User();
+        user1.setId("2");
+        user1.setFirstName("Bob");
+        user1.setLastName("Ross");
+        user1.setJobTitle("برنامه‌نویس وب");
+        user1.setBio("Yo");
+        ArrayList<Skill> skills1 = new ArrayList<>();
+        skills1.add(new Skill(SkillNameList.get("HTML"), 4));
+        skills1.add(new Skill(SkillNameList.get("Javascript"), 2));
+        skills1.add(new Skill(SkillNameList.get("C++"), 8));
+        skills1.add(new Skill(SkillNameList.get("Java"), 1));
+        user1.setSkills(skills1);
+        try {
+            UserList.add(user1);
+        } catch (InvalidObjectException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("Initialization Done.");
     }
 }

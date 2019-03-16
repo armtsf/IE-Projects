@@ -94,4 +94,21 @@ public class User {
     public void setBio(String bio) {
         this.bio = bio;
     }
+
+    public void deleteSkill(String skillName) {
+        for (Skill skill : skills) {
+            if (skill.getSkillName().getName().equals(skillName)) {
+                skills.remove(skill);
+                return;
+            }
+        }
+    }
+
+    public void addSkill(String skillName) {
+        for (Skill skill: skills) {
+            if (skill.getSkillName().getName().equals(skillName))
+                throw new IllegalArgumentException();
+        }
+        skills.add(new Skill(SkillNameList.get(skillName), 0));
+    }
 }

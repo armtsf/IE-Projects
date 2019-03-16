@@ -1,9 +1,11 @@
+package service;
+
 import models.*;
 
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
-class Auction {
+class AuctionService {
 
     static User finish(String projectName) {
         Project project = ProjectList.get(projectName);
