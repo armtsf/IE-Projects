@@ -47,7 +47,7 @@ public class Skill {
 
     public void endorse(String userId) throws IllegalArgumentException {
         if (isEndorsedBy(userId)) {
-            throw new IllegalArgumentException("");
+            throw new IllegalArgumentException("cannot endorse a skill twice");
         }
         endorsedBy.add(userId);
         points += 1;

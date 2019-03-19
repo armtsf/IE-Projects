@@ -22,7 +22,7 @@ public class SkillNameList {
                 return skillName;
             }
         }
-        throw new NoSuchElementException();
+        throw new NoSuchElementException("no such SkillName");
     }
 
     public static ArrayList<SkillName> all() { return skillNames; }

@@ -1,6 +1,6 @@
 package joboonja.controller;
 
-import joboonja.utils.ErrorMessage;
+import joboonja.utils.ResponseMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -17,21 +17,26 @@ import java.util.NoSuchElementException;
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(NoSuchElementException.class)
-    public final ResponseEntity<ErrorMessage> handleNotFoundException(NoSuchElementException e) {
-        ErrorMessage errorMessage = new ErrorMessage(new Date(), e.getMessage());
-        return new ResponseEntity<>(errorMessage, HttpStatus.NOT_FOUND);
+    public final ResponseEntity<ResponseMessage> handleNotFoundException(NoSuchElementException e) {
+        ResponseMessage responseMessage = new ResponseMessage(new Date(), e.getMessage());
+        return new ResponseEntity<>(responseMessage, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(IllegalAccessException.class)
-    public final ResponseEntity<ErrorMessage> handleIllegalAccessException(IllegalAccessException e) {
-        ErrorMessage errorMessage = new ErrorMessage(new Date(), e.getMessage());
-        return new ResponseEntity<>(errorMessage, HttpStatus.FORBIDDEN);
+    public final ResponseEntity<ResponseMessage> handleIllegalAccessException(IllegalAccessException e) {
+        ResponseMessage responseMessage = new ResponseMessage(new Date(), e.getMessage());
+        return new ResponseEntity<>(responseMessage, HttpStatus.FORBIDDEN);
     }
 
     @ExceptionHandler(InvalidObjectException.class)
-    public final ResponseEntity<ErrorMessage> handleInvalidObjectException(InvalidObjectException e) {
-        ErrorMessage errorMessage = new ErrorMessage(new Date(), e.getMessage());
-        return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
+    public final ResponseEntity<ResponseMessage> handleInvalidObjectException(InvalidObjectException e) {
+        ResponseMessage responseMessage = new ResponseMessage(new Date(), e.getMessage());
+        return new ResponseEntity<>(responseMessage, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(IllegalArgumentException.class)
+    public final ResponseEntity<ResponseMessage> handleIllegalArgumentException(IllegalArgumentException e) {
+        ResponseMessage responseMessage = new ResponseMessage(new Date(), e.getMessage());
+        return new ResponseEntity<>(responseMessage, HttpStatus.BAD_REQUEST);
+    }
 }
