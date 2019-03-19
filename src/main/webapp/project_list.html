@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+
+<h2>Projects</h2>
+
+<div id="projects">
+    <button type="button" onclick="retrieveData()">Get Projects</button>
+</div>
+
+<script>
+    function loadJson() {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState === 4 && this.status === 200) {
+                // document.getElementById("projects").innerHTML = this.responseText;
+                var projects = JSON.parse(this.responseText);
+                console.log(projects.length);
+                document.getElementById("projects").innerHTML = "";
+                for (var i = 0; i < projects.length; i++) {
+                    console.log(projects.length);
+                    document.getElementById("projects").innerHTML += "<div>" + JSON.stringify(projects[i]) + "</div>";
+                }
+            }
+        };
+        return xhttp;
+    }
+    function retrieveData() {
+        var xhttp = loadJson();
+        xhttp.open("GET", "http://localhost:8080/projects", true);
+        xhttp.send();
+    }
+</script>
+
+</body>
+
+</html>

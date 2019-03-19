@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+
+<h2>Add Skill</h2>
+
+<div>
+    <input type="text" id="skill-name">
+</div>
+
+<div id="response">
+    <button type="button" onclick="retrieveData()">Add Skill</button>
+</div>
+
+<script>
+    function loadJson() {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState === 4 && this.status === 201) {
+                document.getElementById("response").innerHTML = this.responseText;
+            }
+        };
+        return xhttp;
+    }
+    function retrieveData() {
+        var xhttp = loadJson();
+        xhttp.open("POST", "http://localhost:8080/users/1/skills?skillName=" + document.getElementById("skill-name").value, true);
+        xhttp.send();
+    }
+</script>
+
+</body>
+
+</html>
