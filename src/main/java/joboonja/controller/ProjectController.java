@@ -10,9 +10,10 @@ import joboonja.service.ProjectService;
 
 import java.io.InvalidObjectException;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
-@RequestMapping("projects")
+@RequestMapping("/projects")
 public class ProjectController {
 
     @Autowired
@@ -24,8 +25,8 @@ public class ProjectController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getProjecDetails(@RequestAttribute("user") User user, @PathVariable("id") String id)
-            throws IllegalAccessException {
+    public ResponseEntity<Project> getProjecDetails(@RequestAttribute("user") User user, @PathVariable("id") String id)
+            throws IllegalAccessException, NoSuchElementException {
         Project project = projectService.getProjectDetails(user, id);
         return new ResponseEntity<Project>(project, HttpStatus.OK);
     }
