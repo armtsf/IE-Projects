@@ -1,6 +1,6 @@
-package service;
+package joboonja.service;
 
-import models.*;
+import joboonja.models.*;
 
 import java.util.ArrayList;
 import java.util.NoSuchElementException;

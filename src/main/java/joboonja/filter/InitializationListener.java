@@ -1,26 +1,28 @@
-import base.Session;
+package joboonja.filter;
+
+import joboonja.utils.Session;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
-import models.*;
+import joboonja.models.*;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
+import org.springframework.stereotype.Component;
 
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
-import javax.servlet.annotation.WebListener;
 import java.io.IOException;
 import java.io.InvalidObjectException;
 import java.util.ArrayList;
 import java.util.List;
 
-@WebListener
-public class InitializationListener implements ServletContextListener {
+@Component
+public class InitializationListener {
     private final String PROJECTS_ENDPOINT = "http://142.93.134.194:8000/joboonja/project";
     private final String SKILLS_ENDPOINT = "http://142.93.134.194:8000/joboonja/skill";
 
-    @Override
-    public void contextInitialized(ServletContextEvent sce) {
+    @EventListener(ApplicationReadyEvent.class)
+    public void contextInitialized() {
         ObjectMapper mapper = new ObjectMapper();
         try {
             HttpResponse<String> jsonResponse = Unirest.get(SKILLS_ENDPOINT).asString();

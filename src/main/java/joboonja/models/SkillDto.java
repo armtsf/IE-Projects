@@ -1,4 +1,4 @@
-package models;
+package joboonja.models;
 
 public class SkillDto {
     private String name;

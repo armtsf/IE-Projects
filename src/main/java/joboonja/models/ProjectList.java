@@ -1,4 +1,4 @@
-package models;
+package joboonja.models;
 
 import java.io.InvalidObjectException;
 import java.util.ArrayList;

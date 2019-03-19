@@ -1,24 +1,24 @@
-package service;
+package joboonja.service;
 
-import com.sun.javaws.exceptions.InvalidArgumentException;
-import models.*;
+import joboonja.models.*;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.NoSuchElementException;
 
+@Service
 public class UserService {
 
-    public static User getUser(String userId) {
+    public User getUser(String userId) {
         User requestedUser = UserList.get(userId);
         return requestedUser;
     }
 
-    public static ArrayList<User> getUsersList(User user) {
+    public ArrayList<User> getUsersList(User user) {
         ArrayList<User> userList = UserList.getAllExcept(user);
         return userList;
     }
 
-    public static ArrayList<SkillDto> getSkills(User user, User currentUser) {
+    public ArrayList<SkillDto> getSkills(User user, User currentUser) {
         ArrayList<Skill> skills = user.getSkills();
         ArrayList<SkillDto> dto = new ArrayList<>();
         for (Skill skill : skills) {
@@ -29,17 +29,17 @@ public class UserService {
         return dto;
     }
 
-    public static void endorse(String userId, String endorsee, String skillName) throws IllegalArgumentException {
+    public void endorse(String userId, String endorsee, String skillName) throws IllegalArgumentException {
         User user = UserList.get(endorsee);
         Skill skill = user.getSkill(SkillNameList.get(skillName));
         skill.endorse(userId);
     }
 
-    public static void deleteSkill(User user, String skillName) {
+    public void deleteSkill(User user, String skillName) {
         user.deleteSkill(skillName);
     }
 
-    public static void addSkill(User user, String skill) {
+    public void addSkill(User user, String skill) {
         user.addSkill(skill);
     }
 

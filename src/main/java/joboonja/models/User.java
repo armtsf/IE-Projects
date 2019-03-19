@@ -1,4 +1,4 @@
-package models;
+package joboonja.models;
 
 import java.util.ArrayList;
 import java.util.NoSuchElementException;

@@ -1,4 +1,4 @@
-package models;
+package joboonja.models;
 
 public class SkillName {
     private String name;

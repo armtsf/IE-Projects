@@ -1,16 +1,18 @@
-package filter;
+package joboonja.filter;
 
-import base.Session;
-import models.User;
-import models.UserList;
+import joboonja.utils.Session;
+import joboonja.models.User;
+import joboonja.models.UserList;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.*;
-import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.NoSuchElementException;
 
-@WebFilter(urlPatterns = {"/project", "/project/*", "/user/*"})
+@Order(1)
+@Component
 public class AuthorizationFilter implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
