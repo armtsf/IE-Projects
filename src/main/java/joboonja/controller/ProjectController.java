@@ -27,7 +27,7 @@ public class ProjectController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Project> getProjecDetails(@RequestAttribute("user") User user, @PathVariable("id") String id)
+    public ResponseEntity<Project> getProjectDetails(@RequestAttribute("user") User user, @PathVariable("id") String id)
             throws IllegalAccessException, NoSuchElementException {
         Project project = projectService.getProjectDetails(user, id);
         return new ResponseEntity<>(project, HttpStatus.OK);
