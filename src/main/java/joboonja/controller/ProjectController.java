@@ -2,6 +2,7 @@ package joboonja.controller;
 
 import joboonja.models.Project;
 import joboonja.models.User;
+import joboonja.utils.BidRequest;
 import joboonja.utils.ResponseMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -35,7 +36,8 @@ public class ProjectController {
 
     @PostMapping("/{id}/bid")
     public ResponseEntity<ResponseMessage> bidProject(@RequestAttribute("user") User user, @PathVariable("id") String id,
-                                                      @RequestParam long bidAmount) throws InvalidObjectException {
+                                                      @RequestBody BidRequest bidRequest) throws InvalidObjectException {
+        long bidAmount = bidRequest.getBidAmount();
         projectService.addBid(user, id, bidAmount);
         ResponseMessage responseMessage = new ResponseMessage(new Date(), "ok");
         return new ResponseEntity<>(responseMessage, HttpStatus.OK);

@@ -49,6 +49,7 @@ public class InitializationListener {
         user.setLastName("شریف‌زاده");
         user.setJobTitle("برنامه‌نویس وب");
         user.setBio("روی سنگ قبرم بنویسید: خدا بیامرز می‌خواست خیلی کارا بکنه ولی پول نداشت");
+        user.setProfilePictureURL("http://localhost:8000/mine.jpg");
         ArrayList<Skill> skills = new ArrayList<>();
         skills.add(new Skill(SkillNameList.get("HTML"), 5));
         skills.add(new Skill(SkillNameList.get("Javascript"), 4));

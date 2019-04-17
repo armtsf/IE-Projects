@@ -22,7 +22,7 @@ public class UserService {
         ArrayList<Skill> skills = user.getSkills();
         ArrayList<SkillDto> dto = new ArrayList<>();
         for (Skill skill : skills) {
-            SkillDto tmpSkill = new SkillDto(skill.getSkillName().getName(), skill.getPoints(),
+            SkillDto tmpSkill = new SkillDto(skill.getSkillName(), skill.getPoints(),
                     skill.isEndorsedBy(currentUser.getId()));
             dto.add(tmpSkill);
         }
