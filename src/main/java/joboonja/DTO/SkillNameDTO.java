@@ -1,13 +1,11 @@
-package joboonja.utils;
+package joboonja.DTO;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-public class AddSkillRequest {
+public class SkillNameDTO {
     private String skillName;
 
-    public AddSkillRequest() {}
+    public SkillNameDTO() {}
 
-    public AddSkillRequest(String skillName) {
+    public SkillNameDTO(String skillName) {
         this.skillName = skillName;
     }
 

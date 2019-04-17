@@ -9,9 +9,9 @@ public class BidList {
 
     public static void add(Bid bid) throws InvalidObjectException {
         if (bid.isValid()) {
-            ArrayList<Bid> bidList = BidList.get(bid.getProjectTitle());
+            ArrayList<Bid> bidList = BidList.get(bid.getProject());
             for (Bid oldBid: bidList) {
-                if (oldBid.getBiddingUser().equals(bid.getBiddingUser())) {
+                if (oldBid.getUser().equals(bid.getUser())) {
                     throw new InvalidObjectException("duplicate bid for this project from same user");
                 }
             }
@@ -21,8 +21,8 @@ public class BidList {
         }
     }
 
-    public static ArrayList<Bid> get(String projectName) {
-        return bids.stream().filter(bid -> bid.getProjectTitle().equals(projectName))
+    public static ArrayList<Bid> get(Project project) {
+        return bids.stream().filter(bid -> bid.getProject().equals(project))
                 .collect(Collectors.toCollection(ArrayList::new));
     }
 }

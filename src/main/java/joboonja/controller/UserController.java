@@ -1,8 +1,8 @@
 package joboonja.controller;
 
-import joboonja.models.SkillDto;
+import joboonja.DTO.SkillDTO;
 import joboonja.models.User;
-import joboonja.utils.AddSkillRequest;
+import joboonja.DTO.SkillNameDTO;
 import joboonja.utils.ResponseMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,15 +32,15 @@ public class UserController {
     }
 
     @GetMapping("/{id}/skills")
-    public ResponseEntity<List<SkillDto>> getSkills(@RequestAttribute("user") User user, @PathVariable("id") String id) {
-        ArrayList<SkillDto> skills = userService.getSkills(userService.getUser(id), user);
+    public ResponseEntity<List<SkillDTO>> getSkills(@RequestAttribute("user") User user, @PathVariable("id") String id) {
+        ArrayList<SkillDTO> skills = userService.getSkills(userService.getUser(id), user);
         return new ResponseEntity<>(skills, HttpStatus.OK);
     }
 
     @PostMapping("/{id}/skills")
     public ResponseEntity<ResponseMessage> addSkill(@RequestAttribute("user") User user, @PathVariable("id") String id,
-                                                    @RequestBody AddSkillRequest addSkillRequest) {
-        String skillName = addSkillRequest.getSkillName();
+                                                    @RequestBody SkillNameDTO skillNameDTO) {
+        String skillName = skillNameDTO.getSkillName();
         userService.addSkill(user, skillName.trim());
         ResponseMessage responseMessage = new ResponseMessage(new Date(), "ok");
         return new ResponseEntity<>(responseMessage, HttpStatus.CREATED);

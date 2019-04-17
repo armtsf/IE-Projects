@@ -27,8 +27,9 @@ public class ProjectService {
             throw new IllegalAccessException();
     }
 
-    public void addBid(User user, String projectId, long bidAmount) throws InvalidObjectException {
-        Bid bid = new Bid(user.getId(), projectId, bidAmount);
+    public void addBid(User user, String projectId, long bidAmount) throws InvalidObjectException, IllegalAccessException {
+        Project project = getProjectDetails(user, projectId);
+        Bid bid = new Bid(user, project, bidAmount);
         BidList.add(bid);
     }
 

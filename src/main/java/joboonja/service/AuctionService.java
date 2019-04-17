@@ -12,13 +12,13 @@ class AuctionService {
         ArrayList<Skill> jobSkills = project.getSkills();
         long jobOffer = project.getBudget();
 
-        ArrayList<Bid> bids = BidList.get(projectName);
+        ArrayList<Bid> bids = BidList.get(project);
 
         long maxScore = 0;
         User winner = null;
 
         for (Bid bid : bids) {
-            User user = UserList.get(bid.getBiddingUser());
+            User user = UserList.get(bid.getUser().getId());
             long score = calculate(user, bid.getBidAmount(), jobSkills, jobOffer);
             if (score > maxScore) {
                 maxScore = score;

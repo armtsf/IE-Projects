@@ -1,13 +1,11 @@
-package joboonja.utils;
+package joboonja.DTO;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-public class BidRequest {
+public class BidDTO {
     private long bidAmount;
 
-    public BidRequest() {}
+    public BidDTO() {}
 
-    public BidRequest(long bidAmount) {
+    public BidDTO(long bidAmount) {
         this.bidAmount = bidAmount;
     }
 

@@ -1,5 +1,6 @@
 package joboonja.service;
 
+import joboonja.DTO.SkillDTO;
 import joboonja.models.*;
 import org.springframework.stereotype.Service;
 
@@ -18,11 +19,11 @@ public class UserService {
         return userList;
     }
 
-    public ArrayList<SkillDto> getSkills(User user, User currentUser) {
+    public ArrayList<SkillDTO> getSkills(User user, User currentUser) {
         ArrayList<Skill> skills = user.getSkills();
-        ArrayList<SkillDto> dto = new ArrayList<>();
+        ArrayList<SkillDTO> dto = new ArrayList<>();
         for (Skill skill : skills) {
-            SkillDto tmpSkill = new SkillDto(skill.getSkillName(), skill.getPoints(),
+            SkillDTO tmpSkill = new SkillDTO(skill.getSkillName(), skill.getPoints(),
                     skill.isEndorsedBy(currentUser.getId()));
             dto.add(tmpSkill);
         }

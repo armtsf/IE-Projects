@@ -1,34 +1,32 @@
 package joboonja.models;
 
-import java.util.NoSuchElementException;
-
 public class Bid {
-    private String biddingUser;
-    private String projectTitle;
+    private User user;
+    private Project project;
     private long bidAmount;
 
     public Bid() {}
 
-    public Bid(String biddingUser, String projectTitle, long bidAmount) {
-        this.biddingUser = biddingUser;
-        this.projectTitle = projectTitle;
+    public Bid(User user, Project project, long bidAmount) {
+        this.user = user;
+        this.project = project;
         this.bidAmount = bidAmount;
     }
 
-    public String getBiddingUser() {
-        return biddingUser;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public void setBiddingUser(String biddingUser) {
-        this.biddingUser = biddingUser;
+    public User getUser() {
+        return user;
     }
 
-    public String getProjectTitle() {
-        return projectTitle;
+    public void setProject(Project project) {
+        this.project = project;
     }
 
-    public void setProjectTitle(String projectTitle) {
-        this.projectTitle = projectTitle;
+    public Project getProject() {
+        return project;
     }
 
     public long getBidAmount() {
@@ -40,20 +38,7 @@ public class Bid {
     }
 
     public boolean isValid() {
-        Project project;
-        try {
-            project = ProjectList.get(projectTitle);
-        } catch (NoSuchElementException e) {
-            return false;
-        }
         if (bidAmount > project.getBudget()) {
-            return false;
-        }
-
-        User user;
-        try {
-            user = UserList.get(biddingUser);
-        } catch (NoSuchElementException e) {
             return false;
         }
         return user.isEligibleFor(project);
