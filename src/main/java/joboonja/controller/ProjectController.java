@@ -24,13 +24,13 @@ public class ProjectController {
 
     @GetMapping({"", "/"})
     public ResponseEntity<List<Project>> getProjects(@RequestAttribute("user") User user) {
-        return new ResponseEntity<>(projectService.getProjectList(user), HttpStatus.OK);
+        return new ResponseEntity<>(projectService.getProjectsList(user), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Project> getProjectDetails(@RequestAttribute("user") User user, @PathVariable("id") String id)
             throws IllegalAccessException, NoSuchElementException {
-        Project project = projectService.getProjectDetails(user, id);
+        Project project = projectService.getProject(user, id);
         return new ResponseEntity<>(project, HttpStatus.OK);
     }
 
@@ -41,5 +41,11 @@ public class ProjectController {
         projectService.addBid(user, id, bidAmount);
         ResponseMessage responseMessage = new ResponseMessage(new Date(), "ok");
         return new ResponseEntity<>(responseMessage, HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}/bid")
+    public ResponseEntity<BidDTO> getBid(@RequestAttribute("user") User user, @PathVariable("id") String id) throws IllegalAccessException {
+        BidDTO bidDTO = projectService.getBid(user, id);
+        return new ResponseEntity<>(bidDTO, HttpStatus.OK);
     }
 }
