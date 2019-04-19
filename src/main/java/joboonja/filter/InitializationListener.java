@@ -65,10 +65,11 @@ public class InitializationListener {
 
         User user1 = new User();
         user1.setId("2");
-        user1.setFirstName("Bob");
-        user1.setLastName("Ross");
+        user1.setFirstName("علی");
+        user1.setLastName("احمدی");
         user1.setJobTitle("برنامه‌نویس وب");
         user1.setBio("Yo");
+        user1.setProfilePictureURL("http://localhost:8000/mine.jpg");
         ArrayList<Skill> skills1 = new ArrayList<>();
         skills1.add(new Skill(SkillNameList.get("HTML"), 4));
         skills1.add(new Skill(SkillNameList.get("Javascript"), 2));
