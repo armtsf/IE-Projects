@@ -40,8 +40,9 @@ public class InitializationListener {
             jsonResponse = Unirest.get(PROJECTS_ENDPOINT).asString();
             ArrayList<Project> projects = mapper.readValue(jsonResponse.getBody(), new TypeReference<List<Project>>(){});
             for (Project project: projects) {
-                for (Skill skill: project.getSkills()) {
+                for (ProjectSkill skill: project.getSkills()) {
                     skill.setSkillName(SkillNameList.get(skill.getSkillName().getName()));
+                    skill.setProject(project);
                 }
                 ProjectList.add(project);
             }
@@ -56,11 +57,11 @@ public class InitializationListener {
         user1.setJobTitle("برنامه‌نویس وب");
         user1.setBio("روی سنگ قبرم بنویسید: خدا بیامرز می‌خواست خیلی کارا بکنه ولی پول نداشت");
         user1.setProfilePictureURL("http://localhost:8000/mine.jpg");
-        ArrayList<Skill> skills = new ArrayList<>();
-        skills.add(new Skill(SkillNameList.get("HTML"), 5));
-        skills.add(new Skill(SkillNameList.get("Javascript"), 4));
-        skills.add(new Skill(SkillNameList.get("C++"), 2));
-        skills.add(new Skill(SkillNameList.get("Java"), 3));
+        ArrayList<UserSkill> skills = new ArrayList<>();
+        skills.add(new UserSkill(SkillNameList.get("HTML"), 5));
+        skills.add(new UserSkill(SkillNameList.get("Javascript"), 4));
+        skills.add(new UserSkill(SkillNameList.get("C++"), 2));
+        skills.add(new UserSkill(SkillNameList.get("Java"), 3));
         user1.setSkills(skills);
         try {
             UserList.add(user1);
@@ -76,11 +77,11 @@ public class InitializationListener {
         user2.setJobTitle("برنامه‌نویس وب");
         user2.setBio("Yo");
         user2.setProfilePictureURL("http://localhost:8000/mine.jpg");
-        ArrayList<Skill> skills1 = new ArrayList<>();
-        skills1.add(new Skill(SkillNameList.get("HTML"), 4));
-        skills1.add(new Skill(SkillNameList.get("Javascript"), 2));
-        skills1.add(new Skill(SkillNameList.get("C++"), 8));
-        skills1.add(new Skill(SkillNameList.get("Java"), 1));
+        ArrayList<UserSkill> skills1 = new ArrayList<>();
+        skills1.add(new UserSkill(SkillNameList.get("HTML"), 4));
+        skills1.add(new UserSkill(SkillNameList.get("Javascript"), 2));
+        skills1.add(new UserSkill(SkillNameList.get("C++"), 8));
+        skills1.add(new UserSkill(SkillNameList.get("Java"), 1));
         user2.setSkills(skills1);
         try {
             UserList.add(user2);

@@ -10,7 +10,7 @@ public class Project {
     private String description;
     @JsonProperty("imageUrl")
     private String imageURL;
-    private ArrayList<Skill> skills;
+    private ArrayList<ProjectSkill> skills;
     private long budget;
     private long deadline;
     private long creationDate;
@@ -18,13 +18,13 @@ public class Project {
 
     public Project() {}
 
-    public Project(String id, ArrayList<Skill> skills, long budget) {
+    public Project(String id, ArrayList<ProjectSkill> skills, long budget) {
         this.id = id;
         this.skills = skills;
         this.budget = budget;
     }
 
-    public Project(String id, String title, String description, String imageURL, ArrayList<Skill> skills,
+    public Project(String id, String title, String description, String imageURL, ArrayList<ProjectSkill> skills,
                    long budget, long deadline, long creationDate) {
         this.id = id;
         this.title = title;
@@ -44,11 +44,11 @@ public class Project {
         this.id = id;
     }
 
-    public ArrayList<Skill> getSkills() {
+    public ArrayList<ProjectSkill> getSkills() {
         return skills;
     }
 
-    public void setSkills(ArrayList<Skill> skills) {
+    public void setSkills(ArrayList<ProjectSkill> skills) {
         this.skills = skills;
     }
 

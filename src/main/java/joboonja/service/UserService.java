@@ -20,20 +20,20 @@ public class UserService {
     }
 
     public ArrayList<SkillDTO> getSkills(User user, User currentUser) {
-        ArrayList<Skill> skills = user.getSkills();
+        ArrayList<UserSkill> skills = user.getSkills();
         ArrayList<SkillDTO> dto = new ArrayList<>();
-        for (Skill skill : skills) {
+        for (UserSkill skill : skills) {
             SkillDTO tmpSkill = new SkillDTO(skill.getSkillName(), skill.getPoints(),
-                    skill.isEndorsedBy(currentUser.getId()));
+                    skill.isEndorsedBy(currentUser));
             dto.add(tmpSkill);
         }
         return dto;
     }
 
-    public void endorse(String userId, String endorsee, String skillName) throws IllegalArgumentException {
-        User user = UserList.get(endorsee);
-        Skill skill = user.getSkill(SkillNameList.get(skillName));
-        skill.endorse(userId);
+    public void endorse(User user, String endorsee, String skillName) throws IllegalArgumentException {
+        User endoseeUser = UserList.get(endorsee);
+        UserSkill skill = endoseeUser.getSkill(SkillNameList.get(skillName));
+        skill.endorse(user);
     }
 
     public void deleteSkill(User user, String skillName) {

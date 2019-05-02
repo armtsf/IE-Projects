@@ -10,20 +10,20 @@ public class User {
     private String lastName;
     private String jobTitle;
     private String profilePictureURL;
-    private ArrayList<Skill> skills;
+    private ArrayList<UserSkill> skills = new ArrayList<>();
     private String bio;
 
     public User() {}
 
-    public User(String id, ArrayList<Skill> skills) {
+    public User(String id, ArrayList<UserSkill> skills) {
         this.id = id;
         this.skills = skills;
     }
 
     public boolean isEligibleFor(Project project) {
-        for (Skill skill: project.getSkills()) {
+        for (ProjectSkill skill: project.getSkills()) {
             try {
-                Skill userSkill = this.getSkill(skill.getSkillName());
+                UserSkill userSkill = this.getSkill(skill.getSkillName());
                 if (userSkill.getPoints() < skill.getPoints()) {
                     return false;
                 }
@@ -42,15 +42,15 @@ public class User {
         this.id = id;
     }
 
-    public ArrayList<Skill> getSkills() {
+    public ArrayList<UserSkill> getSkills() {
         return skills;
     }
 
-    public void setSkills(ArrayList<Skill> skills) {
+    public void setSkills(ArrayList<UserSkill> skills) {
         this.skills = skills;
     }
 
-    public Skill getSkill(SkillName skillName) {
+    public UserSkill getSkill(SkillName skillName) {
         return skills.stream().filter(skill -> skill.getSkillName().getName().equals(skillName.getName())).findFirst()
                 .orElseThrow(NoSuchElementException::new);
     }
@@ -95,21 +95,23 @@ public class User {
         this.bio = bio;
     }
 
-    public void deleteSkill(String skillName) {
-        for (Skill skill : skills) {
+    public UserSkill deleteSkill(String skillName) {
+        for (UserSkill skill : skills) {
             if (skill.getSkillName().getName().equals(skillName)) {
                 skills.remove(skill);
-                return;
+                return skill;
             }
         }
         throw new NoSuchElementException("no such skill");
     }
 
-    public void addSkill(String skillName) {
-        for (Skill skill: skills) {
+    public UserSkill addSkill(String skillName) {
+        for (UserSkill skill: skills) {
             if (skill.getSkillName().getName().equals(skillName))
                 throw new IllegalArgumentException("duplicate skill for this user");
         }
-        skills.add(new Skill(SkillNameList.get(skillName), 0));
+        UserSkill userSkill = new UserSkill(SkillNameList.get(skillName), 0, this);
+        skills.add(userSkill);
+        return userSkill;
     }
 }

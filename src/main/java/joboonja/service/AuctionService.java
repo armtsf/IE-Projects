@@ -9,7 +9,7 @@ class AuctionService {
 
     static User finish(String projectName) {
         Project project = ProjectList.get(projectName);
-        ArrayList<Skill> jobSkills = project.getSkills();
+        ArrayList<ProjectSkill> jobSkills = project.getSkills();
         long jobOffer = project.getBudget();
 
         ArrayList<Bid> bids = BidList.get(project);
@@ -29,11 +29,11 @@ class AuctionService {
         return winner;
     }
 
-    private static long calculate(User user, long userOffer, ArrayList<Skill> jobSkills, long jobOffer) {
+    private static long calculate(User user, long userOffer, ArrayList<ProjectSkill> jobSkills, long jobOffer) {
         long sum = 0;
-        for (Skill skill : jobSkills) {
+        for (ProjectSkill skill : jobSkills) {
             try {
-                Skill userSkill = user.getSkill(skill.getSkillName());
+                UserSkill userSkill = user.getSkill(skill.getSkillName());
                 sum += 10000 * Math.pow((userSkill.getPoints() - skill.getPoints()), 2);
             }
             catch (NoSuchElementException e) {

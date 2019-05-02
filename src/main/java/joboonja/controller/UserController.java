@@ -57,8 +57,7 @@ public class UserController {
     @PostMapping("/{id}/skills/endorsements")
     public ResponseEntity<ResponseMessage> endorseSkill(@RequestAttribute("user") User user, @PathVariable("id") String id,
                                                         @RequestParam(name="skill-name") String skillName) {
-        System.out.println(skillName);
-        userService.endorse(user.getId(), id, skillName);
+        userService.endorse(user, id, skillName);
         ResponseMessage responseMessage = new ResponseMessage(new Date(), "ok");
         return new ResponseEntity<>(responseMessage, HttpStatus.OK);
     }
