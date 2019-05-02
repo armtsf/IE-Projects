@@ -1,6 +1,7 @@
 package joboonja.controller;
 
-import joboonja.DTO.SkillDTO;
+import joboonja.DTO.UserDTO;
+import joboonja.DTO.UserSkillDTO;
 import joboonja.models.User;
 import joboonja.DTO.SkillNameDTO;
 import joboonja.utils.ResponseMessage;
@@ -27,19 +28,22 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUser(@RequestAttribute("user") User user, @PathVariable("id") String id) {
-        return new ResponseEntity<>(userService.getUser(id), HttpStatus.OK);
+    public ResponseEntity<UserDTO> getUser(@RequestAttribute("user") User user, @PathVariable("id") String id) {
+        return new ResponseEntity<>(userService.getUser(user, id), HttpStatus.OK);
     }
 
     @GetMapping("/{id}/skills")
-    public ResponseEntity<List<SkillDTO>> getSkills(@RequestAttribute("user") User user, @PathVariable("id") String id) {
-        ArrayList<SkillDTO> skills = userService.getSkills(userService.getUser(id), user);
+    public ResponseEntity<List<UserSkillDTO>> getSkills(@RequestAttribute("user") User user, @PathVariable("id") String id) {
+        ArrayList<UserSkillDTO> skills = userService.getSkills(user, id);
         return new ResponseEntity<>(skills, HttpStatus.OK);
     }
 
     @PostMapping("/{id}/skills")
     public ResponseEntity<ResponseMessage> addSkill(@RequestAttribute("user") User user, @PathVariable("id") String id,
-                                                    @RequestBody SkillNameDTO skillNameDTO) {
+                                                    @RequestBody SkillNameDTO skillNameDTO) throws IllegalAccessException {
+        if (!user.getId().equals(id)) {
+            throw new IllegalAccessException("");
+        }
         String skillName = skillNameDTO.getSkillName();
         userService.addSkill(user, skillName.trim());
         ResponseMessage responseMessage = new ResponseMessage(new Date(), "ok");
@@ -48,7 +52,10 @@ public class UserController {
 
     @DeleteMapping("/{id}/skills")
     public ResponseEntity<ResponseMessage> deleteSkill(@RequestAttribute("user") User user, @PathVariable("id") String id,
-                                                       @RequestParam(name="skill-name") String skillName) {
+                                                       @RequestParam(name="skill-name") String skillName) throws IllegalAccessException {
+        if (!user.getId().equals(id)) {
+            throw new IllegalAccessException("");
+        }
         userService.deleteSkill(user, skillName);
         ResponseMessage responseMessage = new ResponseMessage(new Date(), "ok");
         return new ResponseEntity<>(responseMessage, HttpStatus.OK);

@@ -3,13 +3,13 @@ package joboonja.DTO;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import joboonja.models.SkillName;
 
-public class SkillDTO {
+public class UserSkillDTO {
     private SkillName name;
     @JsonProperty("point")
     private int points;
     private boolean isEndorsed;
 
-    public SkillDTO(SkillName name, int points, boolean isEndorsed) {
+    public UserSkillDTO(SkillName name, int points, boolean isEndorsed) {
         this.name = name;
         this.points = points;
         this.isEndorsed = isEndorsed;
