@@ -1,5 +1,6 @@
 package joboonja.filter;
 
+import joboonja.data.mappers.UserMapper;
 import joboonja.utils.Session;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -7,12 +8,15 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import joboonja.models.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.io.InvalidObjectException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +24,8 @@ import java.util.List;
 public class InitializationListener {
     private final String PROJECTS_ENDPOINT = "http://142.93.134.194:8000/joboonja/project";
     private final String SKILLS_ENDPOINT = "http://142.93.134.194:8000/joboonja/skill";
+
+    private Logger logger = LoggerFactory.getLogger(InitializationListener.class);
 
     @EventListener(ApplicationReadyEvent.class)
     public void contextInitialized() {
@@ -43,45 +49,58 @@ public class InitializationListener {
             e.printStackTrace();
         }
 
-        User user = new User();
-        user.setId("1");
-        user.setFirstName("علی");
-        user.setLastName("شریف‌زاده");
-        user.setJobTitle("برنامه‌نویس وب");
-        user.setBio("روی سنگ قبرم بنویسید: خدا بیامرز می‌خواست خیلی کارا بکنه ولی پول نداشت");
-        user.setProfilePictureURL("http://localhost:8000/mine.jpg");
+        User user1 = new User();
+        user1.setId("1");
+        user1.setFirstName("علی");
+        user1.setLastName("شریف‌زاده");
+        user1.setJobTitle("برنامه‌نویس وب");
+        user1.setBio("روی سنگ قبرم بنویسید: خدا بیامرز می‌خواست خیلی کارا بکنه ولی پول نداشت");
+        user1.setProfilePictureURL("http://localhost:8000/mine.jpg");
         ArrayList<Skill> skills = new ArrayList<>();
         skills.add(new Skill(SkillNameList.get("HTML"), 5));
         skills.add(new Skill(SkillNameList.get("Javascript"), 4));
         skills.add(new Skill(SkillNameList.get("C++"), 2));
         skills.add(new Skill(SkillNameList.get("Java"), 3));
-        user.setSkills(skills);
-        try {
-            UserList.add(user);
-        } catch (InvalidObjectException e) {
-            e.printStackTrace();
-        }
-        Session.put("userId", user.getId());
-
-        User user1 = new User();
-        user1.setId("2");
-        user1.setFirstName("علی");
-        user1.setLastName("احمدی");
-        user1.setJobTitle("برنامه‌نویس وب");
-        user1.setBio("Yo");
-        user1.setProfilePictureURL("http://localhost:8000/mine.jpg");
-        ArrayList<Skill> skills1 = new ArrayList<>();
-        skills1.add(new Skill(SkillNameList.get("HTML"), 4));
-        skills1.add(new Skill(SkillNameList.get("Javascript"), 2));
-        skills1.add(new Skill(SkillNameList.get("C++"), 8));
-        skills1.add(new Skill(SkillNameList.get("Java"), 1));
-        user1.setSkills(skills1);
+        user1.setSkills(skills);
         try {
             UserList.add(user1);
         } catch (InvalidObjectException e) {
             e.printStackTrace();
         }
+        Session.put("userId", user1.getId());
 
-        System.out.println("Initialization Done.");
+        User user2 = new User();
+        user2.setId("2");
+        user2.setFirstName("علی");
+        user2.setLastName("احمدی");
+        user2.setJobTitle("برنامه‌نویس وب");
+        user2.setBio("Yo");
+        user2.setProfilePictureURL("http://localhost:8000/mine.jpg");
+        ArrayList<Skill> skills1 = new ArrayList<>();
+        skills1.add(new Skill(SkillNameList.get("HTML"), 4));
+        skills1.add(new Skill(SkillNameList.get("Javascript"), 2));
+        skills1.add(new Skill(SkillNameList.get("C++"), 8));
+        skills1.add(new Skill(SkillNameList.get("Java"), 1));
+        user2.setSkills(skills1);
+        try {
+            UserList.add(user2);
+        } catch (InvalidObjectException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            UserMapper userMapper = new UserMapper();
+            if (userMapper.get(user1.getId()) == null) {
+                userMapper.insert(user1);
+            }
+            if (userMapper.get(user2.getId()) == null) {
+                userMapper.insert(user2);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            logger.error(e.getSQLState());
+        }
+
+        logger.info("Initialization Done");
     }
 }

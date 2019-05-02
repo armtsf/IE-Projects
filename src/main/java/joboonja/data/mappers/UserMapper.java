@@ -4,7 +4,6 @@ import joboonja.data.ConnectionPool;
 import joboonja.models.User;
 
 import java.sql.*;
-import java.util.NoSuchElementException;
 
 public class UserMapper {
     public UserMapper() throws SQLException {
@@ -15,25 +14,31 @@ public class UserMapper {
                 + "jobTitle VARCHAR(256), "
                 + "profilePictureURL TEXT, "
                 + "bio TEXT)";
-        Connection conn = ConnectionPool.getConnection();
-        Statement stmt = conn.createStatement();
-        stmt.execute(sql);
+        try (
+            Connection conn = ConnectionPool.getConnection();
+            Statement stmt = conn.createStatement()
+        ) {
+            stmt.execute(sql);
+        }
     }
 
     public int insert(User user) throws SQLException {
         String sql = "INSERT INTO User VALUES (?, ?, ?, ?, ?, ?)";
-        Connection conn = ConnectionPool.getConnection();
-        PreparedStatement stmt = conn.prepareStatement(sql);
-        stmt.setString(1, user.getId());
-        stmt.setString(2, user.getFirstName());
-        stmt.setString(3, user.getLastName());
-        stmt.setString(4, user.getJobTitle());
-        stmt.setString(5, user.getProfilePictureURL());
-        stmt.setString(6, user.getBio());
-        return stmt.executeUpdate();
+        try (
+            Connection conn = ConnectionPool.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql)
+        ) {
+            stmt.setString(1, user.getId());
+            stmt.setString(2, user.getFirstName());
+            stmt.setString(3, user.getLastName());
+            stmt.setString(4, user.getJobTitle());
+            stmt.setString(5, user.getProfilePictureURL());
+            stmt.setString(6, user.getBio());
+            return stmt.executeUpdate();
+        }
     }
 
-    public User load(ResultSet rs) throws SQLException {
+    private User load(ResultSet rs) throws SQLException {
         User user = new User();
         user.setId(rs.getString(1));
         user.setFirstName(rs.getString(2));
@@ -44,15 +49,18 @@ public class UserMapper {
         return user;
     }
 
-    public User find(String id) throws SQLException, NoSuchElementException {
+    public User get(String id) throws SQLException {
         String sql = "SELECT * FROM User WHERE id = ?";
-        Connection conn = ConnectionPool.getConnection();
-        PreparedStatement stmt = conn.prepareStatement(sql);
-        stmt.setString(1, id);
-        ResultSet resultSet = stmt.executeQuery();
-        if (resultSet.next()) {
-            return load(resultSet);
+        try (
+            Connection conn = ConnectionPool.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql)
+        ) {
+            stmt.setString(1, id);
+            ResultSet resultSet = stmt.executeQuery();
+            if (resultSet.next()) {
+                return load(resultSet);
+            }
         }
-        throw new NoSuchElementException();
+        return null;
     }
 }
