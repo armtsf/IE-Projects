@@ -38,9 +38,13 @@ public class Bid {
     }
 
     public boolean isValid() {
+        if (bidAmount < 0) {
+            return false;
+        }
         if (bidAmount > project.getBudget()) {
             return false;
         }
+        // TODO: check project deadline
         return user.isEligibleFor(project);
     }
 }
