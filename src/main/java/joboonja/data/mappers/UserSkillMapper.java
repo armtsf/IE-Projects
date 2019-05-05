@@ -9,14 +9,14 @@ import java.util.ArrayList;
 public class UserSkillMapper {
 
     private SkillNameMapper skillNameMapper;
-    private UserSkillMapper userSkillMapper;
 
     public UserSkillMapper() throws SQLException {
         skillNameMapper = new SkillNameMapper();
-        userSkillMapper = new UserSkillMapper();
 
         String sql = "CREATE TABLE IF NOT EXISTS UserSkill ("
-                + "points INTEGER,"
+                + "points INTEGER, "
+                + "skillName VARCHAR(256), "
+                + "userId VARCHAR(256), "
                 + "FOREIGN KEY (skillName) REFERENCES SkillName(name), "
                 + "FOREIGN KEY (userId) REFERENCES User(id),"
                 + "PRIMARY KEY (skillName, userId))";

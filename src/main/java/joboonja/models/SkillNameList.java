@@ -1,29 +1,36 @@
 package joboonja.models;
 
+import joboonja.data.mappers.SkillNameMapper;
+
 import java.io.InvalidObjectException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
 public class SkillNameList {
-    private static ArrayList<SkillName> skillNames = new ArrayList<>();
+    private SkillNameMapper skillNameMapper;
 
-    public static void add(SkillName skillName) throws InvalidObjectException {
-        for (SkillName s: skillNames) {
-            if (s.getName().equals(skillName.getName())) {
-                throw new InvalidObjectException("skill name with the same name exists");
-            }
-        }
-        skillNames.add(skillName);
+    public SkillNameList() throws SQLException {
+        this.skillNameMapper = new SkillNameMapper();
     }
 
-    public static SkillName get(final String name) {
-        for (SkillName skillName: skillNames) {
-            if (skillName.getName().equals(name)) {
-                return skillName;
-            }
+    public void add(SkillName skillName) throws InvalidObjectException, SQLException {
+        if (skillNameMapper.get(skillName.getName()) != null) {
+            throw new InvalidObjectException("skill name with the same name exists");
         }
-        throw new NoSuchElementException("no such SkillName");
+        else {
+            skillNameMapper.insert(skillName);
+        }
     }
 
-    public static ArrayList<SkillName> all() { return skillNames; }
+    public SkillName get(final String name) throws SQLException {
+        SkillName skillName = skillNameMapper.get(name);
+        if (skillName == null)
+            throw new NoSuchElementException("no such SkillName");
+        else
+            return skillName;
+    }
+
+    //TODO
+    public ArrayList<SkillName> all() { return null; }
 }

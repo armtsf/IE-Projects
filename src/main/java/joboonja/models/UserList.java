@@ -1,28 +1,39 @@
 package joboonja.models;
 
+import joboonja.data.mappers.UserMapper;
+
 import java.io.InvalidObjectException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 public class UserList {
-    private static ArrayList<User> users = new ArrayList<>();
+    private UserMapper userMapper;
 
-    public static void add(User user) throws InvalidObjectException {
-        for (User u: users) {
-            if (u.getId().equals(user.getId())) {
-                throw new InvalidObjectException("user with the same id exists");
-            }
+    public UserList() throws SQLException {
+        this.userMapper = new UserMapper();
+    }
+
+    public void add(User user) throws InvalidObjectException, SQLException {
+        if (userMapper.get(user.getId()) != null) {
+            throw new InvalidObjectException("user with the same id exists");
         }
-        users.add(user);
+        else {
+         userMapper.insert(user);
+        }
     }
 
-    public static User get(final String userId) {
-        return users.stream().filter(user -> user.getId().equals(userId)).findFirst()
-                .orElseThrow(NoSuchElementException::new);
+    public User get(final String userId) throws SQLException {
+        User user = userMapper.get(userId);
+        if (user == null)
+            throw new NoSuchElementException();
+        else
+            return user;
     }
 
-    public static ArrayList<User> getAllExcept(User user) {
-        return users.stream().filter(u -> !u.getId().equals(user.getId())).collect(Collectors.toCollection(ArrayList::new));
+    //TODO
+    public ArrayList<User> getAllExcept(User user) {
+        return null;
     }
 }

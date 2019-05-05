@@ -1,27 +1,38 @@
 package joboonja.models;
 
+import joboonja.data.mappers.ProjectMapper;
+
 import java.io.InvalidObjectException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
 public class ProjectList {
-    private static ArrayList<Project> projects = new ArrayList<>();
+    private ProjectMapper projectMapper;
 
-    public static void add(Project project) throws InvalidObjectException {
-        for (Project p : projects) {
-            if (p.getId().equals(project.getId())) {
-                throw new InvalidObjectException("project with the same id exists");
-            }
+    public ProjectList() throws SQLException {
+        this.projectMapper = new ProjectMapper();
+    }
+
+    public void add(Project project) throws InvalidObjectException, SQLException {
+        if (projectMapper.get(project.getId()) != null) {
+            throw new InvalidObjectException("project with the same id exists");
         }
-        projects.add(project);
+        else {
+            projectMapper.insert(project);
+        }
     }
 
-    public static Project get(final String title) {
-        return projects.stream().filter(project -> project.getId().equals(title)).findFirst()
-                .orElseThrow(NoSuchElementException::new);
+    public Project get(final String id) throws SQLException {
+        Project project = projectMapper.get(id);
+        if (project == null)
+            throw new NoSuchElementException();
+        else
+            return project;
     }
 
-    public static ArrayList<Project> all() {
-        return projects;
+    //TODO
+    public ArrayList<Project> all() {
+        return null;
     }
 }

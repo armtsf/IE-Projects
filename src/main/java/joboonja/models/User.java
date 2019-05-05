@@ -105,12 +105,12 @@ public class User {
         throw new NoSuchElementException("no such skill");
     }
 
-    public UserSkill addSkill(String skillName) {
+    public UserSkill addSkill(SkillName skillName) {
         for (UserSkill skill: skills) {
             if (skill.getSkillName().getName().equals(skillName))
                 throw new IllegalArgumentException("duplicate skill for this user");
         }
-        UserSkill userSkill = new UserSkill(SkillNameList.get(skillName), 0, this);
+        UserSkill userSkill = new UserSkill(skillName, 0, this);
         skills.add(userSkill);
         return userSkill;
     }

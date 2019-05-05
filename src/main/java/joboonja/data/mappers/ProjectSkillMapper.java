@@ -14,7 +14,9 @@ public class ProjectSkillMapper {
         skillNameMapper = new SkillNameMapper();
 
         String sql = "CREATE TABLE IF NOT EXISTS ProjectSkill ("
-                + "points INTEGER,"
+                + "points INTEGER, "
+                + "skillName VARCHAR(256), "
+                + "projectId VARCHAR(256), "
                 + "FOREIGN KEY (skillName) REFERENCES SkillName(name), "
                 + "FOREIGN KEY (projectId) REFERENCES Project(id),"
                 + "PRIMARY KEY (skillName, projectId))";

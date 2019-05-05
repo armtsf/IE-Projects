@@ -6,7 +6,11 @@ import joboonja.models.User;
 import java.sql.*;
 
 public class UserMapper {
+
+    private UserSkillMapper userSkillMapper;
+
     public UserMapper() throws SQLException {
+        this.userSkillMapper = new UserSkillMapper();
         String sql = "CREATE TABLE IF NOT EXISTS User ("
                 + "id VARCHAR(256) PRIMARY KEY, "
                 + "firstName VARCHAR(256), "
@@ -46,6 +50,7 @@ public class UserMapper {
         user.setJobTitle(rs.getString(4));
         user.setProfilePictureURL(rs.getString(5));
         user.setBio(rs.getString(6));
+        user.setSkills(userSkillMapper.get(user.getId()));
         return user;
     }
 

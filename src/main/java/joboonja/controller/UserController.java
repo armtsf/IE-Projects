@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import joboonja.service.UserService;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -28,19 +29,19 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserDTO> getUser(@RequestAttribute("user") User user, @PathVariable("id") String id) {
+    public ResponseEntity<UserDTO> getUser(@RequestAttribute("user") User user, @PathVariable("id") String id) throws SQLException {
         return new ResponseEntity<>(userService.getUser(user, id), HttpStatus.OK);
     }
 
     @GetMapping("/{id}/skills")
-    public ResponseEntity<List<UserSkillDTO>> getSkills(@RequestAttribute("user") User user, @PathVariable("id") String id) {
+    public ResponseEntity<List<UserSkillDTO>> getSkills(@RequestAttribute("user") User user, @PathVariable("id") String id) throws SQLException {
         ArrayList<UserSkillDTO> skills = userService.getSkills(user, id);
         return new ResponseEntity<>(skills, HttpStatus.OK);
     }
 
     @PostMapping("/{id}/skills")
     public ResponseEntity<ResponseMessage> addSkill(@RequestAttribute("user") User user, @PathVariable("id") String id,
-                                                    @RequestBody SkillNameDTO skillNameDTO) throws IllegalAccessException {
+                                                    @RequestBody SkillNameDTO skillNameDTO) throws IllegalAccessException, SQLException {
         if (!user.getId().equals(id)) {
             throw new IllegalAccessException("");
         }
@@ -63,7 +64,7 @@ public class UserController {
 
     @PostMapping("/{id}/skills/endorsements")
     public ResponseEntity<ResponseMessage> endorseSkill(@RequestAttribute("user") User user, @PathVariable("id") String id,
-                                                        @RequestParam(name="skill-name") String skillName) {
+                                                        @RequestParam(name="skill-name") String skillName) throws SQLException {
         userService.endorse(user, id, skillName);
         ResponseMessage responseMessage = new ResponseMessage(new Date(), "ok");
         return new ResponseEntity<>(responseMessage, HttpStatus.OK);

@@ -1,14 +1,25 @@
 package joboonja.service;
 
 import joboonja.models.*;
+import org.springframework.stereotype.Service;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
+@Service
 class AuctionService {
 
-    static User finish(String projectName) {
-        Project project = ProjectList.get(projectName);
+    private ProjectList projectList;
+    private UserList userList;
+
+    public AuctionService() throws SQLException {
+        this.projectList = new ProjectList();
+        this.userList = new UserList();
+    }
+
+    public User finish(String projectName) throws SQLException {
+        Project project = projectList.get(projectName);
         ArrayList<ProjectSkill> jobSkills = project.getSkills();
         long jobOffer = project.getBudget();
 
@@ -18,7 +29,7 @@ class AuctionService {
         User winner = null;
 
         for (Bid bid : bids) {
-            User user = UserList.get(bid.getUser().getId());
+            User user = userList.get(bid.getUser().getId());
             long score = calculate(user, bid.getBidAmount(), jobSkills, jobOffer);
             if (score > maxScore) {
                 maxScore = score;
@@ -29,7 +40,7 @@ class AuctionService {
         return winner;
     }
 
-    private static long calculate(User user, long userOffer, ArrayList<ProjectSkill> jobSkills, long jobOffer) {
+    public static long calculate(User user, long userOffer, ArrayList<ProjectSkill> jobSkills, long jobOffer) {
         long sum = 0;
         for (ProjectSkill skill : jobSkills) {
             try {

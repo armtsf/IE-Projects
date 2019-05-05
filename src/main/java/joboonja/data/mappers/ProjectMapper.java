@@ -6,7 +6,11 @@ import joboonja.models.Project;
 import java.sql.*;
 
 public class ProjectMapper {
+
+    private ProjectSkillMapper projectSkillMapper;
+
     public ProjectMapper() throws SQLException {
+        this.projectSkillMapper = new ProjectSkillMapper();
         String sql = "CREATE TABLE IF NOT EXISTS Project ("
                 + "id VARCHAR(256) PRIMARY KEY, "
                 + "title VARCHAR(256), "
@@ -51,10 +55,11 @@ public class ProjectMapper {
         project.setBudget(rs.getLong(5));
         project.setDeadline(rs.getLong(6));
         project.setCreationDate(rs.getLong(7));
+        project.setSkills(projectSkillMapper.get(project.getId()));
         return project;
     }
 
-    public Project getById(String id) throws SQLException {
+    public Project get(String id) throws SQLException {
         String sql = "SELECT * FROM Project WHERE id = ?";
         try (
                 Connection conn = ConnectionPool.getConnection();

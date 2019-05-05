@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import joboonja.service.ProjectService;
 
 import java.io.InvalidObjectException;
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -29,14 +30,14 @@ public class ProjectController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Project> getProjectDetails(@RequestAttribute("user") User user, @PathVariable("id") String id)
-            throws IllegalAccessException, NoSuchElementException {
+            throws IllegalAccessException, NoSuchElementException, SQLException {
         Project project = projectService.getProject(user, id);
         return new ResponseEntity<>(project, HttpStatus.OK);
     }
 
     @PostMapping("/{id}/bid")
     public ResponseEntity<ResponseMessage> bidProject(@RequestAttribute("user") User user, @PathVariable("id") String id,
-                                                      @RequestBody BidDTO bidDTO) throws InvalidObjectException, IllegalAccessException {
+                                                      @RequestBody BidDTO bidDTO) throws InvalidObjectException, IllegalAccessException, SQLException {
         long bidAmount = bidDTO.getBidAmount();
         projectService.addBid(user, id, bidAmount);
         ResponseMessage responseMessage = new ResponseMessage(new Date(), "ok");
@@ -44,7 +45,7 @@ public class ProjectController {
     }
 
     @GetMapping("/{id}/bid")
-    public ResponseEntity<BidDTO> getBid(@RequestAttribute("user") User user, @PathVariable("id") String id) throws IllegalAccessException {
+    public ResponseEntity<BidDTO> getBid(@RequestAttribute("user") User user, @PathVariable("id") String id) throws IllegalAccessException, SQLException {
         BidDTO bidDTO = projectService.getBid(user, id);
         return new ResponseEntity<>(bidDTO, HttpStatus.OK);
     }
