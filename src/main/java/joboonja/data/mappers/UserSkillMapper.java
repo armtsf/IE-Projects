@@ -1,0 +1,67 @@
+package joboonja.data.mappers;
+
+import joboonja.data.ConnectionPool;
+import joboonja.models.UserSkill;
+
+import java.sql.*;
+import java.util.ArrayList;
+
+public class UserSkillMapper {
+
+    private SkillNameMapper skillNameMapper;
+    private UserSkillMapper userSkillMapper;
+
+    public UserSkillMapper() throws SQLException {
+        skillNameMapper = new SkillNameMapper();
+        userSkillMapper = new UserSkillMapper();
+
+        String sql = "CREATE TABLE IF NOT EXISTS UserSkill ("
+                + "points INTEGER,"
+                + "FOREIGN KEY (skillName) REFERENCES SkillName(name), "
+                + "FOREIGN KEY (userId) REFERENCES User(id),"
+                + "PRIMARY KEY (skillName, userId))";
+        try (
+                Connection conn = ConnectionPool.getConnection();
+                Statement stmt = conn.createStatement()
+        ) {
+            stmt.execute(sql);
+        }
+    }
+
+    public int insert(UserSkill userSkill) throws SQLException {
+        String sql = "INSERT INTO UserSkill VALUES (?, ?, ?)";
+        try (
+                Connection conn = ConnectionPool.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql)
+        ) {
+            stmt.setInt(1, userSkill.getPoints());
+            stmt.setString(2, userSkill.getSkillName().getName());
+            stmt.setString(3, userSkill.getUser().getId());
+            return stmt.executeUpdate();
+        }
+    }
+
+    private UserSkill load(ResultSet rs) throws SQLException {
+        UserSkill userSkill = new UserSkill();
+        userSkill.setPoints(rs.getInt(1));
+        userSkill.setSkillName(skillNameMapper.get(rs.getString(2)));
+        return userSkill;
+    }
+
+    public ArrayList<UserSkill> get(String userId) throws SQLException {
+        ArrayList<UserSkill> skills = new ArrayList<>();
+        String sql = "SELECT * FROM UserSkill WHERE userId = ?";
+        try (
+                Connection conn = ConnectionPool.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql)
+        ) {
+            stmt.setString(1, userId);
+            ResultSet resultSet = stmt.executeQuery();
+            if (resultSet.next()) {
+                skills.add(load(resultSet));
+            }
+        }
+        return skills;
+    }
+
+}
