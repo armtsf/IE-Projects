@@ -27,8 +27,7 @@ public class SkillNameRepository {
         SkillName skillName = skillNameMapper.get(name);
         if (skillName == null)
             throw new NoSuchElementException("no such SkillName");
-        else
-            return skillName;
+        return skillName;
     }
 
     public ArrayList<SkillName> all() throws SQLException {

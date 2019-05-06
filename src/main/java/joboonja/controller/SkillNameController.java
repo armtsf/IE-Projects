@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.sql.SQLException;
 import java.util.List;
 
 @RestController
@@ -19,7 +20,7 @@ public class SkillNameController {
     private SkillNameService skillNameService;
 
     @GetMapping({"", "/"})
-    public ResponseEntity<List<SkillName>> getSkillNames() {
+    public ResponseEntity<List<SkillName>> getSkillNames() throws SQLException {
         return new ResponseEntity<>(skillNameService.getSkillNameList(), HttpStatus.OK);
     }
 }

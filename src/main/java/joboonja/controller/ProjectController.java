@@ -24,7 +24,7 @@ public class ProjectController {
     private ProjectService projectService;
 
     @GetMapping({"", "/"})
-    public ResponseEntity<List<Project>> getProjects(@RequestAttribute("user") User user) {
+    public ResponseEntity<List<Project>> getProjects(@RequestAttribute("user") User user) throws SQLException {
         return new ResponseEntity<>(projectService.getProjectsList(user), HttpStatus.OK);
     }
 

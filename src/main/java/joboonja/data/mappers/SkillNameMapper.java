@@ -33,7 +33,8 @@ public class SkillNameMapper extends Mapper<SkillName> {
     @Override
     protected SkillName load(ResultSet rs) throws SQLException {
         SkillName skillName = new SkillName();
-        skillName.setName(rs.getString(1));
+        skillName.setId(rs.getInt(1));
+        skillName.setName(rs.getString(2));
         return skillName;
     }
 
@@ -44,6 +45,17 @@ public class SkillNameMapper extends Mapper<SkillName> {
                 PreparedStatement stmt = conn.prepareStatement(sql)
         ) {
             stmt.setString(1, name);
+            return executeGet(stmt);
+        }
+    }
+
+    public SkillName get(int id) throws SQLException {
+        String sql = "SELECT * FROM SkillName WHERE id = ?";
+        try (
+                Connection conn = ConnectionPool.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql)
+        ) {
+            stmt.setInt(1, id);
             return executeGet(stmt);
         }
     }

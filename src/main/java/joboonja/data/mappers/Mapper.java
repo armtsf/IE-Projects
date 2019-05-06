@@ -9,19 +9,21 @@ public abstract class Mapper<T> {
     abstract T load(ResultSet rs) throws SQLException;
 
     protected T executeGet(PreparedStatement stmt) throws SQLException {
-        ResultSet rs = stmt.executeQuery();
-        if (rs.next()) {
-            return load(rs);
+        try (ResultSet rs = stmt.executeQuery()) {
+            if (rs.next()) {
+                return load(rs);
+            }
         }
         return null;
     }
 
     protected ArrayList<T> executeFilter(PreparedStatement stmt) throws SQLException {
-        ResultSet rs = stmt.executeQuery();
-        ArrayList<T> res = new ArrayList<>();
-        while (rs.next()) {
-            res.add(load(rs));
+        try (ResultSet rs = stmt.executeQuery()) {
+            ArrayList<T> res = new ArrayList<>();
+            while (rs.next()) {
+                res.add(load(rs));
+            }
+            return res;
         }
-        return res;
     }
 }

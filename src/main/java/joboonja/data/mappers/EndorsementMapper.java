@@ -30,11 +30,16 @@ public class EndorsementMapper extends Mapper<Endorsement> {
     }
 
     public int insert(Endorsement endorsement) throws SQLException {
-        String sql = "INSERT INTO Endorsement VALUES (NULL, ?, ?)";
         try (
                 Connection conn = ConnectionPool.getConnection();
-                PreparedStatement stmt = conn.prepareStatement(sql)
         ) {
+            return insert(conn, endorsement);
+        }
+    }
+
+    public int insert(Connection conn, Endorsement endorsement) throws SQLException {
+        String sql = "INSERT INTO Endorsement VALUES (NULL, ?, ?)";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, endorsement.getUserSkill().getId());
             stmt.setString(2, endorsement.getFromUser().getId());
             return stmt.executeUpdate();
@@ -44,7 +49,8 @@ public class EndorsementMapper extends Mapper<Endorsement> {
     @Override
     protected Endorsement load(ResultSet rs) throws SQLException {
         Endorsement endorsement = new Endorsement();
-        endorsement.setFromUser(userMapper.get(rs.getString(2)));
+        endorsement.setId(rs.getInt(1));
+        endorsement.setFromUser(userMapper.get(rs.getString(3)));
         return endorsement;
     }
 

@@ -24,7 +24,7 @@ public class UserController {
     private UserService userService;
 
     @GetMapping({"/", ""})
-    public ResponseEntity<List<User>> getUserList(@RequestAttribute("user") User user) {
+    public ResponseEntity<List<User>> getUserList(@RequestAttribute("user") User user) throws SQLException {
         return new ResponseEntity<>(userService.getUsersList(user), HttpStatus.OK);
     }
 
@@ -53,7 +53,7 @@ public class UserController {
 
     @DeleteMapping("/{id}/skills")
     public ResponseEntity<ResponseMessage> deleteSkill(@RequestAttribute("user") User user, @PathVariable("id") String id,
-                                                       @RequestParam(name="skill-name") String skillName) throws IllegalAccessException {
+                                                       @RequestParam(name="skill-name") String skillName) throws IllegalAccessException, SQLException {
         if (!user.getId().equals(id)) {
             throw new IllegalAccessException("");
         }
@@ -65,9 +65,6 @@ public class UserController {
     @PostMapping("/{id}/skills/endorsements")
     public ResponseEntity<ResponseMessage> endorseSkill(@RequestAttribute("user") User user, @PathVariable("id") String id,
                                                         @RequestParam(name="skill-name") String skillName) throws SQLException {
-        if (user.getId().equals(id)) {
-            throw new IllegalArgumentException("Cannot endorse your own skill");
-        }
         userService.endorse(user, id, skillName);
         ResponseMessage responseMessage = new ResponseMessage(new Date(), "ok");
         return new ResponseEntity<>(responseMessage, HttpStatus.OK);

@@ -1,6 +1,7 @@
 package joboonja.data.mappers;
 
 import joboonja.data.ConnectionPool;
+import joboonja.models.Endorsement;
 import joboonja.models.User;
 import joboonja.models.UserSkill;
 
@@ -37,7 +38,7 @@ public class UserSkillMapper extends Mapper<UserSkill> {
                 PreparedStatement stmt = conn.prepareStatement(sql)
         ) {
             stmt.setInt(1, userSkill.getPoints());
-            stmt.setString(2, userSkill.getSkillName().getName());
+            stmt.setInt(2, userSkill.getSkillName().getId());
             stmt.setString(3, userSkill.getUser().getId());
             return stmt.executeUpdate();
         }
@@ -58,8 +59,9 @@ public class UserSkillMapper extends Mapper<UserSkill> {
     @Override
     protected UserSkill load(ResultSet rs) throws SQLException {
         UserSkill userSkill = new UserSkill();
-        userSkill.setPoints(rs.getInt(1));
-        userSkill.setSkillName(skillNameMapper.get(rs.getString(2)));
+        userSkill.setId(rs.getInt(1));
+        userSkill.setPoints(rs.getInt(2));
+        userSkill.setSkillName(skillNameMapper.get(rs.getInt(3)));
         return userSkill;
     }
 
@@ -75,6 +77,20 @@ public class UserSkillMapper extends Mapper<UserSkill> {
                 userSkill.setUser(user);
             }
             return res;
+        }
+    }
+
+    public void addEndorsement(Endorsement endorsement) throws SQLException {
+        UserSkill userSkill = endorsement.getUserSkill();
+        try (
+                Connection conn = ConnectionPool.getConnection();
+        ) {
+            conn.setAutoCommit(false);
+            String sql = "UPDATE UserSkill SET points = points + 1 WHERE id = ?";
+            try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+                stmt.setInt(1, userSkill.getId());
+                stmt.executeUpdate();
+            }
         }
     }
 }

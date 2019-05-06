@@ -34,7 +34,7 @@ public class ProjectMapper extends Mapper<Project> {
     }
 
     public int insert(Project project) throws SQLException {
-        String sql = "INSERT INTO Project VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Project VALUES (?, ?, ?, ?, ?, ?, ?, NULL)";
         try (
                 Connection conn = ConnectionPool.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql)

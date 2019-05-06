@@ -21,7 +21,7 @@ public class ProjectSkillMapper extends Mapper<ProjectSkill> {
                 + "projectId VARCHAR(256), "
                 + "FOREIGN KEY (skillNameId) REFERENCES SkillName(id), "
                 + "FOREIGN KEY (projectId) REFERENCES Project(id),"
-                + "UNIQUE (skillName, projectId))";
+                + "UNIQUE (skillNameId, projectId))";
         try (
                 Connection conn = ConnectionPool.getConnection();
                 Statement stmt = conn.createStatement()
@@ -37,7 +37,7 @@ public class ProjectSkillMapper extends Mapper<ProjectSkill> {
                 PreparedStatement stmt = conn.prepareStatement(sql)
         ) {
             stmt.setInt(1, projectSkill.getPoints());
-            stmt.setString(2, projectSkill.getSkillName().getName());
+            stmt.setInt(2, projectSkill.getSkillName().getId());
             stmt.setString(3, projectSkill.getProject().getId());
             return stmt.executeUpdate();
         }
@@ -46,8 +46,9 @@ public class ProjectSkillMapper extends Mapper<ProjectSkill> {
     @Override
     protected ProjectSkill load(ResultSet rs) throws SQLException {
         ProjectSkill projectSkill = new ProjectSkill();
-        projectSkill.setPoints(rs.getInt(1));
-        projectSkill.setSkillName(skillNameMapper.get(rs.getString(2)));
+        projectSkill.setId(rs.getInt(1));
+        projectSkill.setPoints(rs.getInt(2));
+        projectSkill.setSkillName(skillNameMapper.get(rs.getInt(3)));
         return projectSkill;
     }
 

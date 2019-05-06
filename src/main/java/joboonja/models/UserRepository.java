@@ -41,6 +41,10 @@ public class UserRepository {
         endorsementMapper.insert(endorsement);
     }
 
+    public ArrayList<Endorsement> getEndorsements(UserSkill userSkill) throws SQLException {
+        return endorsementMapper.filter(userSkill);
+    }
+
     public User get(final String userId) throws SQLException {
         User user = userMapper.get(userId);
         if (user == null) {

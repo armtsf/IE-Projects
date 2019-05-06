@@ -63,6 +63,14 @@ public class UserSkill {
         return id;
     }
 
+    public void setEndorsements(ArrayList<Endorsement> endorsements) {
+        this.endorsements = endorsements;
+    }
+
+    public ArrayList<Endorsement> getEndorsements() {
+        return endorsements;
+    }
+
     public boolean isEndorsedBy(User user) {
         for (Endorsement e: endorsements) {
             if (e.getFromUser().getId().equals(user.getId())) {
@@ -75,6 +83,9 @@ public class UserSkill {
     public Endorsement endorse(User user) throws IllegalArgumentException {
         if (isEndorsedBy(user)) {
             throw new IllegalArgumentException("cannot endorse a skill twice");
+        }
+        if (user.getId().equals(this.getUser().getId())) {
+            throw new IllegalArgumentException("you cannot endorse your own skill");
         }
         Endorsement endorsement = new Endorsement(this, user);
         endorsements.add(endorsement);

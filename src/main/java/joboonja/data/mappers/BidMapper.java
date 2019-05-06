@@ -15,7 +15,7 @@ public class BidMapper extends Mapper<Bid> {
         userMapper = new UserMapper();
 
         String sql = "CREATE TABLE IF NOT EXISTS Bid ("
-                + "id INTEGER PRIMARY, "
+                + "id INTEGER PRIMARY KEY, "
                 + "userId VARCHAR(256), "
                 + "projectId VARCHAR(256), "
                 + "bidAmount INTEGER, "
@@ -46,8 +46,9 @@ public class BidMapper extends Mapper<Bid> {
     @Override
     protected Bid load(ResultSet rs) throws SQLException {
         Bid bid = new Bid();
-        bid.setUser(userMapper.get(rs.getString(1)));
-        bid.setBidAmount(rs.getLong(3));
+        bid.setId(rs.getInt(1));
+        bid.setUser(userMapper.get(rs.getString(2)));
+        bid.setBidAmount(rs.getLong(4));
         return bid;
     }
 
