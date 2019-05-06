@@ -28,15 +28,14 @@ public class ProjectController {
         int startValue = 0;
         int offsetValue = 10;
         if (start != null) {
-            startValue = start.intValue();
+            startValue = start;
         }
         if (offset != null) {
-            offsetValue = offset.intValue();
+            offsetValue = offset;
         }
         if (query == null) {
             return new ResponseEntity<>(projectService.getProjectsList(user, startValue, offsetValue), HttpStatus.OK);
-        }
-        else {
+        } else {
             return new ResponseEntity<>(projectService.getSearchResult(query, startValue, offsetValue), HttpStatus.OK);
         }
     }

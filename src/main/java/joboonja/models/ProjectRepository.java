@@ -38,7 +38,6 @@ public class ProjectRepository {
             return project;
     }
 
-    //TODO
     public ArrayList<Project> all(int start, int offset) throws SQLException {
         return projectMapper.all(start, offset);
     }

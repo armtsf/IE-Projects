@@ -95,7 +95,7 @@ public class InitializationListener {
         }
         for (UserSkill skill: skills) {
             try {
-                logger.info(skill.getSkillName().getName());
+//                logger.info(skill.getSkillName().getName());
                 skill.setUser(user1);
                 userRepository.addSkill(skill);
             } catch (SQLException ignored) {

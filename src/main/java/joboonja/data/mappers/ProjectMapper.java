@@ -8,8 +8,6 @@ import java.util.ArrayList;
 
 public class ProjectMapper extends Mapper<Project> {
 
-    private final int LIMIT = 10;
-
     private ProjectSkillMapper projectSkillMapper;
     private UserMapper userMapper;
 
