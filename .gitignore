@@ -182,4 +182,7 @@ tags
 # Persistent undo
 [._]*.un~
 
+.db
+.sqlite3
+
 # End of https://www.gitignore.io/api/vim,osx,java,linux,maven,intellij
