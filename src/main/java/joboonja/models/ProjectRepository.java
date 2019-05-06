@@ -1,6 +1,7 @@
 package joboonja.models;
 
 import joboonja.data.mappers.ProjectMapper;
+import joboonja.data.mappers.ProjectSkillMapper;
 
 import java.io.InvalidObjectException;
 import java.sql.SQLException;
@@ -9,9 +10,11 @@ import java.util.NoSuchElementException;
 
 public class ProjectRepository {
     private ProjectMapper projectMapper;
+    private ProjectSkillMapper projectSkillMapper;
 
     public ProjectRepository() throws SQLException {
         this.projectMapper = new ProjectMapper();
+        this.projectSkillMapper = new ProjectSkillMapper();
     }
 
     public void add(Project project) throws InvalidObjectException, SQLException {
@@ -21,6 +24,10 @@ public class ProjectRepository {
         else {
             projectMapper.insert(project);
         }
+    }
+
+    public void addSkill(ProjectSkill projectSkill) throws SQLException {
+        projectSkillMapper.insert(projectSkill);
     }
 
     public Project get(final String id) throws SQLException {

@@ -1,5 +1,6 @@
 package joboonja.models;
 
+import joboonja.data.mappers.EndorsementMapper;
 import joboonja.data.mappers.UserMapper;
 import joboonja.data.mappers.UserSkillMapper;
 
@@ -7,15 +8,16 @@ import java.io.InvalidObjectException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
 
 public class UserRepository {
     private UserMapper userMapper;
     private UserSkillMapper userSkillMapper;
+    private EndorsementMapper endorsementMapper;
 
     public UserRepository() throws SQLException {
         this.userMapper = new UserMapper();
         this.userSkillMapper = new UserSkillMapper();
+        this.endorsementMapper = new EndorsementMapper();
     }
 
     public void add(User user) throws InvalidObjectException, SQLException {
@@ -33,6 +35,10 @@ public class UserRepository {
 
     public void deleteSkill(UserSkill userSkill) throws SQLException {
         userSkillMapper.delete(userSkill);
+    }
+
+    public void endorse(Endorsement endorsement) throws SQLException {
+        endorsementMapper.insert(endorsement);
     }
 
     public User get(final String userId) throws SQLException {

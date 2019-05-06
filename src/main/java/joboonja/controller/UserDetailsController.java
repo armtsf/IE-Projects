@@ -1,6 +1,6 @@
 //package joboonja.controller;
 //
-//import joboonja.models.SkillNameList;
+//import joboonja.models.SkillNameRepository;
 //import joboonja.models.User;
 //import joboonja.service.UserService;
 //
@@ -32,7 +32,7 @@
 //                req.getRequestDispatcher("/user-guest.jsp").forward(req, resp);
 //            }
 //            else {
-//                req.setAttribute("availableSkills", SkillNameList.all());
+//                req.setAttribute("availableSkills", SkillNameRepository.all());
 //                req.getRequestDispatcher("/user-logged-in.jsp").forward(req, resp);
 //            }
 //        }

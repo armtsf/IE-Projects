@@ -10,20 +10,21 @@ import java.util.NoSuchElementException;
 @Service
 class AuctionService {
 
-    private ProjectList projectList;
-    private UserList userList;
+    private ProjectRepository projectRepository;
+    private UserRepository userList;
+    private BidRepository bidRepository;
 
     public AuctionService() throws SQLException {
-        this.projectList = new ProjectList();
-        this.userList = new UserList();
+        this.projectRepository = new ProjectRepository();
+        this.userList = new UserRepository();
     }
 
     public User finish(String projectName) throws SQLException {
-        Project project = projectList.get(projectName);
+        Project project = projectRepository.get(projectName);
         ArrayList<ProjectSkill> jobSkills = project.getSkills();
         long jobOffer = project.getBudget();
 
-        ArrayList<Bid> bids = BidList.get(project);
+        ArrayList<Bid> bids = bidRepository.get(project);
 
         long maxScore = 0;
         User winner = null;

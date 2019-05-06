@@ -107,8 +107,9 @@ public class User {
 
     public UserSkill addSkill(SkillName skillName) {
         for (UserSkill skill: skills) {
-            if (skill.getSkillName().getName().equals(skillName))
+            if (skill.getSkillName().getName().equals(skillName.getName())) {
                 throw new IllegalArgumentException("duplicate skill for this user");
+            }
         }
         UserSkill userSkill = new UserSkill(skillName, 0, this);
         skills.add(userSkill);

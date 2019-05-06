@@ -10,7 +10,7 @@ import java.util.NoSuchElementException;
 public class BidRepository {
     private BidMapper bidMapper;
 
-    BidRepository() throws SQLException {
+    public BidRepository() throws SQLException {
         bidMapper = new BidMapper();
     }
 

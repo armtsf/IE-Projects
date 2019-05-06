@@ -1,7 +1,7 @@
 package joboonja.service;
 
 import joboonja.models.SkillName;
-import joboonja.models.SkillNameList;
+import joboonja.models.SkillNameRepository;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
@@ -10,13 +10,13 @@ import java.util.ArrayList;
 @Service
 public class SkillNameService {
 
-    private SkillNameList skillNameList;
+    private SkillNameRepository skillNameRepository;
 
     public SkillNameService() throws SQLException {
-        this.skillNameList = new SkillNameList();
+        this.skillNameRepository = new SkillNameRepository();
     }
 
-    public ArrayList<SkillName> getSkillNameList() {
-        return skillNameList.all();
+    public ArrayList<SkillName> getSkillNameList() throws SQLException {
+        return skillNameRepository.all();
     }
 }

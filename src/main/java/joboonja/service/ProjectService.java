@@ -11,15 +11,17 @@ import java.util.ArrayList;
 @Service
 public class ProjectService {
 
-    private ProjectList projectList;
+    private ProjectRepository projectRepository;
+    private BidRepository bidRepository;
 
-    public ProjectService() {
-        this.projectList = projectList;
+    public ProjectService() throws SQLException {
+        this.projectRepository = new ProjectRepository();
+        this.bidRepository = new BidRepository();
     }
 
-    public ArrayList<Project> getProjectsList(User user) {
+    public ArrayList<Project> getProjectsList(User user) throws SQLException {
         ArrayList<Project> result = new ArrayList<>();
-        for (Project project: projectList.all()) {
+        for (Project project: projectRepository.all()) {
             if (user.isEligibleFor(project)) {
                 result.add(project);
             }
@@ -28,22 +30,21 @@ public class ProjectService {
     }
 
     public Project getProject(User user, String projectId) throws IllegalAccessException, SQLException {
-        Project project = projectList.get(projectId);
+        Project project = projectRepository.get(projectId);
         if (user.isEligibleFor(project))
             return project;
-        else
-            throw new IllegalAccessException();
+        throw new IllegalAccessException();
     }
 
     public void addBid(User user, String projectId, long bidAmount) throws InvalidObjectException, IllegalAccessException, SQLException {
         Project project = getProject(user, projectId);
         Bid bid = new Bid(user, project, bidAmount);
-        BidList.add(bid);
+        bidRepository.add(bid);
     }
 
     public BidDTO getBid(User user, String projectId) throws IllegalAccessException, SQLException {
         Project project = getProject(user, projectId);
-        Bid bid = BidList.get(project, user);
+        Bid bid = bidRepository.get(project, user);
         return new BidDTO(bid.getBidAmount());
     }
 }
