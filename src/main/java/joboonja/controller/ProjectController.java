@@ -24,16 +24,20 @@ public class ProjectController {
     private ProjectService projectService;
 
     @GetMapping({"", "/"})
-    public ResponseEntity<List<Project>> getProjects(@RequestAttribute("user") User user, @RequestParam(value = "p", required = false) Integer page, @RequestParam(name = "q", required = false) String project) throws SQLException {
-        int pageNum = 0;
-        if (page != null) {
-            pageNum = page.intValue();
+    public ResponseEntity<List<Project>> getProjects(@RequestAttribute("user") User user, @RequestParam(value = "start", required = false) Integer start, @RequestParam(name = "q", required = false) String project, @RequestParam(name = "offset", required = false) Integer offset) throws SQLException {
+        int startValue = 0;
+        int offsetValue = 10;
+        if (start != null) {
+            startValue = start.intValue();
+        }
+        if (offset != null) {
+            offsetValue = offset.intValue();
         }
         if (project == null) {
-            return new ResponseEntity<>(projectService.getProjectsList(user, pageNum), HttpStatus.OK);
+            return new ResponseEntity<>(projectService.getProjectsList(user, startValue, offsetValue), HttpStatus.OK);
         }
         else {
-            return new ResponseEntity<>(projectService.getSearchResult(project, pageNum), HttpStatus.OK);
+            return new ResponseEntity<>(projectService.getSearchResult(project, startValue, offsetValue), HttpStatus.OK);
         }
     }
 

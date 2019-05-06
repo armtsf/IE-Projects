@@ -80,9 +80,9 @@ public class ProjectMapper extends Mapper<Project> {
         }
     }
 
-    public ArrayList<Project> all(int page) throws SQLException {
+    public ArrayList<Project> all(int start, int offset) throws SQLException {
         String cntsql = "SELECT COUNT(id) FROM Project";
-        String sql = "SELECT * FROM Project ORDER BY creationDate DESC LIMIT " + LIMIT + " OFFSET " + page*LIMIT;
+        String sql = "SELECT * FROM Project ORDER BY creationDate DESC LIMIT " + offset + " OFFSET " + start;
         try (
                 Connection conn = ConnectionPool.getConnection();
                 PreparedStatement cntstmnt = conn.prepareStatement(cntsql);
@@ -90,16 +90,16 @@ public class ProjectMapper extends Mapper<Project> {
         ) {
             ResultSet rs = cntstmnt.executeQuery();
             int count = rs.getInt(1);
-            if (count <= page * LIMIT)
+            if (count <= start)
                 return new ArrayList<>();
             return executeFilter(stmt);
         }
     }
 
-    public ArrayList<Project> search(String project, int page) throws SQLException {
+    public ArrayList<Project> search(String project, int start, int offset) throws SQLException {
         String cntsql = "SELECT COUNT(id) FROM Project WHERE title LIKE \"%" + project + "%\" OR description LIKE \"%" + project;
         String sql = "SELECT * FROM Project WHERE title LIKE \"%" + project + "%\" OR description LIKE \"%" + project +
-                "%\" ORDER BY creationDate DESC LIMIT " + LIMIT + " OFFSET " + page*LIMIT;
+                "%\" ORDER BY creationDate DESC LIMIT " + offset + " OFFSET " + start;
         try (
                 Connection conn = ConnectionPool.getConnection();
                 PreparedStatement cntstmnt = conn.prepareStatement(cntsql);
@@ -107,7 +107,7 @@ public class ProjectMapper extends Mapper<Project> {
         ) {
             ResultSet rs = cntstmnt.executeQuery();
             int count = rs.getInt(1);
-            if (count <= page * LIMIT)
+            if (count <= start)
                 return new ArrayList<>();
             return executeFilter(stmt);
         }

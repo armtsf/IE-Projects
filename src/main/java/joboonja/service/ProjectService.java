@@ -19,13 +19,13 @@ public class ProjectService {
         this.bidRepository = new BidRepository();
     }
 
-    public ArrayList<Project> getProjectsList(User user, int page) throws SQLException {
+    public ArrayList<Project> getProjectsList(User user, int start, int offset) throws SQLException {
 //        for (Project project: projectRepository.all(page)) {
 //            if (user.isEligibleFor(project)) {
 //                result.add(project);
 //            }
 //        }
-        return new ArrayList<>(projectRepository.all(page));
+        return new ArrayList<>(projectRepository.all(start, offset));
     }
 
     public Project getProject(User user, String projectId) throws IllegalAccessException, SQLException {
@@ -47,7 +47,7 @@ public class ProjectService {
         return new BidDTO(bid.getBidAmount());
     }
 
-    public ArrayList<Project> getSearchResult(String project, int page) throws SQLException {
-        return projectRepository.searchProjects(project, page);
+    public ArrayList<Project> getSearchResult(String project, int start, int offset) throws SQLException {
+        return projectRepository.searchProjects(project, start, offset);
     }
 }
