@@ -24,7 +24,7 @@ public class ProjectController {
     private ProjectService projectService;
 
     @GetMapping({"", "/"})
-    public ResponseEntity<List<Project>> getProjects(@RequestAttribute("user") User user, @RequestParam(value = "start", required = false) Integer start, @RequestParam(name = "q", required = false) String project, @RequestParam(name = "offset", required = false) Integer offset) throws SQLException {
+    public ResponseEntity<List<Project>> getProjects(@RequestAttribute("user") User user, @RequestParam(value = "start", required = false) Integer start, @RequestParam(name = "q", required = false) String query, @RequestParam(name = "offset", required = false) Integer offset) throws SQLException {
         int startValue = 0;
         int offsetValue = 10;
         if (start != null) {
@@ -33,11 +33,11 @@ public class ProjectController {
         if (offset != null) {
             offsetValue = offset.intValue();
         }
-        if (project == null) {
+        if (query == null) {
             return new ResponseEntity<>(projectService.getProjectsList(user, startValue, offsetValue), HttpStatus.OK);
         }
         else {
-            return new ResponseEntity<>(projectService.getSearchResult(project, startValue, offsetValue), HttpStatus.OK);
+            return new ResponseEntity<>(projectService.getSearchResult(query, startValue, offsetValue), HttpStatus.OK);
         }
     }
 

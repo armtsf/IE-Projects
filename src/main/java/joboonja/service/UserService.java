@@ -59,7 +59,7 @@ public class UserService {
         userRepository.addSkill(user.addSkill(skillNameRepository.get(skillName)));
     }
 
-    public ArrayList<User> getSearchResult(String user) throws SQLException {
-        return userRepository.searchUsers(user);
+    public ArrayList<User> getSearchResult(User user, String query) throws SQLException {
+        return userRepository.searchUsers(user, query);
     }
 }

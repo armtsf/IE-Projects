@@ -47,7 +47,7 @@ public class ProjectService {
         return new BidDTO(bid.getBidAmount());
     }
 
-    public ArrayList<Project> getSearchResult(String project, int start, int offset) throws SQLException {
-        return projectRepository.searchProjects(project, start, offset);
+    public ArrayList<Project> getSearchResult(String query, int start, int offset) throws SQLException {
+        return projectRepository.searchProjects(query, start, offset);
     }
 }
