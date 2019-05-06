@@ -22,9 +22,7 @@ public class ProjectService {
     public ArrayList<Project> getProjectsList(User user, int page) throws SQLException {
         ArrayList<Project> result = new ArrayList<>();
         for (Project project: projectRepository.all(page)) {
-            if (user.isEligibleFor(project)) {
-                result.add(project);
-            }
+            result.add(project);
         }
         return result;
     }

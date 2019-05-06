@@ -81,7 +81,7 @@ public class ProjectMapper extends Mapper<Project> {
     }
 
     public ArrayList<Project> all(int page) throws SQLException {
-        String sql = "SELECT * FROM Project ORDER BY creationDate DESC LIMIT " + LIMIT + " OFFSET " + page;
+        String sql = "SELECT * FROM Project ORDER BY creationDate DESC LIMIT " + LIMIT + " OFFSET " + page*LIMIT;
         try (
                 Connection conn = ConnectionPool.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql)
@@ -92,7 +92,7 @@ public class ProjectMapper extends Mapper<Project> {
 
     public ArrayList<Project> search(String project, int page) throws SQLException {
         String sql = "SELECT * FROM Project WHERE title LIKE \"%" + project + "%\" OR description LIKE \"%" + project +
-                "%\" ORDER BY creationDate DESC LIMIT " + LIMIT + " OFFSET " + page;
+                "%\" ORDER BY creationDate DESC LIMIT " + LIMIT + " OFFSET " + page*LIMIT;
         try (
                 Connection conn = ConnectionPool.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql)

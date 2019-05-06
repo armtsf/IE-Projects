@@ -58,5 +58,5 @@ public class ProjectController {
         BidDTO bidDTO = projectService.getBid(user, id);
         return new ResponseEntity<>(bidDTO, HttpStatus.OK);
     }
-    
+
 }
