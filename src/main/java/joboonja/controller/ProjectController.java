@@ -24,8 +24,8 @@ public class ProjectController {
     private ProjectService projectService;
 
     @GetMapping({"", "/"})
-    public ResponseEntity<List<Project>> getProjects(@RequestAttribute("user") User user) throws SQLException {
-        return new ResponseEntity<>(projectService.getProjectsList(user), HttpStatus.OK);
+    public ResponseEntity<List<Project>> getProjects(@RequestAttribute("user") User user, @RequestAttribute("p") int page) throws SQLException {
+        return new ResponseEntity<>(projectService.getProjectsList(user, page), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
@@ -48,5 +48,10 @@ public class ProjectController {
     public ResponseEntity<BidDTO> getBid(@RequestAttribute("user") User user, @PathVariable("id") String id) throws IllegalAccessException, SQLException {
         BidDTO bidDTO = projectService.getBid(user, id);
         return new ResponseEntity<>(bidDTO, HttpStatus.OK);
+    }
+
+    @PostMapping("/")
+    public ResponseEntity<List<Project>> searchProjects(@RequestAttribute("q") String project, @RequestAttribute("p") int page) throws SQLException {
+        return new ResponseEntity<>(projectService.getSearchResult(project, page), HttpStatus.OK);
     }
 }

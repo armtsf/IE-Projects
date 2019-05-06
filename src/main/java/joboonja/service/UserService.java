@@ -58,4 +58,8 @@ public class UserService {
     public void addSkill(User user, String skillName) throws SQLException {
         userRepository.addSkill(user.addSkill(skillNameRepository.get(skillName)));
     }
+
+    public ArrayList<User> getSearchResult(String user) throws SQLException {
+        return userRepository.searchUsers(user);
+    }
 }

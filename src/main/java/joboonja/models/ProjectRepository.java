@@ -39,7 +39,11 @@ public class ProjectRepository {
     }
 
     //TODO
-    public ArrayList<Project> all() throws SQLException {
-        return projectMapper.all();
+    public ArrayList<Project> all(int page) throws SQLException {
+        return projectMapper.all(page);
+    }
+
+    public ArrayList<Project> searchProjects(String project, int page) throws SQLException {
+        return projectMapper.search(project, page);
     }
 }

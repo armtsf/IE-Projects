@@ -19,9 +19,9 @@ public class ProjectService {
         this.bidRepository = new BidRepository();
     }
 
-    public ArrayList<Project> getProjectsList(User user) throws SQLException {
+    public ArrayList<Project> getProjectsList(User user, int page) throws SQLException {
         ArrayList<Project> result = new ArrayList<>();
-        for (Project project: projectRepository.all()) {
+        for (Project project: projectRepository.all(page)) {
             if (user.isEligibleFor(project)) {
                 result.add(project);
             }
@@ -46,5 +46,9 @@ public class ProjectService {
         Project project = getProject(user, projectId);
         Bid bid = bidRepository.get(project, user);
         return new BidDTO(bid.getBidAmount());
+    }
+
+    public ArrayList<Project> getSearchResult(String project, int page) throws SQLException {
+        return projectRepository.searchProjects(project, page);
     }
 }

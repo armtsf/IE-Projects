@@ -77,4 +77,14 @@ public class UserMapper extends Mapper<User> {
             return executeFilter(stmt);
         }
     }
+
+    public ArrayList<User> search(String user) throws SQLException {
+        String sql = "SELECT * FROM User WHERE firstName LIKE \"%" + user + "%\" OR lastName LIKE \"%" + user + "%\"";
+        try (
+                Connection conn = ConnectionPool.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql)
+        ) {
+            return executeFilter(stmt);
+        }
+    }
 }

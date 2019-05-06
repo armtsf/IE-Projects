@@ -56,4 +56,8 @@ public class UserRepository {
     public ArrayList<User> getAllExcept(User user) throws SQLException {
         return userMapper.filterAllExcept(user);
     }
+
+    public ArrayList<User> searchUsers(String user) throws SQLException {
+        return userMapper.search(user);
+    }
 }

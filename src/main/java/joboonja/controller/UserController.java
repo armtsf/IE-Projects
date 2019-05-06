@@ -69,4 +69,9 @@ public class UserController {
         ResponseMessage responseMessage = new ResponseMessage(new Date(), "ok");
         return new ResponseEntity<>(responseMessage, HttpStatus.OK);
     }
+
+    @PostMapping("/")
+    public ResponseEntity<List<User>> searchUsers(@RequestAttribute("q") String user) throws SQLException {
+        return new ResponseEntity<>(userService.getSearchResult(user), HttpStatus.OK);
+    }
 }

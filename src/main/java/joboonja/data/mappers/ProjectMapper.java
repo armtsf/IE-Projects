@@ -8,6 +8,8 @@ import java.util.ArrayList;
 
 public class ProjectMapper extends Mapper<Project> {
 
+    private final int LIMIT = 10;
+
     private ProjectSkillMapper projectSkillMapper;
     private UserMapper userMapper;
 
@@ -78,8 +80,19 @@ public class ProjectMapper extends Mapper<Project> {
         }
     }
 
-    public ArrayList<Project> all() throws SQLException {
-        String sql = "SELECT * FROM Project";
+    public ArrayList<Project> all(int page) throws SQLException {
+        String sql = "SELECT * FROM Project ORDER BY creationDate DESC LIMIT " + LIMIT + " OFFSET " + page;
+        try (
+                Connection conn = ConnectionPool.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql)
+        ) {
+            return executeFilter(stmt);
+        }
+    }
+
+    public ArrayList<Project> search(String project, int page) throws SQLException {
+        String sql = "SELECT * FROM Project WHERE title LIKE \"%" + project + "%\" OR description LIKE \"%" + project +
+                "%\" ORDER BY creationDate DESC LIMIT " + LIMIT + " OFFSET " + page;
         try (
                 Connection conn = ConnectionPool.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql)
