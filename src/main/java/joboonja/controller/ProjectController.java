@@ -24,8 +24,17 @@ public class ProjectController {
     private ProjectService projectService;
 
     @GetMapping({"", "/"})
-    public ResponseEntity<List<Project>> getProjects(@RequestAttribute("user") User user, @RequestAttribute("p") int page) throws SQLException {
-        return new ResponseEntity<>(projectService.getProjectsList(user, page), HttpStatus.OK);
+    public ResponseEntity<List<Project>> getProjects(@RequestAttribute("user") User user, @RequestParam(value = "p", required = false) Integer page, @RequestParam(name = "q", required = false) String project) throws SQLException {
+        int pageNum = 0;
+        if (page != null) {
+            pageNum = page.intValue();
+        }
+        if (project == null) {
+            return new ResponseEntity<>(projectService.getProjectsList(user, pageNum), HttpStatus.OK);
+        }
+        else {
+            return new ResponseEntity<>(projectService.getSearchResult(project, pageNum), HttpStatus.OK);
+        }
     }
 
     @GetMapping("/{id}")
@@ -49,9 +58,5 @@ public class ProjectController {
         BidDTO bidDTO = projectService.getBid(user, id);
         return new ResponseEntity<>(bidDTO, HttpStatus.OK);
     }
-
-    @PostMapping("/")
-    public ResponseEntity<List<Project>> searchProjects(@RequestAttribute("q") String project, @RequestAttribute("p") int page) throws SQLException {
-        return new ResponseEntity<>(projectService.getSearchResult(project, page), HttpStatus.OK);
-    }
+    
 }

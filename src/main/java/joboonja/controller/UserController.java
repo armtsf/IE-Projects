@@ -24,7 +24,9 @@ public class UserController {
     private UserService userService;
 
     @GetMapping({"/", ""})
-    public ResponseEntity<List<User>> getUserList(@RequestAttribute("user") User user) throws SQLException {
+    public ResponseEntity<List<User>> getUserList(@RequestAttribute("user") User user, @RequestParam(name = "q", required = false) String query) throws SQLException {
+        if (query != null)
+            return new ResponseEntity<>(userService.getSearchResult(query), HttpStatus.OK);
         return new ResponseEntity<>(userService.getUsersList(user), HttpStatus.OK);
     }
 
@@ -70,8 +72,4 @@ public class UserController {
         return new ResponseEntity<>(responseMessage, HttpStatus.OK);
     }
 
-    @PostMapping("/")
-    public ResponseEntity<List<User>> searchUsers(@RequestAttribute("q") String user) throws SQLException {
-        return new ResponseEntity<>(userService.getSearchResult(user), HttpStatus.OK);
-    }
 }
