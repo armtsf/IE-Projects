@@ -1,6 +1,7 @@
 package joboonja.data.mappers;
 
 import joboonja.data.ConnectionPool;
+import joboonja.models.User;
 import joboonja.models.UserSkill;
 
 import java.sql.*;
@@ -14,12 +15,13 @@ public class UserSkillMapper extends Mapper<UserSkill> {
         skillNameMapper = new SkillNameMapper();
 
         String sql = "CREATE TABLE IF NOT EXISTS UserSkill ("
+                + "id INTEGER PRIMARY KEY, "
                 + "points INTEGER, "
-                + "skillName VARCHAR(256), "
+                + "skillNameId INTEGER, "
                 + "userId VARCHAR(256), "
-                + "FOREIGN KEY (skillName) REFERENCES SkillName(name), "
+                + "FOREIGN KEY (skillName) REFERENCES SkillName(id), "
                 + "FOREIGN KEY (userId) REFERENCES User(id),"
-                + "PRIMARY KEY (skillName, userId))";
+                + "UNIQUE (skillName, userId))";
         try (
                 Connection conn = ConnectionPool.getConnection();
                 Statement stmt = conn.createStatement()
@@ -29,7 +31,7 @@ public class UserSkillMapper extends Mapper<UserSkill> {
     }
 
     public int insert(UserSkill userSkill) throws SQLException {
-        String sql = "INSERT INTO UserSkill VALUES (?, ?, ?)";
+        String sql = "INSERT INTO UserSkill VALUES (NULL, ?, ?, ?)";
         try (
                 Connection conn = ConnectionPool.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql)
@@ -49,15 +51,18 @@ public class UserSkillMapper extends Mapper<UserSkill> {
         return userSkill;
     }
 
-    public ArrayList<UserSkill> filter(String userId) throws SQLException {
+    public ArrayList<UserSkill> filter(User user) throws SQLException {
         String sql = "SELECT * FROM UserSkill WHERE userId = ?";
         try (
                 Connection conn = ConnectionPool.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql)
         ) {
-            stmt.setString(1, userId);
-            return executeFilter(stmt);
+            stmt.setString(1, user.getId());
+            ArrayList<UserSkill> res = executeFilter(stmt);
+            for (UserSkill userSkill: res) {
+                userSkill.setUser(user);
+            }
+            return res;
         }
     }
-
 }

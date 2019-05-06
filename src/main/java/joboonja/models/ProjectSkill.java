@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class ProjectSkill {
+    @JsonIgnore
+    private int id;
     @JsonProperty("name")
     private SkillName skillName;
     @JsonProperty("point")
@@ -35,5 +37,13 @@ public class ProjectSkill {
 
     public Project getProject() {
         return project;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
     }
 }

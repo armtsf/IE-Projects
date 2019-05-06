@@ -8,9 +8,12 @@ import java.sql.*;
 public class ProjectMapper extends Mapper<Project> {
 
     private ProjectSkillMapper projectSkillMapper;
+    private UserMapper userMapper;
 
     public ProjectMapper() throws SQLException {
         this.projectSkillMapper = new ProjectSkillMapper();
+        this.userMapper = new UserMapper();
+
         String sql = "CREATE TABLE IF NOT EXISTS Project ("
                 + "id VARCHAR(256) PRIMARY KEY, "
                 + "title VARCHAR(256), "
@@ -56,7 +59,10 @@ public class ProjectMapper extends Mapper<Project> {
         project.setBudget(rs.getLong(5));
         project.setDeadline(rs.getLong(6));
         project.setCreationDate(rs.getLong(7));
-        project.setSkills(projectSkillMapper.get(project.getId()));
+        project.setSkills(projectSkillMapper.get(project));
+        if (rs.getString(8) != null) {
+            project.setWinner(userMapper.get(rs.getString(8)));
+        }
         return project;
     }
 

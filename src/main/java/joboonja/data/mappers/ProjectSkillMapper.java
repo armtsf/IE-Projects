@@ -1,12 +1,13 @@
 package joboonja.data.mappers;
 
 import joboonja.data.ConnectionPool;
+import joboonja.models.Project;
 import joboonja.models.ProjectSkill;
 
 import java.sql.*;
 import java.util.ArrayList;
 
-public class ProjectSkillMapper {
+public class ProjectSkillMapper extends Mapper<ProjectSkill> {
 
     private SkillNameMapper skillNameMapper;
 
@@ -14,12 +15,13 @@ public class ProjectSkillMapper {
         skillNameMapper = new SkillNameMapper();
 
         String sql = "CREATE TABLE IF NOT EXISTS ProjectSkill ("
+                + "id INTEGER PRIMARY KEY,"
                 + "points INTEGER, "
-                + "skillName VARCHAR(256), "
+                + "skillNameId INTEGER, "
                 + "projectId VARCHAR(256), "
-                + "FOREIGN KEY (skillName) REFERENCES SkillName(name), "
+                + "FOREIGN KEY (skillNameId) REFERENCES SkillName(id), "
                 + "FOREIGN KEY (projectId) REFERENCES Project(id),"
-                + "PRIMARY KEY (skillName, projectId))";
+                + "UNIQUE (skillName, projectId))";
         try (
                 Connection conn = ConnectionPool.getConnection();
                 Statement stmt = conn.createStatement()
@@ -29,7 +31,7 @@ public class ProjectSkillMapper {
     }
 
     public int insert(ProjectSkill projectSkill) throws SQLException {
-        String sql = "INSERT INTO ProjectSkill VALUES (?, ?, ?)";
+        String sql = "INSERT INTO ProjectSkill VALUES (NULL, ?, ?, ?)";
         try (
                 Connection conn = ConnectionPool.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql)
@@ -41,26 +43,27 @@ public class ProjectSkillMapper {
         }
     }
 
-    private ProjectSkill load(ResultSet rs) throws SQLException {
+    @Override
+    protected ProjectSkill load(ResultSet rs) throws SQLException {
         ProjectSkill projectSkill = new ProjectSkill();
         projectSkill.setPoints(rs.getInt(1));
         projectSkill.setSkillName(skillNameMapper.get(rs.getString(2)));
         return projectSkill;
     }
 
-    public ArrayList<ProjectSkill> get(String projectId) throws SQLException {
+    public ArrayList<ProjectSkill> get(Project project) throws SQLException {
         ArrayList<ProjectSkill> skills = new ArrayList<>();
         String sql = "SELECT * FROM ProjectSkill WHERE projectId = ?";
         try (
                 Connection conn = ConnectionPool.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql)
         ) {
-            stmt.setString(1, projectId);
-            ResultSet resultSet = stmt.executeQuery();
-            if (resultSet.next()) {
-                skills.add(load(resultSet));
+            stmt.setString(1, project.getId());
+            ArrayList<ProjectSkill> res = executeFilter(stmt);
+            for (ProjectSkill projectSkill: res) {
+                projectSkill.setProject(project);
             }
+            return res;
         }
-        return skills;
     }
 }

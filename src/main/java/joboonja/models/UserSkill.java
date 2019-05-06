@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.ArrayList;
 
 public class UserSkill {
+    @JsonIgnore
+    private int id;
     @JsonProperty("name")
     private SkillName skillName;
     @JsonProperty("point")
@@ -51,6 +53,14 @@ public class UserSkill {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public boolean isEndorsedBy(User user) {

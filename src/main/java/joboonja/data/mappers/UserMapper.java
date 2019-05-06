@@ -51,7 +51,7 @@ public class UserMapper extends Mapper<User> {
         user.setJobTitle(rs.getString(4));
         user.setProfilePictureURL(rs.getString(5));
         user.setBio(rs.getString(6));
-        user.setSkills(userSkillMapper.filter(user.getId()));
+        user.setSkills(userSkillMapper.filter(user));
         return user;
     }
 

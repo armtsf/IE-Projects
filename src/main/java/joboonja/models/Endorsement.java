@@ -1,10 +1,14 @@
 package joboonja.models;
 
-public class Endorsement {
-    private User fromUser;
-    private UserSkill userSkill;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
-    Endorsement() {}
+public class Endorsement {
+    @JsonIgnore
+    private int id;
+    private UserSkill userSkill;
+    private User fromUser;
+
+    public Endorsement() {}
 
     Endorsement(UserSkill userSkill, User fromUser) {
         this.userSkill = userSkill;
@@ -17,6 +21,14 @@ public class Endorsement {
 
     public void setFromUser(User fromUser) {
         this.fromUser = fromUser;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public UserSkill getUserSkill() {

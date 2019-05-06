@@ -1,6 +1,10 @@
 package joboonja.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class Bid {
+    @JsonIgnore
+    private int id;
     private User user;
     private Project project;
     private long bidAmount;
@@ -35,6 +39,14 @@ public class Bid {
 
     public void setBidAmount(long bidAmount) {
         this.bidAmount = bidAmount;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public boolean isValid() {
