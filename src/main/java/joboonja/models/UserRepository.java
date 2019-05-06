@@ -38,7 +38,7 @@ public class UserRepository {
     }
 
     public void endorse(Endorsement endorsement) throws SQLException {
-        endorsementMapper.insert(endorsement);
+        userSkillMapper.addEndorsement(endorsement, endorsementMapper);
     }
 
     public ArrayList<Endorsement> getEndorsements(UserSkill userSkill) throws SQLException {

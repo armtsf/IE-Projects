@@ -80,7 +80,7 @@ public class UserSkillMapper extends Mapper<UserSkill> {
         }
     }
 
-    public void addEndorsement(Endorsement endorsement) throws SQLException {
+    public void addEndorsement(Endorsement endorsement, EndorsementMapper endorsementMapper) throws SQLException {
         UserSkill userSkill = endorsement.getUserSkill();
         try (
                 Connection conn = ConnectionPool.getConnection();
@@ -91,6 +91,8 @@ public class UserSkillMapper extends Mapper<UserSkill> {
                 stmt.setInt(1, userSkill.getId());
                 stmt.executeUpdate();
             }
+            endorsementMapper.insert(conn, endorsement);
+            conn.commit();
         }
     }
 }
