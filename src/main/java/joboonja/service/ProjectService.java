@@ -47,7 +47,7 @@ public class ProjectService {
         return new BidDTO(bid.getBidAmount());
     }
 
-    public ArrayList<Project> getSearchResult(String project, int page) throws SQLException {
-        return projectRepository.searchProjects(project, page);
+    public ArrayList<Project> getSearchResult(User user, String query, int page) throws SQLException {
+        return projectRepository.searchProjects(query, page);
     }
 }

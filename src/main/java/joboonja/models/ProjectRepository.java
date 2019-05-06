@@ -43,7 +43,7 @@ public class ProjectRepository {
         return projectMapper.all(page);
     }
 
-    public ArrayList<Project> searchProjects(String project, int page) throws SQLException {
-        return projectMapper.search(project, page);
+    public ArrayList<Project> searchProjects(String query, int page) throws SQLException {
+        return projectMapper.search(query, page);
     }
 }

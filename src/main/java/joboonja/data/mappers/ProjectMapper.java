@@ -81,34 +81,43 @@ public class ProjectMapper extends Mapper<Project> {
     }
 
     public ArrayList<Project> all(int page) throws SQLException {
-        String cntsql = "SELECT COUNT(id) FROM Project";
-        String sql = "SELECT * FROM Project ORDER BY creationDate DESC LIMIT " + LIMIT + " OFFSET " + page*LIMIT;
+        String countSql = "SELECT COUNT(id) FROM Project";
+        String sql = "SELECT * FROM Project ORDER BY creationDate DESC LIMIT ? OFFSET ?";
         try (
                 Connection conn = ConnectionPool.getConnection();
-                PreparedStatement cntstmnt = conn.prepareStatement(cntsql);
-                PreparedStatement stmt = conn.prepareStatement(sql);
+                PreparedStatement countStmt = conn.prepareStatement(countSql);
+                PreparedStatement stmt = conn.prepareStatement(sql)
         ) {
-            ResultSet rs = cntstmnt.executeQuery();
+            ResultSet rs = countStmt.executeQuery();
             int count = rs.getInt(1);
             if (count <= page * LIMIT)
                 return new ArrayList<>();
+
+            stmt.setInt(1, LIMIT);
+            stmt.setInt(2, page * LIMIT);
             return executeFilter(stmt);
         }
     }
 
-    public ArrayList<Project> search(String project, int page) throws SQLException {
-        String cntsql = "SELECT COUNT(id) FROM Project WHERE title LIKE \"%" + project + "%\" OR description LIKE \"%" + project;
-        String sql = "SELECT * FROM Project WHERE title LIKE \"%" + project + "%\" OR description LIKE \"%" + project +
-                "%\" ORDER BY creationDate DESC LIMIT " + LIMIT + " OFFSET " + page*LIMIT;
+    public ArrayList<Project> search(String query, int page) throws SQLException {
+        String countSql = "SELECT COUNT(id) FROM Project WHERE title LIKE ? OR description LIKE ?";
+        String sql = "SELECT * FROM Project WHERE title LIKE ? OR description LIKE ? ORDER BY creationDate DESC LIMIT ? OFFSET ?";
         try (
                 Connection conn = ConnectionPool.getConnection();
-                PreparedStatement cntstmnt = conn.prepareStatement(cntsql);
+                PreparedStatement countStmt = conn.prepareStatement(countSql);
                 PreparedStatement stmt = conn.prepareStatement(sql)
         ) {
-            ResultSet rs = cntstmnt.executeQuery();
+            countStmt.setString(1, "%" + query + "%");
+            countStmt.setString(2, "%" + query + "%");
+            ResultSet rs = countStmt.executeQuery();
             int count = rs.getInt(1);
             if (count <= page * LIMIT)
                 return new ArrayList<>();
+
+            stmt.setString(1, "%" + query + "%");
+            stmt.setString(2, "%" + query + "%");
+            stmt.setInt(3, LIMIT);
+            stmt.setInt(4, page * LIMIT);
             return executeFilter(stmt);
         }
     }
