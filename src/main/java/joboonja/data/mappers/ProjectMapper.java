@@ -81,22 +81,34 @@ public class ProjectMapper extends Mapper<Project> {
     }
 
     public ArrayList<Project> all(int page) throws SQLException {
+        String cntsql = "SELECT COUNT(id) FROM Project";
         String sql = "SELECT * FROM Project ORDER BY creationDate DESC LIMIT " + LIMIT + " OFFSET " + page*LIMIT;
         try (
                 Connection conn = ConnectionPool.getConnection();
-                PreparedStatement stmt = conn.prepareStatement(sql)
+                PreparedStatement cntstmnt = conn.prepareStatement(cntsql);
+                PreparedStatement stmt = conn.prepareStatement(sql);
         ) {
+            ResultSet rs = cntstmnt.executeQuery();
+            int count = rs.getInt(1);
+            if (count <= page * LIMIT)
+                return new ArrayList<>();
             return executeFilter(stmt);
         }
     }
 
     public ArrayList<Project> search(String project, int page) throws SQLException {
+        String cntsql = "SELECT COUNT(id) FROM Project WHERE title LIKE \"%" + project + "%\" OR description LIKE \"%" + project;
         String sql = "SELECT * FROM Project WHERE title LIKE \"%" + project + "%\" OR description LIKE \"%" + project +
                 "%\" ORDER BY creationDate DESC LIMIT " + LIMIT + " OFFSET " + page*LIMIT;
         try (
                 Connection conn = ConnectionPool.getConnection();
+                PreparedStatement cntstmnt = conn.prepareStatement(cntsql);
                 PreparedStatement stmt = conn.prepareStatement(sql)
         ) {
+            ResultSet rs = cntstmnt.executeQuery();
+            int count = rs.getInt(1);
+            if (count <= page * LIMIT)
+                return new ArrayList<>();
             return executeFilter(stmt);
         }
     }
