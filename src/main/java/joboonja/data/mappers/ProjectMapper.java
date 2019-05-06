@@ -4,6 +4,7 @@ import joboonja.data.ConnectionPool;
 import joboonja.models.Project;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 public class ProjectMapper extends Mapper<Project> {
 
@@ -74,6 +75,16 @@ public class ProjectMapper extends Mapper<Project> {
         ) {
             stmt.setString(1, id);
             return executeGet(stmt);
+        }
+    }
+
+    public ArrayList<Project> all() throws SQLException {
+        String sql = "SELECT * FROM Project";
+        try (
+                Connection conn = ConnectionPool.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql)
+        ) {
+            return executeFilter(stmt);
         }
     }
 }

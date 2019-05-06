@@ -4,6 +4,7 @@ import joboonja.data.ConnectionPool;
 import joboonja.models.User;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 public class UserMapper extends Mapper<User> {
 
@@ -63,6 +64,17 @@ public class UserMapper extends Mapper<User> {
         ) {
             stmt.setString(1, id);
             return executeGet(stmt);
+        }
+    }
+
+    public ArrayList<User> filterAllExcept(User user) throws SQLException {
+        String sql = "SELECT * FROM User WHERE id != ?";
+        try (
+                Connection conn = ConnectionPool.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql)
+        ) {
+            stmt.setString(1, user.getId());
+            return executeFilter(stmt);
         }
     }
 }

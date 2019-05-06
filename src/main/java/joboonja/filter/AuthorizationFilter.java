@@ -2,7 +2,7 @@ package joboonja.filter;
 
 import joboonja.utils.Session;
 import joboonja.models.User;
-import joboonja.models.UserList;
+import joboonja.models.UserRepository;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
@@ -18,14 +18,14 @@ public class AuthorizationFilter implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         try {
-            UserList userList = new UserList();
+            UserRepository userRepository = new UserRepository();
             HttpServletResponse response = (HttpServletResponse) servletResponse;
             String userId = Session.get("userId");
             if (userId == null) {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             }
             try {
-                User user = userList.get(userId);
+                User user = userRepository.get(userId);
                 servletRequest.setAttribute("user", user);
                 servletRequest.setCharacterEncoding("UTF-8");
                 filterChain.doFilter(servletRequest, servletResponse);

@@ -4,6 +4,7 @@ import joboonja.data.ConnectionPool;
 import joboonja.models.SkillName;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 public class SkillNameMapper extends Mapper<SkillName> {
     public SkillNameMapper() throws SQLException {
@@ -44,6 +45,16 @@ public class SkillNameMapper extends Mapper<SkillName> {
         ) {
             stmt.setString(1, name);
             return executeGet(stmt);
+        }
+    }
+
+    public ArrayList<SkillName> all() throws SQLException {
+        String sql = "SELECT * FROM SkillName";
+        try (
+                Connection conn = ConnectionPool.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql)
+        ) {
+            return executeFilter(stmt);
         }
     }
 }

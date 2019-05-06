@@ -19,9 +19,9 @@ public class UserSkillMapper extends Mapper<UserSkill> {
                 + "points INTEGER, "
                 + "skillNameId INTEGER, "
                 + "userId VARCHAR(256), "
-                + "FOREIGN KEY (skillName) REFERENCES SkillName(id), "
+                + "FOREIGN KEY (skillNameId) REFERENCES SkillName(id), "
                 + "FOREIGN KEY (userId) REFERENCES User(id),"
-                + "UNIQUE (skillName, userId))";
+                + "UNIQUE (skillNameId, userId))";
         try (
                 Connection conn = ConnectionPool.getConnection();
                 Statement stmt = conn.createStatement()
@@ -39,6 +39,18 @@ public class UserSkillMapper extends Mapper<UserSkill> {
             stmt.setInt(1, userSkill.getPoints());
             stmt.setString(2, userSkill.getSkillName().getName());
             stmt.setString(3, userSkill.getUser().getId());
+            return stmt.executeUpdate();
+        }
+    }
+
+    public int delete(UserSkill userSkill) throws SQLException {
+        String sql = "DELETE FROM UserSkill WHERE skillNameId = ? AND userId = ?";
+        try (
+                Connection conn = ConnectionPool.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql)
+        ) {
+            stmt.setInt(1, userSkill.getSkillName().getId());
+            stmt.setString(2, userSkill.getUser().getId());
             return stmt.executeUpdate();
         }
     }

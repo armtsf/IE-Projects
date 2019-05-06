@@ -27,14 +27,14 @@ public class InitializationListener {
 
     private Logger logger = LoggerFactory.getLogger(InitializationListener.class);
 
-    private ProjectList projectList;
-    private SkillNameList skillNameList;
-    private UserList userList;
+    private ProjectRepository projectRepository;
+    private SkillNameRepository skillNameRepository;
+    private UserRepository userRepository;
 
     public InitializationListener() throws SQLException {
-        this.projectList = new ProjectList();
-        this.skillNameList = new SkillNameList();
-        this.userList = new UserList();
+        this.projectRepository = new ProjectRepository();
+        this.skillNameRepository = new SkillNameRepository();
+        this.userRepository = new UserRepository();
     }
 
     @EventListener(ApplicationReadyEvent.class)
@@ -44,17 +44,17 @@ public class InitializationListener {
             HttpResponse<String> jsonResponse = Unirest.get(SKILLS_ENDPOINT).asString();
             ArrayList<SkillName> skillNames = mapper.readValue(jsonResponse.getBody(), new TypeReference<List<SkillName>>(){});
             for (SkillName skillName: skillNames) {
-                skillNameList.add(skillName);
+                skillNameRepository.add(skillName);
             }
 
             jsonResponse = Unirest.get(PROJECTS_ENDPOINT).asString();
             ArrayList<Project> projects = mapper.readValue(jsonResponse.getBody(), new TypeReference<List<Project>>(){});
             for (Project project: projects) {
                 for (ProjectSkill skill: project.getSkills()) {
-                    skill.setSkillName(skillNameList.get(skill.getSkillName().getName()));
+                    skill.setSkillName(skillNameRepository.get(skill.getSkillName().getName()));
                     skill.setProject(project);
                 }
-                projectList.add(project);
+                projectRepository.add(project);
             }
         } catch (UnirestException | IOException | SQLException e) {
             e.printStackTrace();
@@ -68,13 +68,13 @@ public class InitializationListener {
         user1.setBio("روی سنگ قبرم بنویسید: خدا بیامرز می‌خواست خیلی کارا بکنه ولی پول نداشت");
         user1.setProfilePictureURL("http://localhost:8000/mine.jpg");
         ArrayList<UserSkill> skills = new ArrayList<>();
-        skills.add(new UserSkill(skillNameList.get("HTML"), 5));
-        skills.add(new UserSkill(skillNameList.get("Javascript"), 4));
-        skills.add(new UserSkill(skillNameList.get("C++"), 2));
-        skills.add(new UserSkill(skillNameList.get("Java"), 3));
+        skills.add(new UserSkill(skillNameRepository.get("HTML"), 5));
+        skills.add(new UserSkill(skillNameRepository.get("Javascript"), 4));
+        skills.add(new UserSkill(skillNameRepository.get("C++"), 2));
+        skills.add(new UserSkill(skillNameRepository.get("Java"), 3));
         user1.setSkills(skills);
         try {
-            userList.add(user1);
+            userRepository.add(user1);
         } catch (InvalidObjectException e) {
             e.printStackTrace();
         }
@@ -88,13 +88,13 @@ public class InitializationListener {
         user2.setBio("Yo");
         user2.setProfilePictureURL("http://localhost:8000/mine.jpg");
         ArrayList<UserSkill> skills1 = new ArrayList<>();
-        skills1.add(new UserSkill(skillNameList.get("HTML"), 4));
-        skills1.add(new UserSkill(skillNameList.get("Javascript"), 2));
-        skills1.add(new UserSkill(skillNameList.get("C++"), 8));
-        skills1.add(new UserSkill(skillNameList.get("Java"), 1));
+        skills1.add(new UserSkill(skillNameRepository.get("HTML"), 4));
+        skills1.add(new UserSkill(skillNameRepository.get("Javascript"), 2));
+        skills1.add(new UserSkill(skillNameRepository.get("C++"), 8));
+        skills1.add(new UserSkill(skillNameRepository.get("Java"), 1));
         user2.setSkills(skills1);
         try {
-            userList.add(user2);
+            userRepository.add(user2);
         } catch (InvalidObjectException e) {
             e.printStackTrace();
         }

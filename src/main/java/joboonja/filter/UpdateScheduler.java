@@ -7,9 +7,9 @@ import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import joboonja.data.mappers.ProjectMapper;
 import joboonja.models.Project;
-import joboonja.models.ProjectList;
+import joboonja.models.ProjectRepository;
 import joboonja.models.ProjectSkill;
-import joboonja.models.SkillNameList;
+import joboonja.models.SkillNameRepository;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -22,12 +22,12 @@ import java.util.List;
 public class UpdateScheduler {
 
     private final String PROJECTS_ENDPOINT = "http://142.93.134.194:8000/joboonja/project";
-    private ProjectList projectList;
-    private SkillNameList skillNameList;
+    private ProjectRepository projectRepository;
+    private SkillNameRepository skillNameRepository;
 
     public UpdateScheduler() throws SQLException {
-        this.projectList = new ProjectList();
-        this.skillNameList = new SkillNameList();
+        this.projectRepository = new ProjectRepository();
+        this.skillNameRepository = new SkillNameRepository();
     }
 
     @Scheduled(fixedDelay = 300000, initialDelay = 10000)
@@ -40,11 +40,11 @@ public class UpdateScheduler {
             });
             for (Project project : projects) {
                 for (ProjectSkill skill : project.getSkills()) {
-                    skill.setSkillName(skillNameList.get(skill.getSkillName().getName()));
+                    skill.setSkillName(skillNameRepository.get(skill.getSkillName().getName()));
                     skill.setProject(project);
                 }
-                if (projectList.get(project.getId()) == null)
-                    projectList.add(project);
+                if (projectRepository.get(project.getId()) == null)
+                    projectRepository.add(project);
             }
         } catch (UnirestException | IOException | SQLException e) {
             e.printStackTrace();

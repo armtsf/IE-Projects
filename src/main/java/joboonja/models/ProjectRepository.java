@@ -7,10 +7,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
-public class ProjectList {
+public class ProjectRepository {
     private ProjectMapper projectMapper;
 
-    public ProjectList() throws SQLException {
+    public ProjectRepository() throws SQLException {
         this.projectMapper = new ProjectMapper();
     }
 
@@ -32,7 +32,7 @@ public class ProjectList {
     }
 
     //TODO
-    public ArrayList<Project> all() {
-        return null;
+    public ArrayList<Project> all() throws SQLException {
+        return projectMapper.all();
     }
 }

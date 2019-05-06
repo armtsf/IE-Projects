@@ -7,10 +7,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
-public class SkillNameList {
+public class SkillNameRepository {
     private SkillNameMapper skillNameMapper;
 
-    public SkillNameList() throws SQLException {
+    public SkillNameRepository() throws SQLException {
         this.skillNameMapper = new SkillNameMapper();
     }
 
@@ -31,6 +31,7 @@ public class SkillNameList {
             return skillName;
     }
 
-    //TODO
-    public ArrayList<SkillName> all() { return null; }
+    public ArrayList<SkillName> all() throws SQLException {
+        return skillNameMapper.all();
+    }
 }
