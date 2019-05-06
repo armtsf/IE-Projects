@@ -5,7 +5,7 @@ import joboonja.models.User;
 
 import java.sql.*;
 
-public class UserMapper {
+public class UserMapper extends Mapper<User> {
 
     private UserSkillMapper userSkillMapper;
 
@@ -19,8 +19,8 @@ public class UserMapper {
                 + "profilePictureURL TEXT, "
                 + "bio TEXT)";
         try (
-            Connection conn = ConnectionPool.getConnection();
-            Statement stmt = conn.createStatement()
+                Connection conn = ConnectionPool.getConnection();
+                Statement stmt = conn.createStatement()
         ) {
             stmt.execute(sql);
         }
@@ -29,8 +29,8 @@ public class UserMapper {
     public int insert(User user) throws SQLException {
         String sql = "INSERT INTO User VALUES (?, ?, ?, ?, ?, ?)";
         try (
-            Connection conn = ConnectionPool.getConnection();
-            PreparedStatement stmt = conn.prepareStatement(sql)
+                Connection conn = ConnectionPool.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql)
         ) {
             stmt.setString(1, user.getId());
             stmt.setString(2, user.getFirstName());
@@ -42,7 +42,8 @@ public class UserMapper {
         }
     }
 
-    private User load(ResultSet rs) throws SQLException {
+    @Override
+    protected User load(ResultSet rs) throws SQLException {
         User user = new User();
         user.setId(rs.getString(1));
         user.setFirstName(rs.getString(2));
@@ -50,22 +51,18 @@ public class UserMapper {
         user.setJobTitle(rs.getString(4));
         user.setProfilePictureURL(rs.getString(5));
         user.setBio(rs.getString(6));
-        user.setSkills(userSkillMapper.get(user.getId()));
+        user.setSkills(userSkillMapper.filter(user.getId()));
         return user;
     }
 
     public User get(String id) throws SQLException {
         String sql = "SELECT * FROM User WHERE id = ?";
         try (
-            Connection conn = ConnectionPool.getConnection();
-            PreparedStatement stmt = conn.prepareStatement(sql)
+                Connection conn = ConnectionPool.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql)
         ) {
             stmt.setString(1, id);
-            ResultSet resultSet = stmt.executeQuery();
-            if (resultSet.next()) {
-                return load(resultSet);
-            }
+            return executeGet(stmt);
         }
-        return null;
     }
 }

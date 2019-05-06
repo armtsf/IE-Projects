@@ -5,7 +5,7 @@ import joboonja.models.Project;
 
 import java.sql.*;
 
-public class ProjectMapper {
+public class ProjectMapper extends Mapper<Project> {
 
     private ProjectSkillMapper projectSkillMapper;
 
@@ -46,7 +46,8 @@ public class ProjectMapper {
         }
     }
 
-    private Project load(ResultSet rs) throws SQLException {
+    @Override
+    protected Project load(ResultSet rs) throws SQLException {
         Project project = new Project();
         project.setId(rs.getString(1));
         project.setTitle(rs.getString(2));
@@ -66,11 +67,7 @@ public class ProjectMapper {
                 PreparedStatement stmt = conn.prepareStatement(sql)
         ) {
             stmt.setString(1, id);
-            ResultSet resultSet = stmt.executeQuery();
-            if (resultSet.next()) {
-                return load(resultSet);
-            }
+            return executeGet(stmt);
         }
-        return null;
     }
 }

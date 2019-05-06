@@ -5,7 +5,7 @@ import joboonja.models.SkillName;
 
 import java.sql.*;
 
-public class SkillNameMapper {
+public class SkillNameMapper extends Mapper<SkillName> {
     public SkillNameMapper() throws SQLException {
         String sql = "CREATE TABLE IF NOT EXISTS SkillName ("
                 + "name VARCHAR(256) PRIMARY KEY)";
@@ -28,7 +28,8 @@ public class SkillNameMapper {
         }
     }
 
-    private SkillName load(ResultSet rs) throws SQLException {
+    @Override
+    protected SkillName load(ResultSet rs) throws SQLException {
         SkillName skillName = new SkillName();
         skillName.setName(rs.getString(1));
         return skillName;
@@ -41,11 +42,7 @@ public class SkillNameMapper {
                 PreparedStatement stmt = conn.prepareStatement(sql)
         ) {
             stmt.setString(1, name);
-            ResultSet resultSet = stmt.executeQuery();
-            if (resultSet.next()) {
-                return load(resultSet);
-            }
+            return executeGet(stmt);
         }
-        return null;
     }
 }

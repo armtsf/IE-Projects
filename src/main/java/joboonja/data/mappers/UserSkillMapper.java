@@ -6,7 +6,7 @@ import joboonja.models.UserSkill;
 import java.sql.*;
 import java.util.ArrayList;
 
-public class UserSkillMapper {
+public class UserSkillMapper extends Mapper<UserSkill> {
 
     private SkillNameMapper skillNameMapper;
 
@@ -41,27 +41,23 @@ public class UserSkillMapper {
         }
     }
 
-    private UserSkill load(ResultSet rs) throws SQLException {
+    @Override
+    protected UserSkill load(ResultSet rs) throws SQLException {
         UserSkill userSkill = new UserSkill();
         userSkill.setPoints(rs.getInt(1));
         userSkill.setSkillName(skillNameMapper.get(rs.getString(2)));
         return userSkill;
     }
 
-    public ArrayList<UserSkill> get(String userId) throws SQLException {
-        ArrayList<UserSkill> skills = new ArrayList<>();
+    public ArrayList<UserSkill> filter(String userId) throws SQLException {
         String sql = "SELECT * FROM UserSkill WHERE userId = ?";
         try (
                 Connection conn = ConnectionPool.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql)
         ) {
             stmt.setString(1, userId);
-            ResultSet resultSet = stmt.executeQuery();
-            if (resultSet.next()) {
-                skills.add(load(resultSet));
-            }
+            return executeFilter(stmt);
         }
-        return skills;
     }
 
 }
