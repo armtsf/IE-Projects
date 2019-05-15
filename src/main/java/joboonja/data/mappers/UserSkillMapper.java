@@ -85,14 +85,18 @@ public class UserSkillMapper extends Mapper<UserSkill> {
         try (
                 Connection conn = ConnectionPool.getConnection();
         ) {
-            conn.setAutoCommit(false);
-            String sql = "UPDATE UserSkill SET points = points + 1 WHERE id = ?";
-            try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-                stmt.setInt(1, userSkill.getId());
-                stmt.executeUpdate();
+            try {
+                conn.setAutoCommit(false);
+                String sql = "UPDATE UserSkill SET points = points + 1 WHERE id = ?";
+                try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+                    stmt.setInt(1, userSkill.getId());
+                    stmt.executeUpdate();
+                }
+                endorsementMapper.insert(conn, endorsement);
+                conn.commit();
+            } catch (Exception e) {
+                conn.rollback();
             }
-            endorsementMapper.insert(conn, endorsement);
-            conn.commit();
         }
     }
 }

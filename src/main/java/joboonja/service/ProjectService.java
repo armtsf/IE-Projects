@@ -20,11 +20,13 @@ public class ProjectService {
     }
 
     public ArrayList<Project> getProjectsList(User user, int start, int offset) throws SQLException {
-//        for (Project project: projectRepository.all(page)) {
+//        ArrayList<Project> result = new ArrayList<>();
+//        for (Project project: projectRepository.all(start, offset)) {
 //            if (user.isEligibleFor(project)) {
 //                result.add(project);
 //            }
 //        }
+//        return result;
         return new ArrayList<>(projectRepository.all(start, offset));
     }
 

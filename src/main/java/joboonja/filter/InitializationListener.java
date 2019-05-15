@@ -1,6 +1,5 @@
 package joboonja.filter;
 
-import joboonja.data.mappers.UserMapper;
 import joboonja.utils.Session;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -18,6 +17,7 @@ import java.io.IOException;
 import java.io.InvalidObjectException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Component
@@ -38,7 +38,7 @@ public class InitializationListener {
     }
 
     @EventListener(ApplicationReadyEvent.class)
-    public void contextInitialized() {
+    public void contextInitialized() throws InvalidObjectException, SQLException {
         ObjectMapper mapper = new ObjectMapper();
         try {
             HttpResponse<String> jsonResponse = Unirest.get(SKILLS_ENDPOINT).asString();
@@ -68,6 +68,16 @@ public class InitializationListener {
         } catch (UnirestException | IOException | SQLException e) {
             e.printStackTrace();
         }
+
+//        Project dummy = new Project();
+//        dummy.setSkills(new ArrayList<>());
+//        dummy.setCreationDate(new Date().getTime());
+//        dummy.setDeadline(new Date().getTime() + 1000000);
+//        dummy.setBudget(100);
+//        dummy.setTitle("Dummy");
+//        dummy.setId("345");
+//
+//        projectRepository.add(dummy);
 
         User user1 = new User();
         user1.setId("1");

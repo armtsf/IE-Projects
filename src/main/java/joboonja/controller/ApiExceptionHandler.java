@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.io.InvalidObjectException;
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.NoSuchElementException;
 
@@ -38,5 +39,11 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     public final ResponseEntity<ResponseMessage> handleIllegalArgumentException(IllegalArgumentException e) {
         ResponseMessage responseMessage = new ResponseMessage(new Date(), e.getMessage());
         return new ResponseEntity<>(responseMessage, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(SQLException.class)
+    public final ResponseEntity<ResponseMessage> handleSQLException(SQLException e) {
+        ResponseMessage responseMessage = new ResponseMessage(new Date(), e.getMessage());
+        return new ResponseEntity<>(responseMessage, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
