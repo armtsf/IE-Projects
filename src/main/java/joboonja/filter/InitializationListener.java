@@ -1,6 +1,5 @@
 package joboonja.filter;
 
-import joboonja.utils.Session;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mashape.unirest.http.HttpResponse;
@@ -79,6 +78,7 @@ public class InitializationListener {
 //        projectRepository.add(dummy);
 
         User user1 = new User();
+        user1.setId(1);
         user1.setUsername("user1");
         user1.setFirstName("علی");
         user1.setLastName("شریف‌زاده");
@@ -104,15 +104,14 @@ public class InitializationListener {
         }
         for (UserSkill skill: skills) {
             try {
-//                logger.info(skill.getSkillName().getName());
                 skill.setUser(user1);
                 userRepository.addSkill(skill);
             } catch (SQLException ignored) {
             }
         }
-        Session.put("userId", user1.getId());
 
         User user2 = new User();
+        user2.setId(2);
         user2.setUsername("user2");
         user2.setFirstName("علی");
         user2.setLastName("احمدی");

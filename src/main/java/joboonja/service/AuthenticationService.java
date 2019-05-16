@@ -25,11 +25,12 @@ public class AuthenticationService {
         this.userRepository = new UserRepository();
     }
 
-    private String createJWTToken() {
+    private String createJWTToken(int userId) {
         Algorithm algorithm = Algorithm.HMAC256("joboonja"); // TODO
         return JWT.create().withIssuer("joboonja")
                 .withIssuedAt(new Date())
                 .withExpiresAt(new Date(System.currentTimeMillis() + 86400000))
+                .withClaim("userId", userId)
                 .sign(algorithm);
     }
 
@@ -47,8 +48,7 @@ public class AuthenticationService {
         String passwordHash = hashPassword(password);
         if (user.getPasswordHash().equals(passwordHash)) {
             LoginResponseDTO response = new LoginResponseDTO();
-            response.setToken(createJWTToken());
-            response.setId(user.getId());
+            response.setToken(createJWTToken(user.getId()));
             return response;
         }
 
@@ -71,8 +71,8 @@ public class AuthenticationService {
         userRepository.add(user);
 
         LoginResponseDTO response = new LoginResponseDTO();
-        response.setToken(createJWTToken());
-        response.setId(userRepository.getByUsername(user.getUsername()).getId());
+        int userId = userRepository.getByUsername(user.getUsername()).getId();
+        response.setToken(createJWTToken(userId));
         return response;
     }
 }
