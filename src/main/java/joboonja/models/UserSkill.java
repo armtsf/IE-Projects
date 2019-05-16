@@ -73,7 +73,7 @@ public class UserSkill {
 
     public boolean isEndorsedBy(User user) {
         for (Endorsement e: endorsements) {
-            if (e.getFromUser().getId().equals(user.getId())) {
+            if (e.getFromUser().getId() == user.getId()) {
                 return true;
             }
         }
@@ -84,7 +84,7 @@ public class UserSkill {
         if (isEndorsedBy(user)) {
             throw new IllegalArgumentException("cannot endorse a skill twice");
         }
-        if (user.getId().equals(this.getUser().getId())) {
+        if (user.getId() == this.getUser().getId()) {
             throw new IllegalArgumentException("you cannot endorse your own skill");
         }
         Endorsement endorsement = new Endorsement(this, user);

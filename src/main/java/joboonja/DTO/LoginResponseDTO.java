@@ -1,12 +1,12 @@
 package joboonja.DTO;
 
 public class LoginResponseDTO {
-    private String id;
+    private int id;
     private String token;
 
     public LoginResponseDTO() {}
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -14,7 +14,7 @@ public class LoginResponseDTO {
         this.token = token;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 

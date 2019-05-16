@@ -13,7 +13,7 @@ public class UserMapper extends Mapper<User> {
     public UserMapper() throws SQLException {
         this.userSkillMapper = new UserSkillMapper();
         String sql = "CREATE TABLE IF NOT EXISTS User ("
-                + "id VARCHAR(256) PRIMARY KEY, "
+                + "id INTEGER PRIMARY KEY, "
                 + "firstName VARCHAR(256), "
                 + "lastName VARCHAR(256), "
                 + "jobTitle VARCHAR(256), "
@@ -50,7 +50,7 @@ public class UserMapper extends Mapper<User> {
     @Override
     protected User load(ResultSet rs) throws SQLException {
         User user = new User();
-        user.setId(rs.getString(1));
+        user.setId(rs.getInt(1));
         user.setFirstName(rs.getString(2));
         user.setLastName(rs.getString(3));
         user.setJobTitle(rs.getString(4));
@@ -62,13 +62,13 @@ public class UserMapper extends Mapper<User> {
         return user;
     }
 
-    public User get(String id) throws SQLException {
+    public User get(int id) throws SQLException {
         String sql = "SELECT * FROM User WHERE id = ?";
         try (
                 Connection conn = ConnectionPool.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql)
         ) {
-            stmt.setString(1, id);
+            stmt.setInt(1, id);
             return executeGet(stmt);
         }
     }
@@ -90,7 +90,7 @@ public class UserMapper extends Mapper<User> {
                 Connection conn = ConnectionPool.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql)
         ) {
-            stmt.setString(1, user.getId());
+            stmt.setInt(1, user.getId());
             return executeFilter(stmt);
         }
     }
@@ -103,7 +103,7 @@ public class UserMapper extends Mapper<User> {
         ) {
             stmt.setString(1, "%" + query + "%");
             stmt.setString(2, "%" + query + "%");
-            stmt.setString(3, user.getId());
+            stmt.setInt(3, user.getId());
             return executeFilter(stmt);
         }
     }

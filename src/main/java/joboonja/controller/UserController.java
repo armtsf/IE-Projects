@@ -26,7 +26,7 @@ public class UserController {
     @Autowired
     private AuthenticationService authService;
 
-    @PostMapping({"/signup", ""})
+    @PostMapping({"/", ""})
     public ResponseEntity<LoginResponseDTO> signUp(@RequestBody UserSignUpDTO dto) throws NoSuchAlgorithmException,
             SQLException, InvalidObjectException, IllegalAccessException {
         return new ResponseEntity<>(authService.signUp(dto), HttpStatus.CREATED);
@@ -48,20 +48,20 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserDTO> getUser(@RequestAttribute("user") User user, @PathVariable("id") String id) throws SQLException {
+    public ResponseEntity<UserDTO> getUser(@RequestAttribute("user") User user, @PathVariable("id") int id) throws SQLException {
         return new ResponseEntity<>(userService.getUser(user, id), HttpStatus.OK);
     }
 
     @GetMapping("/{id}/skills")
-    public ResponseEntity<List<UserSkillDTO>> getSkills(@RequestAttribute("user") User user, @PathVariable("id") String id) throws SQLException {
+    public ResponseEntity<List<UserSkillDTO>> getSkills(@RequestAttribute("user") User user, @PathVariable("id") int id) throws SQLException {
         ArrayList<UserSkillDTO> skills = userService.getSkills(user, id);
         return new ResponseEntity<>(skills, HttpStatus.OK);
     }
 
     @PostMapping("/{id}/skills")
-    public ResponseEntity<ResponseMessage> addSkill(@RequestAttribute("user") User user, @PathVariable("id") String id,
+    public ResponseEntity<ResponseMessage> addSkill(@RequestAttribute("user") User user, @PathVariable("id") int id,
                                                     @RequestBody SkillNameDTO skillNameDTO) throws IllegalAccessException, SQLException {
-        if (!user.getId().equals(id)) {
+        if (!(user.getId() == id)) {
             throw new IllegalAccessException("");
         }
         String skillName = skillNameDTO.getSkillName();
@@ -71,9 +71,9 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}/skills")
-    public ResponseEntity<ResponseMessage> deleteSkill(@RequestAttribute("user") User user, @PathVariable("id") String id,
+    public ResponseEntity<ResponseMessage> deleteSkill(@RequestAttribute("user") User user, @PathVariable("id") int id,
                                                        @RequestParam(name="skill-name") String skillName) throws IllegalAccessException, SQLException {
-        if (!user.getId().equals(id)) {
+        if (!(user.getId() == id)) {
             throw new IllegalAccessException("");
         }
         userService.deleteSkill(user, skillName);
@@ -82,7 +82,7 @@ public class UserController {
     }
 
     @PostMapping("/{id}/skills/endorsements")
-    public ResponseEntity<ResponseMessage> endorseSkill(@RequestAttribute("user") User user, @PathVariable("id") String id,
+    public ResponseEntity<ResponseMessage> endorseSkill(@RequestAttribute("user") User user, @PathVariable("id") int id,
                                                         @RequestParam(name="skill-name") String skillName) throws SQLException {
         userService.endorse(user, id, skillName);
         ResponseMessage responseMessage = new ResponseMessage(new Date(), "ok");

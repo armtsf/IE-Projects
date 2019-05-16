@@ -16,7 +16,7 @@ public class BidMapper extends Mapper<Bid> {
 
         String sql = "CREATE TABLE IF NOT EXISTS Bid ("
                 + "id INTEGER PRIMARY KEY, "
-                + "userId VARCHAR(256), "
+                + "userId INTEGER, "
                 + "projectId VARCHAR(256), "
                 + "bidAmount INTEGER, "
                 + "FOREIGN KEY (userId) REFERENCES User(id), "
@@ -36,7 +36,7 @@ public class BidMapper extends Mapper<Bid> {
                 Connection conn = ConnectionPool.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql)
         ) {
-            stmt.setString(1, bid.getUser().getId());
+            stmt.setInt(1, bid.getUser().getId());
             stmt.setString(2, bid.getProject().getId());
             stmt.setLong(3, bid.getBidAmount());
             return stmt.executeUpdate();
@@ -47,7 +47,7 @@ public class BidMapper extends Mapper<Bid> {
     protected Bid load(ResultSet rs) throws SQLException {
         Bid bid = new Bid();
         bid.setId(rs.getInt(1));
-        bid.setUser(userMapper.get(rs.getString(2)));
+        bid.setUser(userMapper.get(rs.getInt(2)));
         bid.setBidAmount(rs.getLong(4));
         return bid;
     }
@@ -58,7 +58,7 @@ public class BidMapper extends Mapper<Bid> {
                 Connection conn = ConnectionPool.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql)
         ) {
-            stmt.setString(1, user.getId());
+            stmt.setInt(1, user.getId());
             stmt.setString(2, project.getId());
             Bid bid = executeGet(stmt);
             if (bid != null) {

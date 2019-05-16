@@ -5,7 +5,7 @@ import joboonja.models.User;
 import java.util.ArrayList;
 
 public class UserDTO {
-    private String id;
+    private int id;
     private String firstName;
     private String lastName;
     private String jobTitle;
@@ -28,7 +28,7 @@ public class UserDTO {
         this.skills = skills;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 

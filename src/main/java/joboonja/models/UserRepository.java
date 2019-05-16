@@ -45,7 +45,7 @@ public class UserRepository {
         return endorsementMapper.filter(userSkill);
     }
 
-    public User get(final String userId) throws SQLException {
+    public User get(final int userId) throws SQLException {
         User user = userMapper.get(userId);
         if (user == null) {
             throw new NoSuchElementException();

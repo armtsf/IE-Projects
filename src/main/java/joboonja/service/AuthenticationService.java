@@ -9,12 +9,12 @@ import joboonja.models.User;
 import joboonja.models.UserRepository;
 import org.springframework.stereotype.Service;
 
+import javax.xml.bind.DatatypeConverter;
 import java.io.InvalidObjectException;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.Date;
 
 @Service
@@ -36,7 +36,8 @@ public class AuthenticationService {
     private String hashPassword(String password) throws NoSuchAlgorithmException {
         byte[] bytesOfMessage = password.getBytes(StandardCharsets.UTF_8);
         MessageDigest md = MessageDigest.getInstance("MD5");
-        return Arrays.toString(md.digest(bytesOfMessage));
+        byte[] digest = md.digest(bytesOfMessage);
+        return DatatypeConverter.printHexBinary(digest).toUpperCase();
     }
 
     public LoginResponseDTO login(LoginRequestDTO request) throws SQLException, IllegalAccessException, NoSuchAlgorithmException {
@@ -66,6 +67,7 @@ public class AuthenticationService {
         user.setLastName(request.getLastName());
         user.setProfilePictureURL(request.getProfilePictureURL());
         user.setBio(request.getBio());
+        user.setJobTitle(request.getJobTitle());
         userRepository.add(user);
 
         LoginResponseDTO response = new LoginResponseDTO();

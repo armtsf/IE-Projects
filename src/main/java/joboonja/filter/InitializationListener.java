@@ -17,7 +17,6 @@ import java.io.IOException;
 import java.io.InvalidObjectException;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Component
@@ -80,7 +79,7 @@ public class InitializationListener {
 //        projectRepository.add(dummy);
 
         User user1 = new User();
-        user1.setId("1");
+        user1.setUsername("user1");
         user1.setFirstName("علی");
         user1.setLastName("شریف‌زاده");
         user1.setJobTitle("برنامه‌نویس وب");
@@ -114,7 +113,7 @@ public class InitializationListener {
         Session.put("userId", user1.getId());
 
         User user2 = new User();
-        user2.setId("2");
+        user2.setUsername("user2");
         user2.setFirstName("علی");
         user2.setLastName("احمدی");
         user2.setJobTitle("برنامه‌نویس وب");

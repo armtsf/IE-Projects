@@ -3,13 +3,13 @@ package joboonja.utils;
 import java.util.HashMap;
 
 public class Session {
-    private static HashMap<String, String> items = new HashMap<>();
+    private static HashMap<String, Integer> items = new HashMap<>();
 
-    public static void put(String key, String value) {
+    public static void put(String key, int value) {
         items.put(key, value);
     }
 
-    public static String get(String key) {
+    public static int get(String key) {
         return items.get(key);
     }
 }

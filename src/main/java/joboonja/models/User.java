@@ -7,7 +7,7 @@ import java.util.NoSuchElementException;
 
 public class User {
 
-    private String id;
+    private int id;
     private String firstName;
     private String lastName;
     private String jobTitle;
@@ -20,7 +20,7 @@ public class User {
 
     public User() {}
 
-    public User(String id, ArrayList<UserSkill> skills) {
+    public User(int id, ArrayList<UserSkill> skills) {
         this.id = id;
         this.skills = skills;
     }
@@ -39,11 +39,11 @@ public class User {
         return true;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

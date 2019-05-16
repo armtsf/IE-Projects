@@ -19,7 +19,7 @@ public class UserSkillMapper extends Mapper<UserSkill> {
                 + "id INTEGER PRIMARY KEY, "
                 + "points INTEGER, "
                 + "skillNameId INTEGER, "
-                + "userId VARCHAR(256), "
+                + "userId INTEGER, "
                 + "FOREIGN KEY (skillNameId) REFERENCES SkillName(id), "
                 + "FOREIGN KEY (userId) REFERENCES User(id),"
                 + "UNIQUE (skillNameId, userId))";
@@ -39,7 +39,7 @@ public class UserSkillMapper extends Mapper<UserSkill> {
         ) {
             stmt.setInt(1, userSkill.getPoints());
             stmt.setInt(2, userSkill.getSkillName().getId());
-            stmt.setString(3, userSkill.getUser().getId());
+            stmt.setInt(3, userSkill.getUser().getId());
             return stmt.executeUpdate();
         }
     }
@@ -51,7 +51,7 @@ public class UserSkillMapper extends Mapper<UserSkill> {
                 PreparedStatement stmt = conn.prepareStatement(sql)
         ) {
             stmt.setInt(1, userSkill.getSkillName().getId());
-            stmt.setString(2, userSkill.getUser().getId());
+            stmt.setInt(2, userSkill.getUser().getId());
             return stmt.executeUpdate();
         }
     }
@@ -71,7 +71,7 @@ public class UserSkillMapper extends Mapper<UserSkill> {
                 Connection conn = ConnectionPool.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql)
         ) {
-            stmt.setString(1, user.getId());
+            stmt.setInt(1, user.getId());
             ArrayList<UserSkill> res = executeFilter(stmt);
             for (UserSkill userSkill: res) {
                 userSkill.setUser(user);

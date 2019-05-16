@@ -17,7 +17,7 @@ public class EndorsementMapper extends Mapper<Endorsement> {
         String sql = "CREATE TABLE IF NOT EXISTS Endorsement ("
                 + "id INTEGER PRIMARY KEY, "
                 + "userSkillId INTEGER, "
-                + "fromUserId VARCHAR(256), "
+                + "fromUserId INTEGER, "
                 + "FOREIGN KEY (userSkillId) REFERENCES UserSkill(id), "
                 + "FOREIGN KEY (fromUserId) REFERENCES User(id), "
                 + "UNIQUE (userSkillId, fromUserId))";
@@ -41,7 +41,7 @@ public class EndorsementMapper extends Mapper<Endorsement> {
         String sql = "INSERT INTO Endorsement VALUES (NULL, ?, ?)";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, endorsement.getUserSkill().getId());
-            stmt.setString(2, endorsement.getFromUser().getId());
+            stmt.setInt(2, endorsement.getFromUser().getId());
             return stmt.executeUpdate();
         }
     }
@@ -50,7 +50,7 @@ public class EndorsementMapper extends Mapper<Endorsement> {
     protected Endorsement load(ResultSet rs) throws SQLException {
         Endorsement endorsement = new Endorsement();
         endorsement.setId(rs.getInt(1));
-        endorsement.setFromUser(userMapper.get(rs.getString(3)));
+        endorsement.setFromUser(userMapper.get(rs.getInt(3)));
         return endorsement;
     }
 

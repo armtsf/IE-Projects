@@ -21,7 +21,7 @@ public class UserService {
         this.userRepository = new UserRepository();
     }
 
-    public UserDTO getUser(User user, String requestedUserID) throws SQLException {
+    public UserDTO getUser(User user, int requestedUserID) throws SQLException {
         User requestedUser = userRepository.get(requestedUserID);
         UserDTO dto = new UserDTO(requestedUser);
         dto.setSkills(getSkills(user, requestedUserID));
@@ -32,7 +32,7 @@ public class UserService {
         return userRepository.getAllExcept(user);
     }
 
-    public ArrayList<UserSkillDTO> getSkills(User user, String requestedUserID) throws SQLException {
+    public ArrayList<UserSkillDTO> getSkills(User user, int requestedUserID) throws SQLException {
         User requestedUser = userRepository.get(requestedUserID);
         ArrayList<UserSkill> skills = requestedUser.getSkills();
         ArrayList<UserSkillDTO> dto = new ArrayList<>();
@@ -44,7 +44,7 @@ public class UserService {
         return dto;
     }
 
-    public void endorse(User user, String requestedUserID, String skillName) throws IllegalArgumentException, SQLException {
+    public void endorse(User user, int requestedUserID, String skillName) throws IllegalArgumentException, SQLException {
         User requestedUser = userRepository.get(requestedUserID);
         UserSkill userSkill = requestedUser.getSkill(skillNameRepository.get(skillName));
         userSkill.setEndorsements(userRepository.getEndorsements(userSkill));

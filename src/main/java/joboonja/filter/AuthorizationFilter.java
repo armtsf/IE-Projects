@@ -26,15 +26,16 @@ public class AuthorizationFilter implements Filter {
             return;
         }
 
+        // TODO
         try {
             UserRepository userRepository = new UserRepository();
             HttpServletResponse response = (HttpServletResponse) servletResponse;
-            String userId = Session.get("userId");
+            Integer userId = Session.get("userId");
             if (userId == null) {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             }
             try {
-                User user = userRepository.get(userId);
+                User user = userRepository.get(userId.intValue());
                 servletRequest.setAttribute("user", user);
                 servletRequest.setCharacterEncoding("UTF-8");
                 filterChain.doFilter(servletRequest, servletResponse);

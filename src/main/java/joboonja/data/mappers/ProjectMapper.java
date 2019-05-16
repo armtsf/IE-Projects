@@ -23,7 +23,7 @@ public class ProjectMapper extends Mapper<Project> {
                 + "budget INTEGER, "
                 + "deadline INTEGER, "
                 + "creationDate INTEGER, "
-                + "winnerId VARCHAR(256),"
+                + "winnerId INTEGER,"
                 + "FOREIGN KEY (winnerId) REFERENCES user(id))";
         try (
                 Connection conn = ConnectionPool.getConnection();
@@ -62,7 +62,7 @@ public class ProjectMapper extends Mapper<Project> {
         project.setCreationDate(rs.getLong(7));
         project.setSkills(projectSkillMapper.get(project));
         if (rs.getString(8) != null) {
-            project.setWinner(userMapper.get(rs.getString(8)));
+            project.setWinner(userMapper.get(rs.getInt(8)));
         }
         return project;
     }
