@@ -53,6 +53,19 @@ public class UserRepository {
         return user;
     }
 
+    public User getByUsername(final String username) throws SQLException, IllegalAccessException {
+        User user = userMapper.getByUsername(username);
+        if (user == null) {
+            throw new IllegalAccessException();
+        }
+        return user;
+    }
+
+    public boolean existsByUsername(final String username) throws SQLException {
+        User user = userMapper.getByUsername(username);
+        return user != null;
+    }
+
     public ArrayList<User> getAllExcept(User user) throws SQLException {
         return userMapper.filterAllExcept(user);
     }

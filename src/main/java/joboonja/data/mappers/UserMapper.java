@@ -18,7 +18,10 @@ public class UserMapper extends Mapper<User> {
                 + "lastName VARCHAR(256), "
                 + "jobTitle VARCHAR(256), "
                 + "profilePictureURL TEXT, "
-                + "bio TEXT)";
+                + "bio TEXT, "
+                + "username VARCHAR(256), "
+                + "passwordHash VARCHAR(256), "
+                + "UNIQUE (username))";
         try (
                 Connection conn = ConnectionPool.getConnection();
                 Statement stmt = conn.createStatement()
@@ -28,17 +31,18 @@ public class UserMapper extends Mapper<User> {
     }
 
     public int insert(User user) throws SQLException {
-        String sql = "INSERT INTO User VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO User VALUES (NULL, ?, ?, ?, ?, ?, ?, ?)";
         try (
                 Connection conn = ConnectionPool.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql)
         ) {
-            stmt.setString(1, user.getId());
-            stmt.setString(2, user.getFirstName());
-            stmt.setString(3, user.getLastName());
-            stmt.setString(4, user.getJobTitle());
-            stmt.setString(5, user.getProfilePictureURL());
-            stmt.setString(6, user.getBio());
+            stmt.setString(1, user.getFirstName());
+            stmt.setString(2, user.getLastName());
+            stmt.setString(3, user.getJobTitle());
+            stmt.setString(4, user.getProfilePictureURL());
+            stmt.setString(5, user.getBio());
+            stmt.setString(6, user.getUsername());
+            stmt.setString(7, user.getPasswordHash());
             return stmt.executeUpdate();
         }
     }
@@ -52,6 +56,8 @@ public class UserMapper extends Mapper<User> {
         user.setJobTitle(rs.getString(4));
         user.setProfilePictureURL(rs.getString(5));
         user.setBio(rs.getString(6));
+        user.setUsername(rs.getString(7));
+        user.setPasswordHash(rs.getString(8));
         user.setSkills(userSkillMapper.filter(user));
         return user;
     }
@@ -63,6 +69,17 @@ public class UserMapper extends Mapper<User> {
                 PreparedStatement stmt = conn.prepareStatement(sql)
         ) {
             stmt.setString(1, id);
+            return executeGet(stmt);
+        }
+    }
+
+    public User getByUsername(String username) throws SQLException {
+        String sql = "SELECT * FROM User WHERE username = ?";
+        try (
+                Connection conn = ConnectionPool.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql)
+        ) {
+            stmt.setString(1, username);
             return executeGet(stmt);
         }
     }

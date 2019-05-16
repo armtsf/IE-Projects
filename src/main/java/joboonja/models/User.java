@@ -1,5 +1,7 @@
 package joboonja.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
@@ -12,6 +14,9 @@ public class User {
     private String profilePictureURL;
     private ArrayList<UserSkill> skills = new ArrayList<>();
     private String bio;
+    private String username;
+    @JsonIgnore
+    private String passwordHash;
 
     public User() {}
 
@@ -93,6 +98,22 @@ public class User {
 
     public void setBio(String bio) {
         this.bio = bio;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPasswordHash() {
+        return passwordHash;
+    }
+
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
     }
 
     public UserSkill deleteSkill(String skillName) {

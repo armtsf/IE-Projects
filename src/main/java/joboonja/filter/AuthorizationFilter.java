@@ -7,6 +7,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -17,6 +18,14 @@ import java.util.NoSuchElementException;
 public class AuthorizationFilter implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+        HttpServletRequest request = (HttpServletRequest) servletRequest;
+        String path = request.getServletPath();
+        String method = request.getMethod();
+        if (path.equals("/users/login") || (path.equals("/users") && method.equals("POST"))) {
+            filterChain.doFilter(servletRequest, servletResponse);
+            return;
+        }
+
         try {
             UserRepository userRepository = new UserRepository();
             HttpServletResponse response = (HttpServletResponse) servletResponse;

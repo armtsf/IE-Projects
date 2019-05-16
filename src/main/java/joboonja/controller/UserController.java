@@ -1,9 +1,8 @@
 package joboonja.controller;
 
-import joboonja.DTO.UserDTO;
-import joboonja.DTO.UserSkillDTO;
+import joboonja.DTO.*;
 import joboonja.models.User;
-import joboonja.DTO.SkillNameDTO;
+import joboonja.service.AuthenticationService;
 import joboonja.utils.ResponseMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import joboonja.service.UserService;
 
+import java.io.InvalidObjectException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -22,6 +23,20 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private AuthenticationService authService;
+
+    @PostMapping({"/signup", ""})
+    public ResponseEntity<LoginResponseDTO> signUp(@RequestBody UserSignUpDTO dto) throws NoSuchAlgorithmException,
+            SQLException, InvalidObjectException, IllegalAccessException {
+        return new ResponseEntity<>(authService.signUp(dto), HttpStatus.CREATED);
+    }
+
+    @PostMapping({"/login"})
+    public ResponseEntity<LoginResponseDTO> login(@RequestBody LoginRequestDTO dto) throws IllegalAccessException,
+            NoSuchAlgorithmException, SQLException {
+        return new ResponseEntity<>(authService.login(dto), HttpStatus.OK);
+    }
 
     @GetMapping({"/", ""})
     public ResponseEntity<List<User>> getUserList(@RequestAttribute("user") User user, @RequestParam(name = "q",
