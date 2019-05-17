@@ -10,17 +10,15 @@ import java.util.NoSuchElementException;
 @Service
 class AuctionService {
 
-    private ProjectRepository projectRepository;
-    private UserRepository userList;
+    private UserRepository userRepository;
     private BidRepository bidRepository;
 
     public AuctionService() throws SQLException {
-        this.projectRepository = new ProjectRepository();
-        this.userList = new UserRepository();
+        this.userRepository = new UserRepository();
+        this.bidRepository = new BidRepository();
     }
 
-    public User finish(String projectName) throws SQLException {
-        Project project = projectRepository.get(projectName);
+    public User finish(Project project) throws SQLException {
         ArrayList<ProjectSkill> jobSkills = project.getSkills();
         long jobOffer = project.getBudget();
 
@@ -30,7 +28,7 @@ class AuctionService {
         User winner = null;
 
         for (Bid bid : bids) {
-            User user = userList.get(bid.getUser().getId());
+            User user = userRepository.get(bid.getUser().getId());
             long score = calculate(user, bid.getBidAmount(), jobSkills, jobOffer);
             if (score > maxScore) {
                 maxScore = score;
@@ -41,7 +39,7 @@ class AuctionService {
         return winner;
     }
 
-    public static long calculate(User user, long userOffer, ArrayList<ProjectSkill> jobSkills, long jobOffer) {
+    private static long calculate(User user, long userOffer, ArrayList<ProjectSkill> jobSkills, long jobOffer) {
         long sum = 0;
         for (ProjectSkill skill : jobSkills) {
             try {
