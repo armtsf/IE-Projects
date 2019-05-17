@@ -38,6 +38,18 @@ public class ProjectRepository {
             return project;
     }
 
+    public ArrayList<Project> filterUnfinishedReachedDeadline(long now) throws SQLException {
+        return projectMapper.filterUnfinishedReachedDeadline(now);
+    }
+
+    public int updateWinner(Project project) throws SQLException {
+        return projectMapper.updateWinner(project);
+    }
+
+    public int updateFinished(Project project) throws SQLException {
+        return projectMapper.updateFinished(project);
+    }
+
     public ArrayList<Project> all(int start, int offset) throws SQLException {
         return projectMapper.all(start, offset);
     }

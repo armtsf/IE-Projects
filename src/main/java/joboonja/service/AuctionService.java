@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
 @Service
-class AuctionService {
+public class AuctionService {
 
     private UserRepository userRepository;
     private BidRepository bidRepository;
@@ -39,7 +39,7 @@ class AuctionService {
         return winner;
     }
 
-    private static long calculate(User user, long userOffer, ArrayList<ProjectSkill> jobSkills, long jobOffer) {
+    private long calculate(User user, long userOffer, ArrayList<ProjectSkill> jobSkills, long jobOffer) {
         long sum = 0;
         for (ProjectSkill skill : jobSkills) {
             try {

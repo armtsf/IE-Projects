@@ -24,6 +24,7 @@ public class ProjectMapper extends Mapper<Project> {
                 + "deadline INTEGER, "
                 + "creationDate INTEGER, "
                 + "winnerId INTEGER,"
+                + "finished INTEGER,"
                 + "FOREIGN KEY (winnerId) REFERENCES user(id))";
         try (
                 Connection conn = ConnectionPool.getConnection();
@@ -34,7 +35,7 @@ public class ProjectMapper extends Mapper<Project> {
     }
 
     public int insert(Project project) throws SQLException {
-        String sql = "INSERT INTO Project VALUES (?, ?, ?, ?, ?, ?, ?, NULL)";
+        String sql = "INSERT INTO Project VALUES (?, ?, ?, ?, ?, ?, ?, NULL, ?)";
         try (
                 Connection conn = ConnectionPool.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql)
@@ -46,6 +47,7 @@ public class ProjectMapper extends Mapper<Project> {
             stmt.setLong(5, project.getBudget());
             stmt.setLong(6, project.getDeadline());
             stmt.setLong(7, project.getCreationDate());
+            stmt.setBoolean(8, project.isFinished());
             return stmt.executeUpdate();
         }
     }
@@ -64,6 +66,7 @@ public class ProjectMapper extends Mapper<Project> {
         if (rs.getString(8) != null) {
             project.setWinner(userMapper.get(rs.getInt(8)));
         }
+        project.setFinished(rs.getBoolean(9));
         return project;
     }
 
@@ -75,6 +78,18 @@ public class ProjectMapper extends Mapper<Project> {
         ) {
             stmt.setString(1, id);
             return executeGet(stmt);
+        }
+    }
+
+    public ArrayList<Project> filterUnfinishedReachedDeadline(long now) throws SQLException {
+        String sql = "SELECT * FROM Project WHERE finished = ? AND deadline < ?";
+        try (
+                Connection conn = ConnectionPool.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql)
+        ) {
+            stmt.setBoolean(1, false);
+            stmt.setLong(2, now);
+            return executeFilter(stmt);
         }
     }
 
@@ -117,6 +132,30 @@ public class ProjectMapper extends Mapper<Project> {
             stmt.setInt(3, offset);
             stmt.setInt(4, start);
             return executeFilter(stmt);
+        }
+    }
+
+    public int updateWinner(Project project) throws SQLException {
+        String sql = "UPDATE Project SET winnerId = ? WHERE id = ?";
+        try (
+                Connection conn = ConnectionPool.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql)
+        ) {
+            stmt.setInt(1, project.getWinner().getId());
+            stmt.setString(2, project.getId());
+            return stmt.executeUpdate();
+        }
+    }
+
+    public int updateFinished(Project project) throws SQLException {
+        String sql = "UPDATE Project SET finished = ? WHERE id = ?";
+        try (
+                Connection conn = ConnectionPool.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql)
+        ) {
+            stmt.setBoolean(1, project.isFinished());
+            stmt.setString(2, project.getId());
+            return stmt.executeUpdate();
         }
     }
 }

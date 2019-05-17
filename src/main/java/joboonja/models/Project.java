@@ -15,6 +15,7 @@ public class Project {
     private long deadline;
     private long creationDate;
     private User winner;
+    private boolean finished = false;
 
     public Project() {}
 
@@ -106,5 +107,13 @@ public class Project {
 
     public void setCreationDate(long creationDate) {
         this.creationDate = creationDate;
+    }
+
+    public void setFinished(boolean finished) {
+        this.finished = finished;
+    }
+
+    public boolean isFinished() {
+        return finished;
     }
 }
