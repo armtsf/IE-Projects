@@ -26,7 +26,7 @@ public class AuthenticationService {
     }
 
     private String createJWTToken(int userId) {
-        Algorithm algorithm = Algorithm.HMAC256("joboonja"); // TODO
+        Algorithm algorithm = Algorithm.HMAC256("joboonja");
         return JWT.create().withIssuer("joboonja")
                 .withIssuedAt(new Date())
                 .withExpiresAt(new Date(System.currentTimeMillis() + 86400000))

@@ -25,7 +25,7 @@ public class AuthenticationFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         String path = request.getServletPath();
         String method = request.getMethod();
-        if (path.equals("/users/login") || (path.equals("/users") && method.equals("POST"))) {
+        if (method.equals("OPTIONS") || path.equals("/users/login") || (path.equals("/users") && method.equals("POST"))) {
             filterChain.doFilter(servletRequest, servletResponse);
             return;
         }
@@ -34,8 +34,7 @@ public class AuthenticationFilter implements Filter {
         String authzHeader = request.getHeader("Authorization");
         if (authzHeader == null) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        }
-        else {
+        } else {
             String[] parts = authzHeader.split(" ");
             if (parts.length < 2) {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
