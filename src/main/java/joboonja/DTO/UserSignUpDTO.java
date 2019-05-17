@@ -9,7 +9,7 @@ public class UserSignUpDTO {
     private String username;
     private String password;
 
-    UserSignUpDTO() {}
+    public UserSignUpDTO() {}
 
     public String getFirstName() {
         return firstName;
