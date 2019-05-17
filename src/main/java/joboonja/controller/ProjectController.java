@@ -3,7 +3,6 @@ package joboonja.controller;
 import joboonja.models.Project;
 import joboonja.models.User;
 import joboonja.DTO.BidDTO;
-import joboonja.utils.ResponseMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

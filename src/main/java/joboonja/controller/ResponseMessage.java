@@ -1,4 +1,4 @@
-package joboonja.utils;
+package joboonja.controller;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
