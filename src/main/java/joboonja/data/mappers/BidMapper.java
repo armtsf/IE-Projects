@@ -15,12 +15,13 @@ public class BidMapper extends Mapper<Bid> {
         userMapper = new UserMapper();
 
         String sql = "CREATE TABLE IF NOT EXISTS Bid ("
-                + "id INTEGER PRIMARY KEY, "
+                + "id INTEGER AUTO_INCREMENT , "
                 + "userId INTEGER, "
                 + "projectId VARCHAR(256), "
-                + "bidAmount INTEGER, "
+                + "bidAmount LONG, "
                 + "FOREIGN KEY (userId) REFERENCES User(id), "
                 + "FOREIGN KEY (projectId) REFERENCES Project(id), "
+                + "PRIMARY KEY (id), "
                 + "UNIQUE (userId, projectId))";
         try (
                 Connection conn = ConnectionPool.getConnection();
@@ -31,7 +32,7 @@ public class BidMapper extends Mapper<Bid> {
     }
 
     public int insert(Bid bid) throws SQLException {
-        String sql = "INSERT INTO Bid VALUES (NULL, ?, ?, ?)";
+        String sql = "INSERT INTO Bid (userId, projectId, bidAmount) VALUES (?, ?, ?)";
         try (
                 Connection conn = ConnectionPool.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql)

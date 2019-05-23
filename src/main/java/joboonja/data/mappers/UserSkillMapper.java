@@ -16,12 +16,13 @@ public class UserSkillMapper extends Mapper<UserSkill> {
         skillNameMapper = new SkillNameMapper();
 
         String sql = "CREATE TABLE IF NOT EXISTS UserSkill ("
-                + "id INTEGER PRIMARY KEY, "
+                + "id INTEGER AUTO_INCREMENT, "
                 + "points INTEGER, "
                 + "skillNameId INTEGER, "
                 + "userId INTEGER, "
                 + "FOREIGN KEY (skillNameId) REFERENCES SkillName(id), "
                 + "FOREIGN KEY (userId) REFERENCES User(id),"
+                + "PRIMARY KEY (id), "
                 + "UNIQUE (skillNameId, userId))";
         try (
                 Connection conn = ConnectionPool.getConnection();
@@ -32,7 +33,7 @@ public class UserSkillMapper extends Mapper<UserSkill> {
     }
 
     public int insert(UserSkill userSkill) throws SQLException {
-        String sql = "INSERT INTO UserSkill VALUES (NULL, ?, ?, ?)";
+        String sql = "INSERT INTO UserSkill (points, skillNameId, userId) VALUES (?, ?, ?)";
         try (
                 Connection conn = ConnectionPool.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql)

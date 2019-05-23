@@ -11,9 +11,8 @@ public class UserMapper extends Mapper<User> {
     private UserSkillMapper userSkillMapper;
 
     public UserMapper() throws SQLException {
-        this.userSkillMapper = new UserSkillMapper();
         String sql = "CREATE TABLE IF NOT EXISTS User ("
-                + "id INTEGER PRIMARY KEY, "
+                + "id INTEGER AUTO_INCREMENT, "
                 + "firstName VARCHAR(256), "
                 + "lastName VARCHAR(256), "
                 + "jobTitle VARCHAR(256), "
@@ -21,6 +20,7 @@ public class UserMapper extends Mapper<User> {
                 + "bio TEXT, "
                 + "username VARCHAR(256), "
                 + "passwordHash VARCHAR(256), "
+                + "PRIMARY KEY (id), "
                 + "UNIQUE (username))";
         try (
                 Connection conn = ConnectionPool.getConnection();
@@ -28,10 +28,12 @@ public class UserMapper extends Mapper<User> {
         ) {
             stmt.execute(sql);
         }
+        this.userSkillMapper = new UserSkillMapper();
     }
 
     public int insert(User user) throws SQLException {
-        String sql = "INSERT INTO User VALUES (NULL, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO User (firstName, lastName, jobTitle, profilePictureURL, bio, username, passwordHash) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (
                 Connection conn = ConnectionPool.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql)

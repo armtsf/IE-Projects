@@ -42,6 +42,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(SQLException.class)
     public final ResponseEntity<ResponseMessage> handleSQLException(SQLException e) {
+        e.printStackTrace();
         ResponseMessage responseMessage = new ResponseMessage(new Date(), e.getMessage());
         return new ResponseEntity<>(responseMessage, HttpStatus.INTERNAL_SERVER_ERROR);
     }

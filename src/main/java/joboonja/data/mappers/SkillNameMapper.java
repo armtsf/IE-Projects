@@ -9,8 +9,9 @@ import java.util.ArrayList;
 public class SkillNameMapper extends Mapper<SkillName> {
     public SkillNameMapper() throws SQLException {
         String sql = "CREATE TABLE IF NOT EXISTS SkillName ("
-                + "id INTEGER PRIMARY KEY, "
-                + "name VARCHAR(256) UNIQUE)";
+                + "id INTEGER AUTO_INCREMENT, "
+                + "name VARCHAR(256) UNIQUE,"
+                + "PRIMARY KEY (id));";
         try (
                 Connection conn = ConnectionPool.getConnection();
                 Statement stmt = conn.createStatement()
@@ -20,7 +21,7 @@ public class SkillNameMapper extends Mapper<SkillName> {
     }
 
     public int insert(SkillName skillName) throws SQLException {
-        String sql = "INSERT INTO SkillName VALUES (NULL, ?)";
+        String sql = "INSERT INTO SkillName (name) VALUES (?)";
         try (
                 Connection conn = ConnectionPool.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql)

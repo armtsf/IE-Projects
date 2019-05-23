@@ -12,26 +12,27 @@ public class ProjectMapper extends Mapper<Project> {
     private UserMapper userMapper;
 
     public ProjectMapper() throws SQLException {
-        this.projectSkillMapper = new ProjectSkillMapper();
         this.userMapper = new UserMapper();
 
         String sql = "CREATE TABLE IF NOT EXISTS Project ("
-                + "id VARCHAR(256) PRIMARY KEY, "
+                + "id VARCHAR(256), "
                 + "title VARCHAR(256), "
                 + "description TEXT,"
                 + "imageURL TEXT, "
                 + "budget INTEGER, "
-                + "deadline INTEGER, "
-                + "creationDate INTEGER, "
+                + "deadline LONG, "
+                + "creationDate LONG, "
                 + "winnerId INTEGER,"
                 + "finished INTEGER,"
-                + "FOREIGN KEY (winnerId) REFERENCES user(id))";
+                + "PRIMARY KEY (id),"
+                + "FOREIGN KEY (winnerId) REFERENCES User(id))";
         try (
                 Connection conn = ConnectionPool.getConnection();
                 Statement stmt = conn.createStatement()
         ) {
             stmt.execute(sql);
         }
+        this.projectSkillMapper = new ProjectSkillMapper();
     }
 
     public int insert(Project project) throws SQLException {
@@ -102,9 +103,11 @@ public class ProjectMapper extends Mapper<Project> {
                 PreparedStatement stmt = conn.prepareStatement(sql)
         ) {
             ResultSet rs = countStmt.executeQuery();
-            int count = rs.getInt(1);
-            if (count <= start)
-                return new ArrayList<>();
+            if (rs.next()) {
+                int count = rs.getInt(1);
+                if (count <= start)
+                    return new ArrayList<>();
+            }
 
             stmt.setInt(1, offset);
             stmt.setInt(2, start);
@@ -123,9 +126,11 @@ public class ProjectMapper extends Mapper<Project> {
             countStmt.setString(1, "%" + query + "%");
             countStmt.setString(2, "%" + query + "%");
             ResultSet rs = countStmt.executeQuery();
-            int count = rs.getInt(1);
-            if (count <= start)
-                return new ArrayList<>();
+            if (rs.next()) {
+                int count = rs.getInt(1);
+                if (count <= start)
+                    return new ArrayList<>();
+            }
 
             stmt.setString(1, "%" + query + "%");
             stmt.setString(2, "%" + query + "%");
