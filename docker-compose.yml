@@ -1,0 +1,24 @@
+version: '3.1'
+
+services:
+  joboonja-react:
+    image: joboonja-react:latest
+    ports:
+      - "8000:80"
+    depends_on:
+      - joboonja
+
+  joboonja:
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+
+  db:
+    image: mysql:latest
+    environment:
+      - MYSQL_ROOT_PASSWORD=secret
+      - MYSQL_DATABASE=joboonja
+    volumes:
+      - /home/shayan/mysql:/var/lib/mysql

@@ -8,7 +8,7 @@ import java.sql.SQLException;
 public class ConnectionPool {
     private static final BasicDataSource ds = new BasicDataSource();
 //    private static final String dbURL = "jdbc:sqlite:joboonja.db";
-    private static final String dbURL = "jdbc:mysql://localhost:3306/joboonja";
+    private static final String dbURL = "jdbc:mysql://db:3306/joboonja";
 
     static {
         ds.setUrl(dbURL);
