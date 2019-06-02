@@ -1,0 +1,1 @@
+[![Build Status](https://travis-ci.com/armtsf/IE-Projects.svg?token=xVRkpymyvpXcCu6XgNJy&branch=master)](https://travis-ci.com/armtsf/IE-Projects)
