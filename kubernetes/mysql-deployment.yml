@@ -1,4 +1,4 @@
-apiVersion: apps/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: mysql
@@ -22,6 +22,12 @@ spec:
               value: secret
             - name: MYSQL_DATABASE
               value: joboonja
+          ports:
+            - containerPort: 3306
+              name: mysql
+          volumeMounts:
+            - mountPath: /var/lib/mysql
+              name: mysql-persistent-storage
           resources:
             limits:
               cpu: "600m"
@@ -29,4 +35,7 @@ spec:
             requests:
               cpu: "100m"
               memory: "100Mi"
-
+      volumes:
+        - name: mysql-persistent-storage
+          persistentVolumeClaim:
+            claimName: mysql-pv-claim

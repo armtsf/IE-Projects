@@ -1,4 +1,4 @@
-apiVersion: apps/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: joboonja
@@ -26,4 +26,3 @@ spec:
             requests:
               cpu: "100m"
               memory: "100Mi"
-
