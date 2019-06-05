@@ -27,8 +27,11 @@ public class InitializationListener {
     }
 
     private void createDummyUser(UserSignUpDTO dto, ArrayList<UserSkill> skills) {
+        logger.info(dto.getUsername());
         try {
             authService.signUp(dto);
+        } catch (Exception ignored) {}
+        try {
             User user = userRepository.getByUsername(dto.getUsername());
             for (UserSkill skill : skills) {
                 skill.setUser(user);
