@@ -20,14 +20,16 @@ public class ConnectionPool {
         ds.setMaxOpenPreparedStatements(100);
     }
 
-    public static Connection getConnection() throws SQLException, InterruptedException {
+    public static Connection getConnection() throws SQLException {
         SQLException exception = new SQLException();
         for (int i = 0; i < 5; i++) {
             try {
                 return ds.getConnection();
             } catch (SQLException e) {
                 exception = e;
-                TimeUnit.SECONDS.sleep(1);
+                try {
+                    TimeUnit.SECONDS.sleep(1);
+                } catch (InterruptedException ignored) {}
             }
         }
         throw exception;
