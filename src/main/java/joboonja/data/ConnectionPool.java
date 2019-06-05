@@ -4,6 +4,7 @@ import org.apache.commons.dbcp.BasicDataSource;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.concurrent.TimeUnit;
 
 public class ConnectionPool {
     private static final BasicDataSource ds = new BasicDataSource();
@@ -20,6 +21,17 @@ public class ConnectionPool {
     }
 
     public static Connection getConnection() throws SQLException {
-        return ds.getConnection();
+        SQLException exception = new SQLException();
+        for (int i = 0; i < 5; i++) {
+            try {
+                return ds.getConnection();
+            } catch (SQLException e) {
+                exception = e;
+                try {
+                    TimeUnit.SECONDS.sleep(1);
+                } catch (InterruptedException ignored) {}
+            }
+        }
+        throw exception;
     }
 }

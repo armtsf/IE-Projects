@@ -1,1 +1,2 @@
 [![Build Status](https://travis-ci.com/armtsf/IE-Projects.svg?token=xVRkpymyvpXcCu6XgNJy&branch=master)](https://travis-ci.com/armtsf/IE-Projects)
+[![buddy pipeline](https://app.buddy.works/armtsafa/ie-projects/pipelines/pipeline/190768/badge.svg?token=5ac78f3650c9f9ece25916998c7603d01f618fe819486b3155b572df7f3120fe "buddy pipeline")](https://app.buddy.works/armtsafa/ie-projects/pipelines/pipeline/190768)
