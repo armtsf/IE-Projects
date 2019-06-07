@@ -36,6 +36,7 @@ public class InitializationListener {
             for (UserSkill skill : skills) {
                 skill.setUser(user);
                 userRepository.addSkill(skill);
+                logger.info(skill.getSkillName().getName());
             }
         } catch (Exception ignored) {}
     }
